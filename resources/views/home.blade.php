@@ -178,10 +178,6 @@
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <a href="{{ route('testingPage') }}" class="btn btn-primary">TESTING PAGE</a>
-            </div>
-
         </div>
     </div>
 @endsection

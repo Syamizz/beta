@@ -359,8 +359,6 @@
                                                     </option>
                                                     <option value="Kediaman">Kediaman</option>
                                                     <option value="Pejabat">Pejabat</option>
-                                                    <option value="ReturnR">Return-R</option>
-                                                    <option value="ReturnP">Return-P</option>
                                                 </select>
                                             </th>
                                             <th>
@@ -520,7 +518,7 @@
                                     <th scope="row">No Tel Pejabat</th>
                                     <th>{{ $perhubungan->telPejabat }}</th>
                                     <th> <a id="edit_telP" class="btn btn-success btn-block">Kemaskini</a></th>
-                                    <th><a href="" class="btn btn-danger btn-block">Padam</a></th>
+                                    <th><a href="{{route('padamTelPStaff',$perhubungan->noKPBaru)}}" class="btn btn-danger btn-block">Padam</a></th>
                                 </tr>
                                 {{--@endif
                                 @if($perhubungan->telHP==TRUE)--}}
@@ -528,7 +526,7 @@
                                     <th scope="row">No Tel Bimbit</th>
                                     <th>{{ $perhubungan->telHP }}</th>
                                     <th> <a id="edit_telHP" class="btn btn-success btn-block">Kemaskini</a></th>
-                                    <th><a href="" class="btn btn-danger btn-block">Padam</a></th>
+                                    <th><a href="{{route('padamTelHPStaff',$perhubungan->noKPBaru)}}" class="btn btn-danger btn-block">Padam</a></th>
                                 </tr>
                                 {{--@endif
                                 @if($perhubungan->faks==TRUE)--}}
@@ -536,7 +534,7 @@
                                     <th scope="row">Faks</th>
                                     <th>{{ $perhubungan->faks }}</th>
                                     <th> <a id="edit_faks" class="btn btn-success btn-block">Kemaskini</a></th>
-                                    <th><a href="" class="btn btn-danger btn-block">Padam</a></th>
+                                    <th><a href="{{route('padamFaksStaff',$perhubungan->noKPBaru)}}" class="btn btn-danger btn-block">Padam</a></th>
                                 </tr>
                                 {{--@endif
                                 @if($perhubungan->email==TRUE)--}}
@@ -544,7 +542,7 @@
                                     <th scope="row">E-mail</th>
                                     <th>{{ $perhubungan->email }}</th>
                                     <th> <a id="edit_email" class="btn btn-success btn-block">Kemaskini</a></th>
-                                    <th><a href="{{ route('padamTelRStaff', $perhubungan->id) }}"
+                                    <th><a href="{{ route('padamEmailStaff', $perhubungan->noKPBaru) }}"
                                             class="btn btn-danger btn-block">Padam</a></th>
                                 </tr>
                                 {{--@endif--}}

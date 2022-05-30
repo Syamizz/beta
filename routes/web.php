@@ -211,9 +211,9 @@ Route::group(['middleware' => 'auth'], function () {
 
         //Route no telefon kakitangan
         Route::post('kakitangan/updateTelRStaff/{noKPBaru}', 'App\Http\Controllers\KakitanganController@updateTelRStaff')->name('updateTelRStaff');
-        Route::post('kakitangan/updateTelPStaff/{noKPBaru}', 'App\Http\Controllers\KakitangannController@updateTelPStaff')->name('updateTelPStaff');
+        Route::post('kakitangan/updateTelPStaff/{noKPBaru}', 'App\Http\Controllers\KakitanganController@updateTelPStaff')->name('updateTelPStaff');
         Route::post('kakitangan/updateTelHPStaff/{noKPBaru}', 'App\Http\Controllers\KakitanganController@updateTelHPStaff')->name('updateTelHPStaff');
-        Route::post('kakitangan/updatefaksStaff/{noKPBaru}', 'App\Http\Controllers\KakitangannController@updatefaksStaff')->name('updatefaksStaff');
+        Route::post('kakitangan/updatefaksStaff/{noKPBaru}', 'App\Http\Controllers\KakitanganController@updatefaksStaff')->name('updatefaksStaff');
         Route::post('kikatangan/updateEmailStaff/{noKPBaru}', 'App\Http\Controllers\KakitanganController@updateEmailStaff')->name('updateEmailStaff');
         Route::get('kakitangan/padamTelRStaff/{noKPBaru}', 'App\Http\Controllers\KakitanganController@padamTelRStaff')->name('padamTelRStaff');
         Route::get('kakitangan/padamTelPStaff/{noKPBaru}', 'App\Http\Controllers\KakitanganController@padamTelPStaff')->name('padamTelPStaff');
