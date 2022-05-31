@@ -25,12 +25,12 @@
                         </tr>
                         <tr>
                             <td width="35%"></td>
-                            <td><button type="submit">Cari</button></td>
+                            <td><button class="btn btn-secondary" type="submit">Cari</button></td>
                         </tr>
                     </table>
                 </form>
                 <br>
-                <a href="{{route('displayIndividu')}}">Display All</a>
+                <a class="btn btn-primary" href="{{route('displayIndividu')}}">Display All</a>
                 <br>
 
                 

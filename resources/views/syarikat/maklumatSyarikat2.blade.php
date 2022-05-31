@@ -279,32 +279,34 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><button type="submit">Cari</button></td>
+                                <td><button class="btn btn-secondary" type="submit">Cari</button></td>
                             </tr>
                         </table>
                     </form>
                     
                     <br><br>
 
-                    <table id="t">
-                        <tr>
-                            <th id="t" colspan="2">Tindakan</th>
-                            <th id="t">Nama Jabatan/Syarikat</th>
-                            <th id="t">Kod Jabatan/Syarikat</th>
-                            <th id="t">Maklumat Jabatan/Syarikat</th>
-                            <th id="t">Penerimaan</th>
-                        </tr>
-                        @foreach ($syarikat as $info)
+                    <div class="col-md-7">
+                        <table style="background: white" class="table table-bordered table-striped">
                             <tr>
-                                <td id="t"><a href="{{ route('maklumatSyarikatEdit', $info->id) }}">Kemaskini</a></td>
-                                <td id="t"><a href="{{ route('maklumatSyarikatDelete', $info->id) }}">Padam</a></td>
-                                <td id="t">{{ $info->nama_jabatan }}</td>
-                                <td id="t">{{ $info->kod_jabatan }}</td>
-                                <td id="t">{{ $info->maklumat_jabatan }}</td>
-                                <td id="t">Penerimaan</td>
+                                <th id="t" colspan="2">Tindakan</th>
+                                <th id="t">Nama Jabatan/Syarikat</th>
+                                <th id="t">Kod Jabatan/Syarikat</th>
+                                <th id="t">Maklumat Jabatan/Syarikat</th>
+                                <th id="t">Penerimaan</th>
                             </tr>
-                        @endforeach
-                    </table>
+                            @foreach ($syarikat as $info)
+                                <tr>
+                                    <td id="t"><a class="btn btn-success" href="{{ route('maklumatSyarikatEdit', $info->id) }}">Kemaskini</a></td>
+                                    <td id="t"><a class="btn btn-danger" href="{{ route('maklumatSyarikatDelete', $info->id) }}">Padam</a></td>
+                                    <td id="t">{{ $info->nama_jabatan }}</td>
+                                    <td id="t">{{ $info->kod_jabatan }}</td>
+                                    <td id="t">{{ $info->maklumat_jabatan }}</td>
+                                    <td id="t">Penerimaan</td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    </div>
 
                 </div>
             </div>

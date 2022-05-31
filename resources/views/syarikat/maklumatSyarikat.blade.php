@@ -21,7 +21,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><button type="submit">Cari</button></td>
+                            <td><button class="btn btn-secondary" type="submit">Cari</button></td>
                         </tr>
                     </table>
                 </form>

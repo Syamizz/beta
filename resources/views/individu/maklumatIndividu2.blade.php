@@ -268,7 +268,7 @@
                 <p>Carian Individu</p>
                 <form action="{{ route('carianIndividu') }}" method="POST" enctype="multipart/form-data">
                     {{ csrf_field() }}
-                    <table>
+                    <table >
                         <tr>
                             <td>Masukkan Carian Anda:&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td><input type="text" name="search" class="form-control"></td>
@@ -284,10 +284,7 @@
                         </tr>
                         <tr>
                             <td width="35%"></td>
-                            <td><button type="submit">Cari</button></td>
-                        </tr>
-                        <tr>
-                            <td>Masa carian: 0 Saat</td>
+                            <td><button class="btn btn-secondary" type="submit">Cari</button></td>
                         </tr>
                     </table>
                 </form>
@@ -303,8 +300,8 @@
                     <!-- Display data-->
                     <p>Carian Individu</p>
 
-                    <div class="col-md-12">
-                        <table id="t" style="border: 1px solid black;">
+                    <div class="col-md-8">
+                        <table style="background: white" class="table table-bordered table-striped">
                             <tr>
                                 <th id="th" width="10%" colspan="2" width="5%">Action</th>
                                 <th id="th" width="30%">Nama</th>
@@ -313,9 +310,9 @@
                             </tr>
                             @foreach ($individu as $info)
                                 <tr>
-                                    <td id="t"><a href="{{ route('maklumatIndividuEdit', $info->id) }}">Kemaskini</a>
+                                    <td id="t"><a class="btn btn-success" href="{{ route('maklumatIndividuEdit', $info->id) }}">Kemaskini</a>
                                     </td>
-                                    <td id="t"><a href="{{ route('maklumatIndividuDelete', $info->id) }}">Padam</a>
+                                    <td id="t"><a class="btn btn-danger" href="{{ route('maklumatIndividuDelete', $info->id) }}">Padam</a>
                                     </td>
                                     <td id="t">{{ $info->nama }}</td>
                                     <td id="t">{{ $info->noKP }}</td>
@@ -325,11 +322,6 @@
                         </table>
                         
                     </div>
-
-                    
-                    
-                
-
 
             </div>
         </div>
