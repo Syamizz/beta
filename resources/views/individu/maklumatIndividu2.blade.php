@@ -14,6 +14,9 @@
     <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+    <!-- Alert -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.css">
+
     <style>
         #t {
             border: 1px solid black;
@@ -241,9 +244,8 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                                                         document.getElementById('logout-form').submit();">
+                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                            `document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 
@@ -263,12 +265,12 @@
     <!-- Search box-->
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">KOPERASI - Maklumat Individu 2</div>
+            <div class="card-header">KOPERASI - Maklumat Individu</div>
             <div class="card-body" style="background-color: orange;">
                 <p>Carian Individu</p>
                 <form action="{{ route('carianIndividu') }}" method="POST" enctype="multipart/form-data">
                     {{ csrf_field() }}
-                    <table >
+                    <table>
                         <tr>
                             <td>Masukkan Carian Anda:&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td><input type="text" name="search" class="form-control"></td>
@@ -296,7 +298,7 @@
                 <br>
 
                 <div class="row">
-                    
+
                     <!-- Display data-->
                     <p>Carian Individu</p>
 
@@ -310,80 +312,113 @@
                             </tr>
                             @foreach ($individu as $info)
                                 <tr>
-                                    <td id="t"><a class="btn btn-success" href="{{ route('maklumatIndividuEdit', $info->id) }}">Kemaskini</a>
+                                    <td id="t"><a class="btn btn-success"
+                                            href="{{ route('maklumatIndividuEdit', $info->id) }}">Kemaskini</a>
                                     </td>
-                                    <td id="t"><a class="btn btn-danger" href="{{ route('maklumatIndividuDelete', $info->id) }}">Padam</a>
-                                    </td>
+                                    <td id="t"><a class="btn btn-danger" id="deleteData">Padam</a></td>
                                     <td id="t">{{ $info->nama }}</td>
                                     <td id="t">{{ $info->noKP }}</td>
                                     <td id="t">{{ $info->noKPlama }}</td>
                                 </tr>
                             @endforeach
                         </table>
-                        
                     </div>
 
+                </div>
             </div>
         </div>
-    </div>
 
-    <br><br>
+        <br><br>
 
-    <!-- New scripts 28/3/2022-->
+        <!-- New scripts 28/3/2022-->
 
-    <script type="text/javascript">
-        function display() {
-            var x = document.getElementById('jenis_maklumat').value;
+        <script type="text/javascript">
+            function display() {
+                var x = document.getElementById('jenis_maklumat').value;
 
-            var alamat = document.getElementById('alamatIndividu');
-            var perhubungan = document.getElementById('perhubunganIndividu');
-            var akaun = document.getElementById('akaunIndividu');
+                var alamat = document.getElementById('alamatIndividu');
+                var perhubungan = document.getElementById('perhubunganIndividu');
+                var akaun = document.getElementById('akaunIndividu');
 
-            if (x == "semua") {
-                alamat.style.display = "block";
-                perhubungan.style.display = "block";
-                akaun.style.display = "block";
-            } else if (x == "alamat") {
-                alamat.style.display = "block";
-                perhubungan.style.display = "none";
-                akaun.style.display = "none";
-            } else if (x == "perhubungan") {
-                alamat.style.display = "none";
-                perhubungan.style.display = "block";
-                akaun.style.display = "none";
-            } else if (x == "akaun") {
-                alamat.style.display = "none";
-                perhubungan.style.display = "none";
-                akaun.style.display = "block";
+                if (x == "semua") {
+                    alamat.style.display = "block";
+                    perhubungan.style.display = "block";
+                    akaun.style.display = "block";
+                } else if (x == "alamat") {
+                    alamat.style.display = "block";
+                    perhubungan.style.display = "none";
+                    akaun.style.display = "none";
+                } else if (x == "perhubungan") {
+                    alamat.style.display = "none";
+                    perhubungan.style.display = "block";
+                    akaun.style.display = "none";
+                } else if (x == "akaun") {
+                    alamat.style.display = "none";
+                    perhubungan.style.display = "none";
+                    akaun.style.display = "block";
+                }
             }
-        }
-    </script>
+        </script>
 
 
-    <script type="text/javascript">
-        //function button
-        $("#close").click(
-            function() {
-                $("#alamatIndividu").hide();
-            }
-        );
+        <script type="text/javascript">
+            //function button
+            $("#close").click(
+                function() {
+                    $("#alamatIndividu").hide();
+                }
+            );
 
-        $("#close2").click(
-            function() {
-                $("#perhubunganIndividu").hide();
-            }
-        );
+            $("#close2").click(
+                function() {
+                    $("#perhubunganIndividu").hide();
+                }
+            );
 
-        $("#close3").click(
-            function() {
-                $("#akaunIndividu").hide();
-            }
-        );
-    </script>
+            $("#close3").click(
+                function() {
+                    $("#akaunIndividu").hide();
+                }
+            );
+        </script>
 
 
-    <!-- Scripts -->
-    <script src="{{ asset('public/js/app.js') }}" defer></script>
+        <script type="text/javascript">
+            $('#deleteData').on('click', function() {
+                console.log("btn click");
+                Swal.fire({
+                    title: 'Anda ingin memadam data ini ?',
+                    text: "Data tidak akan dapat dikembalikan!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Padam'
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.cancel) {
+
+                    } else {
+                        Swal.fire(
+                            'Telah dipadam!',
+                            'Alamat anda telah dipadam.',
+                            'success'
+                        )
+                        @if ($info == true)
+                            window.location = '{{ route('maklumatIndividuDelete', $info->id) }}';
+                        @endif
+                    }
+
+                })
+
+            })
+        </script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+                integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.js"></script>
+
+        <!-- Scripts -->
+        <script src="{{ asset('public/js/app.js') }}" defer></script>
 </body>
 
 </html>

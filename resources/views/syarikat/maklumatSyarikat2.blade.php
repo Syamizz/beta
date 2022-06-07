@@ -289,7 +289,7 @@
                     <div class="col-md-7">
                         <table style="background: white" class="table table-bordered table-striped">
                             <tr>
-                                <th id="t" colspan="2">Tindakan</th>
+                                <th id="t">Tindakan</th>
                                 <th id="t">Nama Jabatan/Syarikat</th>
                                 <th id="t">Kod Jabatan/Syarikat</th>
                                 <th id="t">Maklumat Jabatan/Syarikat</th>
@@ -298,7 +298,6 @@
                             @foreach ($syarikat as $info)
                                 <tr>
                                     <td id="t"><a class="btn btn-success" href="{{ route('maklumatSyarikatEdit', $info->id) }}">Kemaskini</a></td>
-                                    <td id="t"><a class="btn btn-danger" href="{{ route('maklumatSyarikatDelete', $info->id) }}">Padam</a></td>
                                     <td id="t">{{ $info->nama_jabatan }}</td>
                                     <td id="t">{{ $info->kod_jabatan }}</td>
                                     <td id="t">{{ $info->maklumat_jabatan }}</td>
@@ -312,8 +311,6 @@
             </div>
         </div>
     </div>
-
-
 
 
     <!-- Scripts -->

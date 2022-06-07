@@ -15,7 +15,12 @@ class CreateIndividuAlamatsTable extends Migration
     {
         Schema::create('individu_alamats', function (Blueprint $table) {
             $table->id();
-            
+            $table->string('noKP');
+            $table->string('alamat');
+            $table->string('poskod');
+            $table->string('daerah');
+            $table->string('negeri');
+            $table->string('jenis_alamat');
             $table->timestamps();
         });
     }

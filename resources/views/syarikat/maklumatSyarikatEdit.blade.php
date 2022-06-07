@@ -288,7 +288,7 @@
                                 <td>{{ $syarikat->maklumat_jabatan }}</td>
                                 <td>{{ $syarikat->kategori }}</td>
                                 <td><button id="updateDaftar" class="btn btn-success">Kemaskini</button></td>
-                                <td><a class="btn btn-danger" href="{{ route('maklumatSyarikatDelete', $syarikat->id) }}">Padam</a></td>
+                                <td><a class="btn btn-danger" id="syarikatDelete">Padam</a></td>
                             </tr>
                         </table>
                     </div>
@@ -517,8 +517,7 @@
                                         <td id="td">{{ $syarikatPerhubungan->tel_HP_type }}</td>
                                         <td id="td"><button class="btn btn-success" id="update1">Kemaskini</button>
                                         </td>
-                                        <td id="td"><a href="{{ route('tel_HP_delete', $syarikatPerhubungan->id) }}"
-                                                class="btn btn-danger">Padam</a></td>
+                                        <td id="td"><a id="padamTelHP" class="btn btn-danger">Padam</a></td>
                                     </tr>
                                     <tr>
 
@@ -527,8 +526,7 @@
                                         <td id="td"></td>
                                         <td id="td"><button class="btn btn-success" id="update2">Kemaskini</button>
                                         </td>
-                                        <td id="td"><a href="{{ route('tel_P_delete', $syarikatPerhubungan->id) }}"
-                                                class="btn btn-danger">Padam</a></td>
+                                        <td id="td"><a id="padamTelP" class="btn btn-danger">Padam</a></td>
                                     </tr>
                                     <tr>
 
@@ -537,8 +535,7 @@
                                         <td id="td"></td>
                                         <td id="td"><button class="btn btn-success" id="update3">Kemaskini</button>
                                         </td>
-                                        <td id="td"><a href="{{ route('tel_R_delete', $syarikatPerhubungan->id) }}"
-                                                class="btn btn-danger">Padam</a></td>
+                                        <td id="td"><a id="padamTelR" class="btn btn-danger">Padam</a></td>
                                     </tr>
                                     <tr>
 
@@ -547,8 +544,7 @@
                                         <td id="td"></td>
                                         <td id="td"><button class="btn btn-success" id="update4">Kemaskini</button>
                                         </td>
-                                        <td id="td"><a href="{{ route('faks_delete', $syarikatPerhubungan->id) }}"
-                                                class="btn btn-danger">Padam</a></td>
+                                        <td id="td"><a id="padamFaks" class="btn btn-danger">Padam</a></td>
                                     </tr>
                                     <tr>
 
@@ -557,8 +553,7 @@
                                         <td id="td"></td>
                                         <td id="td"><button class="btn btn-success" id="update5">Kemaskini</button>
                                         </td>
-                                        <td id="td"><a href="{{ route('email_delete', $syarikatPerhubungan->id) }}"
-                                                class="btn btn-danger">Padam</a></td>
+                                        <td id="td"><a id="padamEmail" class="btn btn-danger">Padam</a></td>
                                     </tr>
                                 </table>
 
@@ -711,6 +706,35 @@
 
     <!--New Script 11/5/2022 -->
     <script type="text/javascript">
+        $('#syarikatDelete').on('click', function() {
+            console.log("btn click");
+            Swal.fire({
+                title: 'Anda ingin memadam data ini ?',
+                text: "Data tidak akan dapat dikembalikan!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Padam'
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.cancel) {
+
+                } else {
+                    Swal.fire(
+                        'Telah dipadam!',
+                        'Maklumat syarikat anda telah dipadam.',
+                        'success'
+                    )
+                    @if ($syarikat == true)
+                        window.location = '{{ route('maklumatSyarikatDelete', $syarikat->id) }}';
+                    @endif
+                }
+
+            })
+
+        })
+
+
         $('#alamatSyarikatDelete').on('click', function() {
             console.log("btn click");
             Swal.fire({
@@ -738,6 +762,153 @@
             })
 
         })
+
+
+        $('#padamTelHP').on('click', function() {
+            console.log("btn click");
+            Swal.fire({
+                title: 'Anda ingin memadam data ini ?',
+                text: "Data tidak akan dapat dikembalikan!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Padam'
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.cancel) {
+
+                } else {
+                    Swal.fire(
+                        'Telah dipadam!',
+                        'Alamat anda telah dipadam.',
+                        'success'
+                    )
+                    @if ($syarikatPerhubungan == true)
+                        window.location = '{{ route('tel_HP_delete', $syarikatPerhubungan->id) }}';
+                    @endif
+                }
+
+            })
+
+        })
+
+
+        $('#padamTelP').on('click', function() {
+            console.log("btn click");
+            Swal.fire({
+                title: 'Anda ingin memadam data ini ?',
+                text: "Data tidak akan dapat dikembalikan!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Padam'
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.cancel) {
+
+                } else {
+                    Swal.fire(
+                        'Telah dipadam!',
+                        'Alamat anda telah dipadam.',
+                        'success'
+                    )
+                    @if ($syarikatPerhubungan == true)
+                        window.location = '{{ route('tel_P_delete', $syarikatPerhubungan->id) }}';
+                    @endif
+                }
+
+            })
+
+        })
+
+
+        $('#padamTelR').on('click', function() {
+            console.log("btn click");
+            Swal.fire({
+                title: 'Anda ingin memadam data ini ?',
+                text: "Data tidak akan dapat dikembalikan!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Padam'
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.cancel) {
+
+                } else {
+                    Swal.fire(
+                        'Telah dipadam!',
+                        'Alamat anda telah dipadam.',
+                        'success'
+                    )
+                    @if ($syarikatPerhubungan == true)
+                        window.location = '{{ route('tel_R_delete', $syarikatPerhubungan->id) }}';
+                    @endif
+                }
+
+            })
+
+        })
+
+
+        $('#padamFaks').on('click', function() {
+            console.log("btn click");
+            Swal.fire({
+                title: 'Anda ingin memadam data ini ?',
+                text: "Data tidak akan dapat dikembalikan!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Padam'
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.cancel) {
+
+                } else {
+                    Swal.fire(
+                        'Telah dipadam!',
+                        'Alamat anda telah dipadam.',
+                        'success'
+                    )
+                    @if ($syarikatPerhubungan == true)
+                        window.location = '{{ route('faks_delete', $syarikatPerhubungan->id) }}';
+                    @endif
+                }
+
+            })
+
+        })
+
+
+        $('#padamEmail').on('click', function() {
+            console.log("btn click");
+            Swal.fire({
+                title: 'Anda ingin memadam data ini ?',
+                text: "Data tidak akan dapat dikembalikan!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Padam'
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.cancel) {
+
+                } else {
+                    Swal.fire(
+                        'Telah dipadam!',
+                        'Alamat anda telah dipadam.',
+                        'success'
+                    )
+                    @if ($syarikatPerhubungan == true)
+                        window.location = '{{ route('email_delete', $syarikatPerhubungan->id) }}';
+                    @endif
+                }
+
+            })
+
+        })
+
+
     </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"

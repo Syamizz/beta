@@ -248,7 +248,7 @@
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
-                                                                                         document.getElementById('logout-form').submit();">
+                                                                                                     document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 
@@ -270,54 +270,76 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Kemaskini maklumat individu</div>
-                <div class="card-body" style="background: orange">
-                    <form action="{{ route('maklumatIndividuUpdate', $individu->id) }}" method="POST"
-                        enctype="multipart/form-data">
-                        {{ csrf_field() }}
-                        <p>Maklumat Individu</p>
-                        <table>
+                <div class="card-header">Maklumat Individu</div>
+                <div class="card-body">
+
+                    <div class="col-md-10">
+                        <table style="background: white" class="table table-bordered table-striped">
                             <tr>
                                 <th>Nama</th>
-                                <td><input type="text" class="form-control" name="nama"
-                                        value="{{ $individu->nama }}"></td>
-                            </tr>
-                            <tr>
                                 <th>No KP Baru</th>
-                                <td><input type="text" name="noKP" class="form-control" minlength="12" maxlength="12"
-                                        value="{{ $individu->noKP }}"></td>
-                            </tr>
-                            <tr>
-                                <th>No KP Lama/Tentera/Polis&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                                <td><input type="text" name="noKPlama" class="form-control"
-                                        value="{{ $individu->noKPlama }}"></td>
-                            </tr>
-                            <tr>
+                                <th>No KP Lama/Tentera/Polis</th>
                                 <th>Jantina</th>
-                                <td>
-                                    <input type="radio" id="Lelaki" name="jantina" value="Lelaki"
-                                        @if ($individu->jantina == 'Lelaki') checked @endif>
-                                    <label for="Lelaki">Lelaki</label>&nbsp;&nbsp;&nbsp;
-                                    <input type="radio" id="Perempuan" name="jantina" value="Perempuan"
-                                        @if ($individu->jantina == 'Perempuan') checked @endif>
-                                    <label for="Perempuan">Perempuan</label>
-                                </td>
+                                <th>Tarikh lahir</th>
+                                <th>Tempat lahir</th>
+                                <th></th>
                             </tr>
                             <tr>
-                                <th>Tarikh Lahir</th>
-                                <td><input type="date" name="tarikh_lahir" id="" class="form-control"
-                                        value="{{ $individu->tarikh_lahir }}"></td>
-                            </tr>
-                            <tr>
-                                <th>Tempat Lahir</th>
-                                <td><input type="text" name="tempat_lahir" class="form-control"
-                                        value="{{ $individu->tempat_lahir }}"></td>
+                                <td>{{ $individu->nama }}</td>
+                                <td>{{ $individu->noKP }}</td>
+                                <td>{{ $individu->noKPlama }}</td>
+                                <td>{{ $individu->jantina }}</td>
+                                <td>{{ $individu->tarikh_lahir }}</td>
+                                <td>{{ $individu->tempat_lahir }}</td>
+                                <td><button id="kemaskiniMaklumat" class="btn btn-success">Kemaskini</button></td>
                             </tr>
                         </table>
+                    </div>
+
+
+                    <div class="col-md-10" id="maklumatUpdate" style="display: none">
+
                         <br><br>
-                        <button class="btn btn-primary" type="submit">Submit</button>&nbsp;&nbsp;
-                        <button class="btn btn-secondary" type="reset">Reset</button>&nbsp;&nbsp;
-                        <a href="{{ route('home') }}" class="btn btn-danger">Batal</a>
+                        <p>Kemaskini maklumat individu</p>
+                        <form action="{{ route('maklumatIndividuUpdate', $individu->id) }}" method="POST"
+                            enctype="multipart/form-data">
+                            {{ csrf_field() }}
+                            <table style="background: white" class="table table-bordered table-striped">
+                                <tr>
+                                    <th>Nama</th>
+                                    <th>No KP Baru</th>
+                                    <th>No KP Lama/Tentera/Polis</th>
+                                    <th>Jantina</th>
+                                    <th>Tarikh Lahir</th>
+                                    <th>Tempat Lahir</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" class="form-control" name="nama"
+                                            value="{{ $individu->nama }}"></td>
+                                    <td><input type="text" name="noKP" class="form-control" minlength="12"
+                                            maxlength="12" value="{{ $individu->noKP }}"></td>
+                                    <td><input type="text" name="noKPlama" class="form-control"
+                                            value="{{ $individu->noKPlama }}"></td>
+                                    <td>
+                                        <select name="jantina" id="jantina" class="form-select">
+                                            <option value="{{ $individu->jantina }}">{{ $individu->jantina }}
+                                            </option>
+                                            <option value="Lelaki">Lelaki</option>
+                                            <option value="Perempuan">Perempuan</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="date" name="tarikh_lahir" id="" class="form-control"
+                                            value="{{ $individu->tarikh_lahir }}"></td>
+                                    <td><input type="text" name="tempat_lahir" class="form-control"
+                                            value="{{ $individu->tempat_lahir }}"></td>
+                                    <td><button class="btn btn-primary" type="submit">Submit</button></td>
+                                    <td><button class="btn btn-danger">Batal</button></td>
+                                </tr>
+                            </table>
+                    </div>
+
                     </form>
 
 
@@ -340,10 +362,11 @@
                     <!--Daftar Alamat  -->
                     <div class="col-md-10" style="display: none;" id="alamatIndividu">
                         <div class="row">
-                            <div style="background: orange;" class="col-md-10">
+                            <div class="col-md-10">
                                 <div class="card">
                                     <div class="card-header">Maklumat Alamat</div>
                                     <div class="card-body">
+
                                         <table>
                                             <tr>
 
@@ -595,7 +618,8 @@
                                                     <td id="td">{{ $individuPerhubungan->created_at }}</td>
                                                     <td id="td"><button class="btn btn-success"
                                                             id="edit2">Kemaskini</button></td>
-                                                    <td id="td"><a class="btn btn-danger" id="perhubunganIndividuDelete">Padam</a>
+                                                    <td id="td"><a class="btn btn-danger"
+                                                            id="perhubunganIndividuDelete">Padam</a>
                                                     </td>
                                                 </tr>
                                             @endif
@@ -728,7 +752,8 @@
                                                     <td id="td">{{ $individuAkaun->created_at }}</td>
                                                     <td id="td"><button class="btn btn-success"
                                                             id="edit3">Kemaskini</button></td>
-                                                    <td id="td"><a class="btn btn-danger" id="akaunIndividuDelete">Padam</a>
+                                                    <td id="td"><a class="btn btn-danger"
+                                                            id="akaunIndividuDelete">Padam</a>
                                                     </td>
                                                 </tr>
                                             @endif
@@ -906,8 +931,8 @@
                         'Alamat anda telah dipadam.',
                         'success'
                     )
-                    @if ($individuAlamat==true)
-                    window.location='{{ route('alamatIndividuDelete', $individuAlamat->id) }}';
+                    @if ($individuAlamat == true)
+                        window.location = '{{ route('alamatIndividuDelete', $individuAlamat->id) }}';
                     @endif
                 }
 
@@ -934,8 +959,9 @@
                         'Maklumat perhubungan anda telah dipadam.',
                         'success'
                     )
-                    @if ($individuPerhubungan==true)
-                    window.location='{{ route('perhubunganIndividuDelete', $individuPerhubungan->id) }}';
+                    @if ($individuPerhubungan == true)
+                        window.location =
+                            '{{ route('perhubunganIndividuDelete', $individuPerhubungan->id) }}';
                     @endif
                 }
 
@@ -962,8 +988,8 @@
                         'Maklumat akaun anda telah dipadam.',
                         'success'
                     )
-                    @if ($individuAkaun==true)
-                    window.location='{{ route('akaunIndividuDelete', $individuAkaun->id) }}';
+                    @if ($individuAkaun == true)
+                        window.location = '{{ route('akaunIndividuDelete', $individuAkaun->id) }}';
                     @endif
                 }
 
@@ -1041,6 +1067,11 @@
 
     <script type="text/javascript">
         //function button
+        $("#kemaskiniMaklumat").click(
+            function() {
+                $("#maklumatUpdate").show();
+            }
+        );
         $("#daftar1").click(
             function() {
                 $("#daftarAlamat").show();
