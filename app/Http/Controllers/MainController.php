@@ -218,6 +218,7 @@ class MainController extends Controller
         return view('ahli.maklumatAhli');
     }
 
+    /*
     public function maklumatAhliCari()
     {
         $carian = $_POST['carian'];
@@ -232,6 +233,7 @@ class MainController extends Controller
         return view('ahli.maklumatAhliHasil', compact('ahli', 'alamat', 'bank', 'noTelefon'));
     }
 
+
     public function maklumatAhliHasil()
     {
         $ahli = ahli_daftar::all();
@@ -241,6 +243,7 @@ class MainController extends Controller
 
         return view('ahli.maklumatAhliHasil', compact('ahli', 'alamat', 'bank', 'noTelefon'));
     }
+    */
 
     public function maklumatAhliKemaskini(Request $request, $noKPBaru)
     {

@@ -29,4 +29,24 @@ class AhliController extends Controller
 
         return view('ahli.daftarAhli', compact('syarikat','syarikatAlamat'));
     }
+
+    public function maklumatAhliCari()
+    {
+        $carian = $_POST['carian'];
+        $jenisCarian = $_POST['jenisCarian'];
+
+        $ahli = ahli_daftar::where($jenisCarian, 'LIKE', '%' . $carian . '%')->get();
+        
+        return view('ahli.maklumatAhli2', compact('ahli'));
+    }
+
+    public function maklumatAhliHasil($noKPBaru)
+    {
+        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
+        $alamat = ahli_alamat::where("noKPBaru", $noKPBaru)->first();
+        $bank = ahli_bank::where("noKPBaru", $noKPBaru)->first();
+        $noTelefon = ahli_perhubungan::where("noKPBaru", $noKPBaru)->first();
+
+        return view('ahli.maklumatAhliHasil', compact('ahli', 'alamat', 'bank', 'noTelefon'));
+    }
 }

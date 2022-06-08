@@ -138,8 +138,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         //Route maklumat ahli
         Route::get('ahli/maklumatAhli', 'App\Http\Controllers\MainController@maklumatAhli')->name('maklumatAhli');
-        Route::post('ahli/maklumatAhliCari', 'App\Http\Controllers\MainController@maklumatAhliCari')->name('maklumatAhliCari');
-        Route::get('ahli/maklumatAhliHasil', 'App\Http\Controllers\MainController@maklumatAhliHasil')->name('maklumatAhliHasil');
+        Route::post('ahli/maklumatAhliCari', 'App\Http\Controllers\AhliController@maklumatAhliCari')->name('maklumatAhliCari');
+        Route::get('ahli/maklumatAhliHasil/{noKPBaru}', 'App\Http\Controllers\AhliController@maklumatAhliHasil')->name('maklumatAhliHasil');
         Route::get('ahli/maklumatAhliKemaskini/{noKPBaru}', 'App\Http\Controllers\MainController@maklumatAhliKemaskini')->name('maklumatAhliKemaskini');
         Route::post('ahli/kemaskiniAhli/{noKPBaru}', 'App\Http\Controllers\MainController@kemaskiniAhli')->name('kemaskiniAhli');
 
