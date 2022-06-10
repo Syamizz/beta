@@ -302,7 +302,7 @@ class MainController extends Controller
     {
         $alamat = ahli_alamat::where("id", $id)->delete();
 
-        return redirect()->route('maklumatAhliHasil', compact('alamat'));
+        return redirect()->route('maklumatAhli');
     }
 
     public function updateAlamat(Request $request, $noKPBaru)

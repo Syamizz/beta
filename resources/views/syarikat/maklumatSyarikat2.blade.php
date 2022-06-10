@@ -260,7 +260,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">KOPERASI - Maklumat Syarikat</div>
-                <div class="card-body" style="background: orange">
+                <div class="card-body">
 
                     <p>Carian Jabatan/Syarikat</p>
                     <form action="{{ route('carianSyarikat') }}" method="post" enctype="multipart/form-data">

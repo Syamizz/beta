@@ -14,6 +14,9 @@
     <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+    <!-- Alert -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.css">
+
 </head>
 
 <body>
@@ -233,7 +236,7 @@
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
-                                                                                 document.getElementById('logout-form').submit();">
+                                                                                         document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 
@@ -319,183 +322,185 @@
                                 <th scope="col">Kemaskini</th>
                                 <th scope="col">Padam</th>
                             </tr>
-                            @if($alamat==TRUE)
-                            <tr>
-                                {{-- <input type="hidden" name="noKPBaru" value="{{$alamat->noKPBaru}}"> --}}
-                                <th scope="row">{{ $alamat->jenisAlamat }}</th>
-                                <th>{{ $alamat->alamat }}</th>
-                                <th>{{ $alamat->poskod }}</th>
-                                <th>{{ $alamat->bandar }}</th>
-                                <th>{{ $alamat->negeri }}</th>
-                                <th>{{ $alamat->created_at }}</th>
-                                <th>{{ $alamat->updated_at }}</th>
-                                <th><a id="edit_alamat" class="btn btn-success btn-block">Kemaskini</a></th>
-                                <th>
-                                    <a href="{{ route('padamAlamat', $alamat->id) }}" class="btn btn-danger btn-block">Padam</a>
-                                </th>
-                            </tr>
+                            @if ($alamat == true)
+                                <tr>
+                                    {{-- <input type="hidden" name="noKPBaru" value="{{$alamat->noKPBaru}}"> --}}
+                                    <th scope="row">{{ $alamat->jenisAlamat }}</th>
+                                    <th>{{ $alamat->alamat }}</th>
+                                    <th>{{ $alamat->poskod }}</th>
+                                    <th>{{ $alamat->bandar }}</th>
+                                    <th>{{ $alamat->negeri }}</th>
+                                    <th>{{ $alamat->created_at }}</th>
+                                    <th>{{ $alamat->updated_at }}</th>
+                                    <th><a id="edit_alamat" class="btn btn-success btn-block">Kemaskini</a></th>
+                                    <th>
+                                        <a id="alamatDelete"
+                                            class="btn btn-danger btn-block">Padam</a>
+                                    </th>
+                                </tr>
                             @endif
                         </table>
 
                         <a id="daftar_alamat" class="btn btn-primary btn-block">Daftar Alamat</a>
                         <button id="close" class="btn btn-danger">Close</button>
                         <br><br>
-                        @if($alamat==TRUE)
-                        <div class="col-md-12" id="appear7" style="display: none">
-                            <form action="{{ route('updateAlamat', $alamat->noKPBaru) }}" method="POST"
-                                enctype="multipart/form-data">
-                                {{ csrf_field() }}
-                                <table class="table table-bordered table-striped">
-                                    <tr>
-                                        <th scope="col">Jenis Alamat</th>
-                                        <th scope="col">Alamat</th>
-                                        <th scope="col">Poskod</th>
-                                        <th scope="col">Bandar</th>
-                                        <th scope="col">Negeri</th>
-                                        <th scope="col">Kemaskini</th>
-                                        <th scope="col">Batal</th>
-                                    </tr>
-                                    <tr>
-                                        <input type="hidden" name="noAhli" value="{{ $alamat->noAhli }}">
-                                        <input type="hidden" name="noKPBaru" value="{{ $alamat->noKPBaru }}">
-                                        <th scope="row">
-                                            <select name="jenisAlamat" class="form-select">
-                                                <option value="{{ $alamat->jenisAlamat }}">
-                                                    {{ $alamat->jenisAlamat }}
-                                                </option>
-                                                <option value="Kediaman">Kediaman</option>
-                                                <option value="Pejabat">Pejabat</option>
-                                                <option value="ReturnR">Return-R</option>
-                                                <option value="ReturnP">Return-P</option>
-                                            </select>
-                                        </th>
-                                        <th>
-                                            <textarea type="text" name="alamat" class="form-control" rows="3"
-                                                style="resize: none;">{{ $alamat->alamat }}</textarea>
-                                        </th>
-                                        <th>
-                                            <input type="text" name="poskod" class="form-control"
-                                                value="{{ $alamat->poskod }}">
-                                        </th>
-                                        <th>
-                                            <input type="text" name="bandar" class="form-control"
-                                                value="{{ $alamat->bandar }}">
-                                        </th>
-                                        <th>
-                                            <select name="negeri" class="form-select">
-                                                <option value="{{ $alamat->negeri }}">{{ $alamat->negeri }}
-                                                </option>
-                                                <option value="Perlis">Perlis</option>
-                                                <option value="Kedah">Kedah</option>
-                                                <option value="Pulau Pinang">Pulau Pinang</option>
-                                                <option value="Perak">Perak</option>
-                                                <option value="Kelantan">Kelantan</option>
-                                                <option value="Terengganu">Terengganu</option>
-                                                <option value="Pahang">Pahang</option>
-                                                <option value="Melaka">Melaka</option>
-                                                <option value="Negeri Sembilan">Negeri Sembilan</option>
-                                                <option value="Selangor">Selangor</option>
-                                                <option value="Johor">Johor</option>
-                                                <option value="Sarawak">Sarawak</option>
-                                                <option value="Sabah">Sabah</option>
-                                                <option value="Wilayah Persekutuan Kuala Lumpur">Wilayah Persekutuan
-                                                    Kuala Lumpur</option>
-                                                <option value="Wilayah Persekutuan Putrajaya">Wilayah Persekutuan
-                                                    Putrajaya</option>
-                                                <option value="Wilayah Persekutuan Labuan">Wilayah Persekutuan
-                                                    Labuan</option>
-                                            </select>
-                                        </th>
-                                        <th>
-                                            <button class="btn btn-success btn-block" type="submit">Kemaskini</button>
-                                        </th>
-                                        <th>
-                                            <a id="close7" class="btn btn-danger btn-block">Batal</a>
-                                        </th>
-                                    </tr>
-                                </table>
-                            </form>
-                        </div>
+                        @if ($alamat == true)
+                            <div class="col-md-12" id="appear7" style="display: none">
+                                <form action="{{ route('updateAlamat', $alamat->noKPBaru) }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    {{ csrf_field() }}
+                                    <table class="table table-bordered table-striped">
+                                        <tr>
+                                            <th scope="col">Jenis Alamat</th>
+                                            <th scope="col">Alamat</th>
+                                            <th scope="col">Poskod</th>
+                                            <th scope="col">Bandar</th>
+                                            <th scope="col">Negeri</th>
+                                            <th scope="col">Kemaskini</th>
+                                            <th scope="col">Batal</th>
+                                        </tr>
+                                        <tr>
+                                            <input type="hidden" name="noAhli" value="{{ $alamat->noAhli }}">
+                                            <input type="hidden" name="noKPBaru" value="{{ $alamat->noKPBaru }}">
+                                            <th scope="row">
+                                                <select name="jenisAlamat" class="form-select">
+                                                    <option value="{{ $alamat->jenisAlamat }}">
+                                                        {{ $alamat->jenisAlamat }}
+                                                    </option>
+                                                    <option value="Kediaman">Kediaman</option>
+                                                    <option value="Pejabat">Pejabat</option>
+                                                    <option value="ReturnR">Return-R</option>
+                                                    <option value="ReturnP">Return-P</option>
+                                                </select>
+                                            </th>
+                                            <th>
+                                                <textarea type="text" name="alamat" class="form-control" rows="3" style="resize: none;">{{ $alamat->alamat }}</textarea>
+                                            </th>
+                                            <th>
+                                                <input type="text" name="poskod" class="form-control"
+                                                    value="{{ $alamat->poskod }}">
+                                            </th>
+                                            <th>
+                                                <input type="text" name="bandar" class="form-control"
+                                                    value="{{ $alamat->bandar }}">
+                                            </th>
+                                            <th>
+                                                <select name="negeri" class="form-select">
+                                                    <option value="{{ $alamat->negeri }}">{{ $alamat->negeri }}
+                                                    </option>
+                                                    <option value="Perlis">Perlis</option>
+                                                    <option value="Kedah">Kedah</option>
+                                                    <option value="Pulau Pinang">Pulau Pinang</option>
+                                                    <option value="Perak">Perak</option>
+                                                    <option value="Kelantan">Kelantan</option>
+                                                    <option value="Terengganu">Terengganu</option>
+                                                    <option value="Pahang">Pahang</option>
+                                                    <option value="Melaka">Melaka</option>
+                                                    <option value="Negeri Sembilan">Negeri Sembilan</option>
+                                                    <option value="Selangor">Selangor</option>
+                                                    <option value="Johor">Johor</option>
+                                                    <option value="Sarawak">Sarawak</option>
+                                                    <option value="Sabah">Sabah</option>
+                                                    <option value="Wilayah Persekutuan Kuala Lumpur">Wilayah Persekutuan
+                                                        Kuala Lumpur</option>
+                                                    <option value="Wilayah Persekutuan Putrajaya">Wilayah Persekutuan
+                                                        Putrajaya</option>
+                                                    <option value="Wilayah Persekutuan Labuan">Wilayah Persekutuan
+                                                        Labuan</option>
+                                                </select>
+                                            </th>
+                                            <th>
+                                                <button class="btn btn-success btn-block"
+                                                    type="submit">Kemaskini</button>
+                                            </th>
+                                            <th>
+                                                <a id="close7" class="btn btn-danger btn-block">Batal</a>
+                                            </th>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </div>
                         @endif
                         <br><br>
-                        @if($alamat==FALSE)
-                        <div class="col-md-6" id="appear8" style="display: none">
-                            <form action="{{ route('daftarAlamat', $alamat->noKPBaru) }}" method="POST"
-                                enctype="multipart/form-data">
-                                {{ csrf_field() }}
-                                <table class="table table-bordered table-striped">
-                                    <tr>
-                                        <input type="hidden" name="noAhli" value="{{ $alamat->noAhli }}">
-                                        <th style="width: 20%">
-                                            <label for="alamat">Alamat</label>
-                                        </th>
-                                        <td>
-                                            <textarea type="text" name="alamat" class="form-control" rows="3" style="resize: none"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <label for="poskod">Poskod</label>
-                                        </th>
-                                        <td>
-                                            <input type="text" name="poskod" class="form-control">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <label for="bandar">Bandar</label>
-                                        </th>
-                                        <td>
-                                            <input type="text" name="bandar" class="form-control">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <label for="negeri">Negeri</label>
-                                        </th>
-                                        <td>
-                                            <select name="negeri" class="form-select">
-                                                <option value="">Pilih</option>
-                                                <option value="Perlis">Perlis</option>
-                                                <option value="Kedah">Kedah</option>
-                                                <option value="Pulau Pinang">Pulau Pinang</option>
-                                                <option value="Perak">Perak</option>
-                                                <option value="Kelantan">Kelantan</option>
-                                                <option value="Terengganu">Terengganu</option>
-                                                <option value="Pahang">Pahang</option>
-                                                <option value="Melaka">Melaka</option>
-                                                <option value="Negeri Sembilan">Negeri Sembilan</option>
-                                                <option value="Selangor">Selangor</option>
-                                                <option value="Johor">Johor</option>
-                                                <option value="Sarawak">Sarawak</option>
-                                                <option value="Sabah">Sabah</option>
-                                                <option value="Wilayah Persekutuan Kuala Lumpur">Wilayah Persekutuan
-                                                    Kuala Lumpur</option>
-                                                <option value="Wilayah Persekutuan Putrajaya">Wilayah Persekutuan
-                                                    Putrajaya</option>
-                                                <option value="Wilayah Persekutuan Labuan">Wilayah Persekutuan Labuan
-                                                </option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <label for="jenisAlamat">Jenis Alamat</label>
-                                        </th>
-                                        <td>
-                                            <select name="jenisAlamat" class="form-select">
-                                                <option value="">Pilih</option>
-                                                <option value="Kediaman">Kediaman</option>
-                                                <option value="Pejabat">Pejabat</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <button class="btn btn-success btn-block" type="submit">Submit</button>
-                                <br><br>
-                            </form>
-                            <button id="close8" class="btn btn-danger">Close</button>
-                        </div>
+                        @if ($alamat == false)
+                            <div class="col-md-6" id="appear8" style="display: none">
+                                <form action="{{ route('daftarAlamat', $ahli->noKPBaru) }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    {{ csrf_field() }}
+                                    <table class="table table-bordered table-striped">
+                                        <tr>
+                                            <input type="hidden" name="noAhli" value="{{ $ahli->noAhli }}">
+                                            <th style="width: 20%">
+                                                <label for="alamat">Alamat</label>
+                                            </th>
+                                            <td>
+                                                <textarea type="text" name="alamat" class="form-control" rows="3" style="resize: none"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <label for="poskod">Poskod</label>
+                                            </th>
+                                            <td>
+                                                <input type="text" name="poskod" class="form-control">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <label for="bandar">Bandar</label>
+                                            </th>
+                                            <td>
+                                                <input type="text" name="bandar" class="form-control">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <label for="negeri">Negeri</label>
+                                            </th>
+                                            <td>
+                                                <select name="negeri" class="form-select">
+                                                    <option value="">Pilih</option>
+                                                    <option value="Perlis">Perlis</option>
+                                                    <option value="Kedah">Kedah</option>
+                                                    <option value="Pulau Pinang">Pulau Pinang</option>
+                                                    <option value="Perak">Perak</option>
+                                                    <option value="Kelantan">Kelantan</option>
+                                                    <option value="Terengganu">Terengganu</option>
+                                                    <option value="Pahang">Pahang</option>
+                                                    <option value="Melaka">Melaka</option>
+                                                    <option value="Negeri Sembilan">Negeri Sembilan</option>
+                                                    <option value="Selangor">Selangor</option>
+                                                    <option value="Johor">Johor</option>
+                                                    <option value="Sarawak">Sarawak</option>
+                                                    <option value="Sabah">Sabah</option>
+                                                    <option value="Wilayah Persekutuan Kuala Lumpur">Wilayah Persekutuan
+                                                        Kuala Lumpur</option>
+                                                    <option value="Wilayah Persekutuan Putrajaya">Wilayah Persekutuan
+                                                        Putrajaya</option>
+                                                    <option value="Wilayah Persekutuan Labuan">Wilayah Persekutuan
+                                                        Labuan
+                                                    </option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <label for="jenisAlamat">Jenis Alamat</label>
+                                            </th>
+                                            <td>
+                                                <select name="jenisAlamat" class="form-select">
+                                                    <option value="">Pilih</option>
+                                                    <option value="Kediaman">Kediaman</option>
+                                                    <option value="Pejabat">Pejabat</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <button class="btn btn-success btn-block" type="submit">Submit</button>
+                                    <br><br>
+                                </form>
+                                <button id="close8" class="btn btn-danger">Close</button>
+                            </div>
                         @endif
                     </div>
                 </div>
@@ -504,7 +509,7 @@
                     <div class="col-md-8" id="appear1" style="display: none">
                         <h4>Maklumat Pejabat</h4>
                         <table class="table table-bordered table-striped">
-                            <tr> 
+                            <tr>
                                 <th scope="col">Kod</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">Alamat</th>
@@ -557,7 +562,7 @@
                                 <th></th>
                                 <th> <a id="edit_telP" class="btn btn-success btn-block">Kemaskini</a></th>
                                 <th><a href="{{ route('padamTelPAhli', $noTelefon->noKPBaru) }}"
-                                    class="btn btn-danger btn-block">Padam</a></th>
+                                        class="btn btn-danger btn-block">Padam</a></th>
                             </tr>
                             <tr>
                                 <th scope="row">No Tel Bimbit</th>
@@ -565,7 +570,7 @@
                                 <th></th>
                                 <th> <a id="edit_telHP" class="btn btn-success btn-block">Kemaskini</a></th>
                                 <th><a href="{{ route('padamTelHPAhli', $noTelefon->noKPBaru) }}"
-                                    class="btn btn-danger btn-block">Padam</a></th>
+                                        class="btn btn-danger btn-block">Padam</a></th>
                             </tr>
                             <tr>
                                 <th scope="row">Faks</th>
@@ -573,7 +578,7 @@
                                 <th></th>
                                 <th> <a id="edit_faks" class="btn btn-success btn-block">Kemaskini</a></th>
                                 <th><a href="{{ route('padamFaksAhli', $noTelefon->noKPBaru) }}"
-                                    class="btn btn-danger btn-block">Padam</a></th>
+                                        class="btn btn-danger btn-block">Padam</a></th>
                             </tr>
                             <tr>
                                 <th scope="row">E-mail</th>
@@ -581,7 +586,7 @@
                                 <th></th>
                                 <th> <a id="edit_email" class="btn btn-success btn-block">Kemaskini</a></th>
                                 <th><a href="{{ route('padamEmailAhli', $noTelefon->noKPBaru) }}"
-                                    class="btn btn-danger btn-block">Padam</a></th>
+                                        class="btn btn-danger btn-block">Padam</a></th>
                             </tr>
                         </table>
 
@@ -617,11 +622,11 @@
                                                 <option value="TuneTalk">Tune Talk</option>
                                             </select>
                                         </th>
-                                        <th> 
+                                        <th>
                                             <button type="submit" class="btn btn-success btn-block">Kemaskini</button>
                                         </th>
                                         <th>
-                                             <a id="closeEditTelR" class="btn btn-danger btn-block">Batal</a>
+                                            <a id="closeEditTelR" class="btn btn-danger btn-block">Batal</a>
                                         </th>
                                     </tr>
                                 </table>
@@ -657,7 +662,7 @@
                                                 <option value="TuneTalk">Tune Talk</option>
                                             </select>
                                         </th>
-                                        <th> 
+                                        <th>
                                             <button type="submit" class="btn btn-success btn-block">Kemaskini</button>
                                         </th>
                                         <th>
@@ -697,7 +702,7 @@
                                                 <option value="TuneTalk">Tune Talk</option>
                                             </select>
                                         </th>
-                                        <th> 
+                                        <th>
                                             <button type="submit" class="btn btn-success btn-block">Kemaskini</button>
                                         </th>
                                         <th>
@@ -781,82 +786,11 @@
                                 <th scope="col">Kemaskini</th>
                                 <th scope="col">Padam</th>
                             </tr>
-                            @if($bank==TRUE)
-                            <tr>
-                                <th scope="row">{{ $bank->jenisBank }}</th>
-                                <th>{{ $bank->noAkaunBank }}</th>
-                                <th>{{ $bank->created_at }}</th>
-                                <th>{{ $bank->updated_at }}</th>
-                                <th></th>
-                                <th>
-                                    <a href="#">Set Akaun No Utama</a>
-                                </th>
-                                <th>
-                                    <a href="#">Bukan Akaun No Utama</a>
-                                </th>
-                                <th><a id="edit_bank" class="btn btn-success btn-block">Kemaskini</a></th>
-                                <th>
-                                    <a href="{{ route('padamBankAhli', $bank->noKPBaru) }}" class="btn btn-danger btn-block">Padam</a>
-                                </th>
-                            </tr>
-                            @endif
-                        </table>
-                        <button id="daftarBank" class="btn btn-primary">Daftar Akaun No</button>
-                        <button id="close3" class="btn btn-danger">Close</button>
-                    </div>
-                    <br>
-                    @if($bank==TRUE)
-                    <div class="col-md-12" id="appearEditBank" style="display: none">
-                        <form action="{{ route('updateBank', $ahli->noKPBaru) }}" method="POST"
-                            enctype="multipart/form-data">
-                            {{ csrf_field() }}
-                            <table class="table table-bordered table-striped">
+                            @if ($bank == true)
                                 <tr>
-                                    <th scope="col">Jenis Bank</th>
-                                    <th scope="col">No Akaun</th>
-                                    <th scope="col">Dicipta Oleh</th>
-                                    <th scope="col">Dicipta pada</th>
-                                    <th scope="col">Dikemaskini oleh</th>
-                                    <th scope="col">Dikemaskini pada</th>
-                                    <th scope="col">Akaun Bank Utama</th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                    <th scope="col">Kemaskini</th>
-                                    <th scope="col">Batal</th>
-                                </tr>
-                                <tr>
-                                    <input type="hidden" name="noAhli" value="{{$bank->noAhli}}">
-                                    <th scope="row">
-                                        <select name="jenisBank" class="form-select">
-                                            <option value="{{ $bank->jenisBank }}">{{ $bank->jenisBank }}</option>
-                                            <option value="BANK ISLAM">Bank Islam</option>
-                                            <option value="AGRO BANK">Agro Bank</option>
-                                            <option value="MAYBANK">Maybank</option>
-                                            <option value="RHB BANK">RHB Bank</option>
-                                            <option value="CIMB BANK">CIMB Bank</option>
-                                            <option value="AM BANK">Am Bank</option>
-                                            <option value="BANK SIMPANAN NASIONAL">Bank Simpanan Nasional</option>
-                                            <option value="BANK RAKYAT">Bank Rakyat</option>
-                                            <option value="BANK MUAMALAT">Bank Muamalat</option>
-                                            <option value="PUBLIC BANK">Public Bank</option>
-                                            <option value="ALLIANCE BANK">Alliance Bank</option>
-                                            <option value="STANDARD CHARTERED BANK">Standard Chartered Bank</option>
-                                            <option value="EON BANK">EON Bank</option>
-                                            <option value="HONG LEONG BANK">Hong Leong Bank</option>
-                                            <option value="HSBC BANK">HSBC Bank</option>
-                                            <option value="AFFIN BANK">Affin Bank</option>
-                                            <option value="CITY BANK">City Bank</option>
-                                            <option value="UNITED OVERSEAS BANK">United Overseas Bank</option>
-                                            <option value="OCBC BANK">OCBC Bank</option>
-                                            <option value="AL RAJHI BANK">Al Rajhi Bank</option>
-                                        </select>
-                                    </th>
-                                    <th>
-                                        <input type="text" name="noAkaunBank" class="form-control" value="{{ $bank->noAkaunBank }}">
-                                    </th>
-                                    <th></th>
+                                    <th scope="row">{{ $bank->jenisBank }}</th>
+                                    <th>{{ $bank->noAkaunBank }}</th>
                                     <th>{{ $bank->created_at }}</th>
-                                    <th></th>
                                     <th>{{ $bank->updated_at }}</th>
                                     <th></th>
                                     <th>
@@ -865,70 +799,144 @@
                                     <th>
                                         <a href="#">Bukan Akaun No Utama</a>
                                     </th>
+                                    <th><a id="edit_bank" class="btn btn-success btn-block">Kemaskini</a></th>
                                     <th>
-                                        <button type="submit" class="btn btn-success btn-block">Kemaskini</button>
-                                    </th>
-                                    <th>
-                                        <a id="closeEditBank" class="btn btn-danger btn-block">Batal</a>
+                                        <a href="{{ route('padamBankAhli', $bank->noKPBaru) }}"
+                                            class="btn btn-danger btn-block">Padam</a>
                                     </th>
                                 </tr>
-                            </table>
-                        </form>
+                            @endif
+                        </table>
+                        <button id="daftarBank" class="btn btn-primary">Daftar Akaun No</button>
+                        <button id="close3" class="btn btn-danger">Close</button>
                     </div>
+                    <br>
+                    @if ($bank == true)
+                        <div class="col-md-12" id="appearEditBank" style="display: none">
+                            <form action="{{ route('updateBank', $ahli->noKPBaru) }}" method="POST"
+                                enctype="multipart/form-data">
+                                {{ csrf_field() }}
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th scope="col">Jenis Bank</th>
+                                        <th scope="col">No Akaun</th>
+                                        <th scope="col">Dicipta Oleh</th>
+                                        <th scope="col">Dicipta pada</th>
+                                        <th scope="col">Dikemaskini oleh</th>
+                                        <th scope="col">Dikemaskini pada</th>
+                                        <th scope="col">Akaun Bank Utama</th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col">Kemaskini</th>
+                                        <th scope="col">Batal</th>
+                                    </tr>
+                                    <tr>
+                                        <input type="hidden" name="noAhli" value="{{ $bank->noAhli }}">
+                                        <th scope="row">
+                                            <select name="jenisBank" class="form-select">
+                                                <option value="{{ $bank->jenisBank }}">{{ $bank->jenisBank }}
+                                                </option>
+                                                <option value="BANK ISLAM">Bank Islam</option>
+                                                <option value="AGRO BANK">Agro Bank</option>
+                                                <option value="MAYBANK">Maybank</option>
+                                                <option value="RHB BANK">RHB Bank</option>
+                                                <option value="CIMB BANK">CIMB Bank</option>
+                                                <option value="AM BANK">Am Bank</option>
+                                                <option value="BANK SIMPANAN NASIONAL">Bank Simpanan Nasional</option>
+                                                <option value="BANK RAKYAT">Bank Rakyat</option>
+                                                <option value="BANK MUAMALAT">Bank Muamalat</option>
+                                                <option value="PUBLIC BANK">Public Bank</option>
+                                                <option value="ALLIANCE BANK">Alliance Bank</option>
+                                                <option value="STANDARD CHARTERED BANK">Standard Chartered Bank</option>
+                                                <option value="EON BANK">EON Bank</option>
+                                                <option value="HONG LEONG BANK">Hong Leong Bank</option>
+                                                <option value="HSBC BANK">HSBC Bank</option>
+                                                <option value="AFFIN BANK">Affin Bank</option>
+                                                <option value="CITY BANK">City Bank</option>
+                                                <option value="UNITED OVERSEAS BANK">United Overseas Bank</option>
+                                                <option value="OCBC BANK">OCBC Bank</option>
+                                                <option value="AL RAJHI BANK">Al Rajhi Bank</option>
+                                            </select>
+                                        </th>
+                                        <th>
+                                            <input type="text" name="noAkaunBank" class="form-control"
+                                                value="{{ $bank->noAkaunBank }}">
+                                        </th>
+                                        <th></th>
+                                        <th>{{ $bank->created_at }}</th>
+                                        <th></th>
+                                        <th>{{ $bank->updated_at }}</th>
+                                        <th></th>
+                                        <th>
+                                            <a href="#">Set Akaun No Utama</a>
+                                        </th>
+                                        <th>
+                                            <a href="#">Bukan Akaun No Utama</a>
+                                        </th>
+                                        <th>
+                                            <button type="submit" class="btn btn-success btn-block">Kemaskini</button>
+                                        </th>
+                                        <th>
+                                            <a id="closeEditBank" class="btn btn-danger btn-block">Batal</a>
+                                        </th>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
                     @endif
                     <br>
-                    @if($bank==FALSE)
-                    <div class="col-md-8" id="appearDaftarBank" style="display: none">
-                        <form action="{{ route('daftarBank', $ahli->noKPBaru) }}" method="POST"
-                            enctype="multipart/form-data">
-                            {{ csrf_field() }}
-                            <table class="table table-bordered table-striped">
-                                <tr>
-                                    <th scope="col">Jenis Bank</th>
-                                    <th scope="col">No Akaun</th>
-                                    <th scope="col">Kemaskini</th>
-                                    <th scope="col">Batal</th>
-                                </tr>
-                                <tr>
-                                    <input type="hidden" name="noAhli" value="{{$ahli->noAhli}}">
-                                    <th scope="row">
-                                        <select name="jenisBank" class="form-select">
-                                            <option value="">Pilih</option>
-                                            <option value="BANK ISLAM">Bank Islam</option>
-                                            <option value="AGRO BANK">Agro Bank</option>
-                                            <option value="MAYBANK">Maybank</option>
-                                            <option value="RHB BANK">RHB Bank</option>
-                                            <option value="CIMB BANK">CIMB Bank</option>
-                                            <option value="AM BANK">Am Bank</option>
-                                            <option value="BANK SIMPANAN NASIONAL">Bank Simpanan Nasional</option>
-                                            <option value="BANK RAKYAT">Bank Rakyat</option>
-                                            <option value="BANK MUAMALAT">Bank Muamalat</option>
-                                            <option value="PUBLIC BANK">Public Bank</option>
-                                            <option value="ALLIANCE BANK">Alliance Bank</option>
-                                            <option value="STANDARD CHARTERED BANK">Standard Chartered Bank</option>
-                                            <option value="EON BANK">EON Bank</option>
-                                            <option value="HONG LEONG BANK">Hong Leong Bank</option>
-                                            <option value="HSBC BANK">HSBC Bank</option>
-                                            <option value="AFFIN BANK">Affin Bank</option>
-                                            <option value="CITY BANK">City Bank</option>
-                                            <option value="UNITED OVERSEAS BANK">United Overseas Bank</option>
-                                            <option value="OCBC BANK">OCBC Bank</option>
-                                            <option value="AL RAJHI BANK">Al Rajhi Bank</option>
-                                        </select>
-                                    </th>
-                                    <th>
-                                        <input type="text" name="noAkaunBank" class="form-control">
-                                    </th>
-                                    <th>
-                                        <button type="submit" class="btn btn-success btn-block">Daftar</button>
-                                    </th>
-                                    <th>
-                                        <a id="closeDaftarBank" class="btn btn-danger btn-block">Batal</a>
-                                    </th>
-                                </tr>
-                            </table>
-                        </form>
-                    </div>
+                    @if ($bank == false)
+                        <div class="col-md-8" id="appearDaftarBank" style="display: none">
+                            <form action="{{ route('daftarBank', $ahli->noKPBaru) }}" method="POST"
+                                enctype="multipart/form-data">
+                                {{ csrf_field() }}
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th scope="col">Jenis Bank</th>
+                                        <th scope="col">No Akaun</th>
+                                        <th scope="col">Kemaskini</th>
+                                        <th scope="col">Batal</th>
+                                    </tr>
+                                    <tr>
+                                        <input type="hidden" name="noAhli" value="{{ $ahli->noAhli }}">
+                                        <th scope="row">
+                                            <select name="jenisBank" class="form-select">
+                                                <option value="">Pilih</option>
+                                                <option value="BANK ISLAM">Bank Islam</option>
+                                                <option value="AGRO BANK">Agro Bank</option>
+                                                <option value="MAYBANK">Maybank</option>
+                                                <option value="RHB BANK">RHB Bank</option>
+                                                <option value="CIMB BANK">CIMB Bank</option>
+                                                <option value="AM BANK">Am Bank</option>
+                                                <option value="BANK SIMPANAN NASIONAL">Bank Simpanan Nasional</option>
+                                                <option value="BANK RAKYAT">Bank Rakyat</option>
+                                                <option value="BANK MUAMALAT">Bank Muamalat</option>
+                                                <option value="PUBLIC BANK">Public Bank</option>
+                                                <option value="ALLIANCE BANK">Alliance Bank</option>
+                                                <option value="STANDARD CHARTERED BANK">Standard Chartered Bank</option>
+                                                <option value="EON BANK">EON Bank</option>
+                                                <option value="HONG LEONG BANK">Hong Leong Bank</option>
+                                                <option value="HSBC BANK">HSBC Bank</option>
+                                                <option value="AFFIN BANK">Affin Bank</option>
+                                                <option value="CITY BANK">City Bank</option>
+                                                <option value="UNITED OVERSEAS BANK">United Overseas Bank</option>
+                                                <option value="OCBC BANK">OCBC Bank</option>
+                                                <option value="AL RAJHI BANK">Al Rajhi Bank</option>
+                                            </select>
+                                        </th>
+                                        <th>
+                                            <input type="text" name="noAkaunBank" class="form-control">
+                                        </th>
+                                        <th>
+                                            <button type="submit" class="btn btn-success btn-block">Daftar</button>
+                                        </th>
+                                        <th>
+                                            <a id="closeDaftarBank" class="btn btn-danger btn-block">Batal</a>
+                                        </th>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
                     @endif
                 </div>
 
@@ -1099,6 +1107,38 @@
                 </div>
             </div>
         </div>
+
+        <!-- ALERT -->
+        <script type="text/javascript">
+            $('#alamatDelete').on('click', function() {
+                console.log("btn click");
+                Swal.fire({
+                    title: 'Anda ingin memadam alamat ini ?',
+                    text: "Data tidak akan dapat dikembalikan!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Padam'
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.cancel) {
+    
+                    } else {
+                        Swal.fire(
+                            'Telah dipadam!',
+                            'Alamat anda telah dipadam.',
+                            'success'
+                        )
+                        @if ($alamat == true)
+                            window.location = '{{ route('padamAlamat', $alamat->id) }}';
+                        @endif
+                    }
+    
+                })
+    
+            })
+            </script>
+
         <script type="text/javascript">
             $("#btn_alamat").click(
                 function() {
@@ -1294,6 +1334,9 @@
         </script>
 
         <!-- Scripts -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+                integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.js"></script>
         <script src="{{ asset('public/js/app.js') }}" defer></script>
     </div>
 </body>
