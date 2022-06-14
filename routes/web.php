@@ -127,7 +127,7 @@ Route::get('individu/alamatIndividu', 'App\Http\Controllers\MainController@alama
 //Route untuk maklumat ahli
 //
 //
-Route::post('ahli/cariMaklumat','App\Http\Controllers\AhliController@cariMaklumatPejabat')->name('cariMaklumatPejabat');
+Route::post('ahli/cariMaklumat', 'App\Http\Controllers\AhliController@cariMaklumatPejabat')->name('cariMaklumatPejabat');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::prefix('/user/')->group(function () {
@@ -230,5 +230,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('kakitangan/updatePendidikanStaff/{noKPBaru}', 'App\Http\Controllers\KakitanganController@updatePendidikanStaff')->name('updatePendidikanStaff');
         Route::get('kakitangan/padamPendidikanStaff/{noKPBaru}', 'App\Http\Controllers\KakitanganController@padamPendidikanStaff')->name('padamPendidikanStaff');
         Route::post('kakitangan/daftarPendidikanStaff/{noKPBaru}', 'App\Http\Controllers\KakitanganController@daftarPendidikanStaff')->name('daftarPendidikanStaff');
+
+
+        //Excel test
+        Route::resource('individu', ExcelController::class);
+        Route::get('individu_export', [ExcelController::class, 'get_individu_data'])->name('individu.export');
+    
+        //TESTING EXCEL
+        Route::resource('student', StudentController::class);
+        Route::get('student_export',[StudentController::class, 'get_student_data'])->name('student.export');
+    
     });
 });

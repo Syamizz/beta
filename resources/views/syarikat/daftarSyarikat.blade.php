@@ -4,7 +4,7 @@
 <div class="row justify-content-center">
     <div class="card">
         <div class="card-header">KOPERASI - Daftar Syarikat</div>
-        <div class="card-body" style="background: orange">
+        <div class="card-body" >
             <div class="col-md-12">
                 <form action="{{route('pengesahanSyarikat')}}" method="POST" enctype="multipart/form-data">
                 {{csrf_field()}}

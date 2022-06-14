@@ -31,7 +31,10 @@
                 </form>
                 <br>
                 <a class="btn btn-primary" href="{{route('displayIndividu')}}">Display All</a>
-                <br>
+                <br><br>
+                <a href="{{ route('individu.export') }}" class="btn btn-primary">
+                    Export Data
+               </a>
 
                 
                 <br>

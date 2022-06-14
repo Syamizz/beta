@@ -8,6 +8,10 @@ use App\Models\IndividuPerhubungan;
 use App\Models\IndividuAkaun;
 use Illuminate\Http\Request;
 
+use App\Exports\IndividuExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Requests\StoreStudentRequest;
+
 class IndividuController extends Controller
 {
     public function daftarIndividu()

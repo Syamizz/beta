@@ -293,7 +293,9 @@
                 <br>
                 <a href="{{ route('displayIndividu') }}">Display All</a>
                 <br>
-
+                <a href="{{ route('individu.export') }}" class="btn btn-primary">
+                    Export Data
+               </a>
 
                 <br>
 
