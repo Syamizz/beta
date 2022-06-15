@@ -201,7 +201,7 @@ Route::group(['middleware' => 'auth'], function () {
         //Route maklumat kakitangan
         Route::get('kakitangan/maklumatStaff', 'App\Http\Controllers\KakitanganController@maklumatStaff')->name('maklumatStaff');
         Route::post('kakitangan/maklumatStaffCari', 'App\Http\Controllers\KakitanganController@maklumatStaffCari')->name('maklumatStaffCari');
-        Route::get('kakitangan/maklumatStaffHasil', 'App\Http\Controllers\KakitanganController@maklumatStaffHasil')->name('maklumatStaffHasil');
+        Route::get('kakitangan/maklumatStaffHasil{noKPBaru}', 'App\Http\Controllers\KakitanganController@maklumatStaffHasil')->name('maklumatStaffHasil');
         Route::get('kakitangan/maklumatStaffKemaskini/{noKPBaru}', 'App\Http\Controllers\KakitanganController@maklumatStaffKemaskini')->name('maklumatStaffKemaskini');
         Route::post('kakitangan/kemaskiniStaff/{noKPBaru}', 'App\Http\Controllers\KakitanganController@kemaskiniStaff')->name('kemaskiniStaff');
 

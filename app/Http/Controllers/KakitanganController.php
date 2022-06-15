@@ -234,24 +234,19 @@ class KakitanganController extends Controller
         $carian = $_POST['carian'];
         $jenisCarian = $_POST['jenisCarian'];
 
-        $staff = kakitangan_daftar::where($jenisCarian, 'LIKE', '%' . $carian . '%')->first();
-        $alamat2 = kakitangan_alamat::where($jenisCarian, 'LIKE', '%' . $carian . '%')->first();
-        $bank2 = kakitangan_bank::where($jenisCarian, 'LIKE', '%' . $carian . '%')->first();
-        $perhubungan = kakitangan_perhubungan::where($jenisCarian, 'LIKE', '%' . $carian . '%')->first();
-        $pekerjaan = kakitangan_pekerjaan::where($jenisCarian, 'LIKE', '%' . $carian . '%')->first();
-        $pendidikan = kakitangan_pendidikan::where($jenisCarian, 'LIKE', '%' . $carian . '%')->first();
+        $staff = kakitangan_daftar::where($jenisCarian, 'LIKE', '%' . $carian . '%')->get();
 
-        return view('kakitangan.maklumatStaffHasil', compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        return view('kakitangan.maklumatStaff2', compact('staff'));
     }
 
-    public function maklumatStaffHasil()
+    public function maklumatStaffHasil($noKPBaru)
     {
-        $staff = kakitangan_daftar::all();
-        $alamat2 = kakitangan_alamat::all();
-        $bank2 = kakitangan_bank::all();
-        $perhubungan = kakitangan_perhubungan::all();
-        $pekerjaan = kakitangan_pekerjaan::all();
-        $pendidikan = kakitangan_pendidikan::all();
+        $staff = kakitangan_daftar::where("noKPBaru", $noKPBaru)->first();
+        $alamat2 = kakitangan_alamat::where("noKPBaru", $noKPBaru)->first();
+        $bank2 = kakitangan_bank::where("noKPBaru", $noKPBaru)->first();
+        $perhubungan = kakitangan_perhubungan::where("noKPBaru", $noKPBaru)->first();
+        $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
+        $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
         return view('kakitangan.maklumatStaffHasil', compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
     }
