@@ -14,6 +14,10 @@ use App\Http\Requests\StoreIndividuRequest;
 
 class ExcelController extends Controller
 {
+    public function studentPage()
+    {
+        return view('student.index');
+    }
    /**
      * Display a listing of the resource.
      *

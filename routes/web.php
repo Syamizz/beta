@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -233,12 +234,14 @@ Route::group(['middleware' => 'auth'], function () {
 
 
         //Excel test
-        Route::resource('individu', ExcelController::class);
-        Route::get('individu_export', [ExcelController::class, 'get_individu_data'])->name('individu.export');
+        Route::resource('individu', 'App\Http\Controllers\ExcelController');
+        Route::get('individu_export','App\Http\Controllers\ExcelController@get_individu_data')->name('individu.export');
     
         //TESTING EXCEL
-        Route::resource('student', StudentController::class);
-        Route::get('student_export',[StudentController::class, 'get_student_data'])->name('student.export');
+        Route::get('student/index', 'App\Http\Controllers\ExcelController@studentPage')->name('studentPage');
+        Route::resource('student', 'App\Http\Controllers\StudentController');
+        Route::get('student_export','App\Http\Controllers\StudentController@get_student_data')->name('student.export');
     
+        Route::get('laporan/data','App\Http\Controllers\LaporanController@maklumatLaporan')->name('maklumatLaporan');
     });
 });

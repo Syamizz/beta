@@ -165,7 +165,7 @@
                 <div class="card">
                     <div class="card-header">{{ __('Selamat Datang') }}</div>
                     <div class="card-body text-center">
-                        <h2>TOTAL CO-OPERATIVE INFORMATION SYSTEM</h2>
+                        <h2>TOTAL CO-OPERATIVE INFORMATION SYSTEM </h2>
                         <h2>(TCIS)</h2>
                         <img src="{{ asset('resources/photo/ixs_banner.jpg') }}" alt="inter xs" width="80%">
                     </div>

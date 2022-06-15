@@ -53,7 +53,7 @@
                                 <li><a class="dropdown-item" href="{{route('daftarAhli')}}">Daftar Ahli</a></li>
                                 <li><a class="dropdown-item" href="#">Yuran Pendaftaran</a></li>
                                 <li><a class="dropdown-item" href="#">Pemberhentian</a></li>
-                                <li><a class="dropdown-item" href="#">Laporan Keahlian</a></li>
+                                <li><a class="dropdown-item" href="{{route('maklumatLaporan')}}">Laporan Keahlian</a></li>
                                 <li><a class="dropdown-item" href="#">Transaksi Ahli</a></li>
                                 <li><a class="dropdown-item" href="#">Penyata</a></li>
                                 <li><a class="dropdown-item" href="#">Tuntutan</a></li>
