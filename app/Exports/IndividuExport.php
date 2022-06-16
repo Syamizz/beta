@@ -13,15 +13,15 @@ class IndividuExport implements FromCollection,WithHeadings
     */
     public function headings():array{
         return[
-            'id',
-            'nama',
-            'noKP',
-            'noKPlama',
-            'jantina',
-            'tarikh_lahir',
-            'tempat_lahir',
-            'created_at',
-            'updated_at' 
+            'Id',
+            'Nama',
+            'No KP',
+            'No KP Lama',
+            'Jantina',
+            'Tarikh Lahir',
+            'Tempat Lahir',
+            'Dicipta',
+            'Dikemaskini' 
         ];
     } 
     public function collection()
