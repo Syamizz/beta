@@ -146,11 +146,16 @@ class SyarikatController extends Controller
         ->where('cariP', $nama_jabatan)
         ->orWhere('cariP', $kod_jabatan)
         ->get();
-        return view('syarikat.maklumatSyarikatEdit',compact('syarikat','syarikatAlamat','syarikatPerhubungan','syarikatAnggota'));
+
+        $syarikatPembayarGaji = DB::table('ahli_syarikats')
+        ->where('cariPG', $nama_jabatan)
+        ->orWhere('cariPG', $kod_jabatan)
+        ->get();
+        return view('syarikat.maklumatSyarikatEdit',compact('syarikat','syarikatAlamat','syarikatPerhubungan','syarikatAnggota','syarikatPembayarGaji'));
     }
 
     //update maklumat syarikat
-    public function maklumatSyarikatUpdate(Request $request,$id)
+    public function maklumatSyarikatUpdate(Request $request,$id,$nama_jabatan,$kod_jabatan)
     {
         $syarikat = SyarikatDaftar::find($id);
 
@@ -162,10 +167,10 @@ class SyarikatController extends Controller
 
         $syarikat->save();
 
-        return redirect()->route('maklumatSyarikatEdit',$id);
+        return redirect()->route('maklumatSyarikatEdit',[$id,$nama_jabatan,$kod_jabatan]);
     }
 
-    public function alamatSyarikatUpdate(Request $request,$id)
+    public function alamatSyarikatUpdate(Request $request,$id,$nama_jabatan,$kod_jabatan)
     {
         $syarikatAlamat = SyarikatAlamat::find($id);
 
@@ -177,124 +182,124 @@ class SyarikatController extends Controller
 
         $syarikatAlamat->save();
 
-        return redirect()->route('maklumatSyarikatEdit',$id);
+        return redirect()->route('maklumatSyarikatEdit',[$id,$nama_jabatan,$kod_jabatan]);
     }
 
     //alamat Delete
-    public function alamatSyarikatDelete(Request $request,$id)
+    public function alamatSyarikatDelete(Request $request,$id,$nama_jabatan,$kod_jabatan)
     {
         $syarikatAlamat = SyarikatAlamat::find($id);
         $syarikatAlamat->delete();
-        return redirect()->route('maklumatSyarikatEdit',$id);
+        return redirect()->route('maklumatSyarikatEdit',[$id,$nama_jabatan,$kod_jabatan]);
     }
 
     //tel HP update
-    public function tel_HP_update(Request $request,$id)
+    public function tel_HP_update(Request $request,$id,$nama_jabatan,$kod_jabatan)
     {
         $syarikatPerhubungan = SyarikatPerhubungan::find($id);
         $syarikatPerhubungan->tel_HP = $request->tel_HP;
         $syarikatPerhubungan->tel_HP_type = $request->tel_HP_type;
 
         $syarikatPerhubungan->save();
-        return redirect()->route('maklumatSyarikatEdit',$id);
+        return redirect()->route('maklumatSyarikatEdit',[$id,$nama_jabatan,$kod_jabatan]);
     }
 
     //tel HP delete
-    public function tel_HP_delete(Request $request,$id)
+    public function tel_HP_delete(Request $request,$id,$nama_jabatan,$kod_jabatan)
     {
         $syarikatPerhubungan = SyarikatPerhubungan::find($id);
         $tel_HP_reset=" ";
         $syarikatPerhubungan->tel_HP = $request->$tel_HP_reset;
         $syarikatPerhubungan->tel_HP_type = $request->$tel_HP_reset;
         $syarikatPerhubungan->save();
-        return redirect()->route('maklumatSyarikatEdit',$id);
+        return redirect()->route('maklumatSyarikatEdit',[$id,$nama_jabatan,$kod_jabatan]);
     }
 
 
     //tel R update
-    public function tel_R_update(Request $request,$id)
+    public function tel_R_update(Request $request,$id,$nama_jabatan,$kod_jabatan)
     {
         $syarikatPerhubungan = SyarikatPerhubungan::find($id);
         $syarikatPerhubungan->tel_R = $request->tel_R;
 
         $syarikatPerhubungan->save();
-        return redirect()->route('maklumatSyarikatEdit',$id);
+        return redirect()->route('maklumatSyarikatEdit',[$id,$nama_jabatan,$kod_jabatan]);
     }
 
     //tel R delete
-    public function tel_R_delete(Request $request,$id)
+    public function tel_R_delete(Request $request,$id,$nama_jabatan,$kod_jabatan)
     {
         $syarikatPerhubungan = SyarikatPerhubungan::find($id);
         $tel_R_reset=" ";
         $syarikatPerhubungan->tel_R = $request->$tel_R_reset;
         $syarikatPerhubungan->save();
-        return redirect()->route('maklumatSyarikatEdit',$id);
+        return redirect()->route('maklumatSyarikatEdit',[$id,$nama_jabatan,$kod_jabatan]);
     }
 
 
     //tel P update
-    public function tel_P_update(Request $request,$id)
+    public function tel_P_update(Request $request,$id,$nama_jabatan,$kod_jabatan)
     {
         $syarikatPerhubungan = SyarikatPerhubungan::find($id);
         $syarikatPerhubungan->tel_P = $request->tel_P;
 
         $syarikatPerhubungan->save();
-        return redirect()->route('maklumatSyarikatEdit',$id);
+        return redirect()->route('maklumatSyarikatEdit',[$id,$nama_jabatan,$kod_jabatan]);
     }
 
     //tel P delete
-    public function tel_P_delete(Request $request,$id)
+    public function tel_P_delete(Request $request,$id,$nama_jabatan,$kod_jabatan)
     {
         $syarikatPerhubungan = SyarikatPerhubungan::find($id);
         $tel_P_reset=" ";
         $syarikatPerhubungan->tel_P = $request->$tel_P_reset;
         $syarikatPerhubungan->save();
-        return redirect()->route('maklumatSyarikatEdit',$id);
+        return redirect()->route('maklumatSyarikatEdit',[$id,$nama_jabatan,$kod_jabatan]);
     }
 
     //faks update
-    public function faks_update(Request $request,$id)
+    public function faks_update(Request $request,$id,$nama_jabatan,$kod_jabatan)
     {
         $syarikatPerhubungan = SyarikatPerhubungan::find($id);
         $syarikatPerhubungan->faks = $request->faks;
 
         $syarikatPerhubungan->save();
-        return redirect()->route('maklumatSyarikatEdit',$id);
+        return redirect()->route('maklumatSyarikatEdit',[$id,$nama_jabatan,$kod_jabatan]);
     }
 
     //faks delete
-    public function faks_delete(Request $request,$id)
+    public function faks_delete(Request $request,$id,$nama_jabatan,$kod_jabatan)
     {
         $syarikatPerhubungan = SyarikatPerhubungan::find($id);
         $reset=" ";
         $syarikatPerhubungan->faks = $request->$reset;
         $syarikatPerhubungan->save();
-        return redirect()->route('maklumatSyarikatEdit',$id);
+        return redirect()->route('maklumatSyarikatEdit',[$id,$nama_jabatan,$kod_jabatan]);
     }
 
     //email update
-    public function email_update(Request $request,$id)
+    public function email_update(Request $request,$id,$nama_jabatan,$kod_jabatan)
     {
         $syarikatPerhubungan = SyarikatPerhubungan::find($id);
         $syarikatPerhubungan->email = $request->email;
 
         $syarikatPerhubungan->save();
-        return redirect()->route('maklumatSyarikatEdit',$id);
+        return redirect()->route('maklumatSyarikatEdit',[$id,$nama_jabatan,$kod_jabatan]);
     }
 
-    public function email_delete(Request $request,$id)
+    public function email_delete(Request $request,$id,$nama_jabatan,$kod_jabatan)
     {
         $syarikatPerhubungan = SyarikatPerhubungan::find($id);
         $reset=" ";
         $syarikatPerhubungan->email = $request->$reset;
         $syarikatPerhubungan->save();
-        return redirect()->route('maklumatSyarikatEdit',$id);
+        return redirect()->route('maklumatSyarikatEdit',[$id,$nama_jabatan,$kod_jabatan]);
     }
 
 
     //12.5.2022
     //daftar alamat
-    public function daftarAlamatSyarikat(Request $request,$id)
+    public function daftarAlamatSyarikat(Request $request,$id,$nama_jabatan,$kod_jabatan)
     {
         $daftarAlamat = new SyarikatAlamat;
 
@@ -307,7 +312,7 @@ class SyarikatController extends Controller
 
         $daftarAlamat->save();
 
-        return redirect()->route('maklumatSyarikatEdit',$id);
+        return redirect()->route('maklumatSyarikatEdit',[$id,$nama_jabatan,$kod_jabatan]);
     }
 
     //21.6.2022 - daftar anggota

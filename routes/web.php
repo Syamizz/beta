@@ -85,32 +85,32 @@ Route::get('syarikat/maklumatSyarikat', 'App\Http\Controllers\SyarikatController
 Route::post('syarikat/carianSyarikat', 'App\Http\Controllers\SyarikatController@carianSyarikat')->name('carianSyarikat');
 
 //Route delete maklumat syarikat
-Route::get('syarikat/maklumatSyarikat/delete/{id}', 'App\Http\Controllers\SyarikatController@maklumatSyarikatDelete')->name('maklumatSyarikatDelete');
+Route::get('syarikat/maklumatSyarikat/delete/{id}/{nama_jabatan}/{kod_jabatan}', 'App\Http\Controllers\SyarikatController@maklumatSyarikatDelete')->name('maklumatSyarikatDelete');
 
 //Route edit & update maklumat syarikat
 Route::get('syarikat/maklumatSyarikat/edit/{id}/{nama_jabatan}/{kod_jabatan}', 'App\Http\Controllers\SyarikatController@maklumatSyarikatEdit')->name('maklumatSyarikatEdit');
-Route::post('syarikat/maklumatSyarikat/update/{id}', 'App\Http\Controllers\SyarikatController@maklumatSyarikatUpdate')->name('maklumatSyarikatUpdate');
+Route::post('syarikat/maklumatSyarikat/update/{id}/{nama_jabatan}/{kod_jabatan}', 'App\Http\Controllers\SyarikatController@maklumatSyarikatUpdate')->name('maklumatSyarikatUpdate');
 
-Route::post('syarikat/maklumatSyarikat/update2/{id}', 'App\Http\Controllers\SyarikatController@alamatSyarikatUpdate')->name('alamatSyarikatUpdate');
+Route::post('syarikat/maklumatSyarikat/update2/{id}/{nama_jabatan}/{kod_jabatan}', 'App\Http\Controllers\SyarikatController@alamatSyarikatUpdate')->name('alamatSyarikatUpdate');
 
-Route::post('syarikat/maklumatSyarikat/update3/{id}', 'App\Http\Controllers\SyarikatController@tel_HP_update')->name('tel_HP_update');
-Route::post('syarikat/maklumatSyarikat/update4/{id}', 'App\Http\Controllers\SyarikatController@tel_P_update')->name('tel_P_update');
-Route::post('syarikat/maklumatSyarikat/update5/{id}', 'App\Http\Controllers\SyarikatController@tel_R_update')->name('tel_R_update');
-Route::post('syarikat/maklumatSyarikat/update6/{id}', 'App\Http\Controllers\SyarikatController@faks_update')->name('faks_update');
-Route::post('syarikat/maklumatSyarikat/update7/{id}', 'App\Http\Controllers\SyarikatController@email_update')->name('email_update');
+Route::post('syarikat/maklumatSyarikat/update3/{id}/{nama_jabatan}/{kod_jabatan}', 'App\Http\Controllers\SyarikatController@tel_HP_update')->name('tel_HP_update');
+Route::post('syarikat/maklumatSyarikat/update4/{id}/{nama_jabatan}/{kod_jabatan}', 'App\Http\Controllers\SyarikatController@tel_P_update')->name('tel_P_update');
+Route::post('syarikat/maklumatSyarikat/update5/{id}/{nama_jabatan}/{kod_jabatan}', 'App\Http\Controllers\SyarikatController@tel_R_update')->name('tel_R_update');
+Route::post('syarikat/maklumatSyarikat/update6/{id}/{nama_jabatan}/{kod_jabatan}', 'App\Http\Controllers\SyarikatController@faks_update')->name('faks_update');
+Route::post('syarikat/maklumatSyarikat/update7/{id}/{nama_jabatan}/{kod_jabatan}', 'App\Http\Controllers\SyarikatController@email_update')->name('email_update');
 //Route::match(['get', 'post'], 'ahli/pengesahanAhli', 'App\Http\Controllers\MainController@pengesahanAhli')->name('pengesahanAhli');
 
 //Route delete
-Route::get('syarikat/maklumatSyarikat/alamatDelete/{id}', 'App\Http\Controllers\SyarikatController@alamatSyarikatDelete')->name('alamatSyarikatDelete');
+Route::get('syarikat/maklumatSyarikat/alamatDelete/{id}/{nama_jabatan}/{kod_jabatan}', 'App\Http\Controllers\SyarikatController@alamatSyarikatDelete')->name('alamatSyarikatDelete');
 
-Route::get('syarikat/maklumatSyarikat/delete1/{id}', 'App\Http\Controllers\SyarikatController@tel_HP_delete')->name('tel_HP_delete');
-Route::get('syarikat/maklumatSyarikat/delete2/{id}', 'App\Http\Controllers\SyarikatController@tel_P_delete')->name('tel_P_delete');
-Route::get('syarikat/maklumatSyarikat/delete3/{id}', 'App\Http\Controllers\SyarikatController@tel_R_delete')->name('tel_R_delete');
-Route::get('syarikat/maklumatSyarikat/delete4/{id}', 'App\Http\Controllers\SyarikatController@faks_delete')->name('faks_delete');
-Route::get('syarikat/maklumatSyarikat/delete5/{id}', 'App\Http\Controllers\SyarikatController@email_delete')->name('email_delete');
+Route::get('syarikat/maklumatSyarikat/delete1/{id}/{nama_jabatan}/{kod_jabatan}', 'App\Http\Controllers\SyarikatController@tel_HP_delete')->name('tel_HP_delete');
+Route::get('syarikat/maklumatSyarikat/delete2/{id}/{nama_jabatan}/{kod_jabatan}', 'App\Http\Controllers\SyarikatController@tel_P_delete')->name('tel_P_delete');
+Route::get('syarikat/maklumatSyarikat/delete3/{id}/{nama_jabatan}/{kod_jabatan}', 'App\Http\Controllers\SyarikatController@tel_R_delete')->name('tel_R_delete');
+Route::get('syarikat/maklumatSyarikat/delete4/{id}/{nama_jabatan}/{kod_jabatan}', 'App\Http\Controllers\SyarikatController@faks_delete')->name('faks_delete');
+Route::get('syarikat/maklumatSyarikat/delete5/{id}/{nama_jabatan}/{kod_jabatan}', 'App\Http\Controllers\SyarikatController@email_delete')->name('email_delete');
 
 //daftar alamat syarikat
-Route::post('syarikat/alamatSyarikat/daftar/{id}', 'App\Http\Controllers\SyarikatController@daftarAlamatSyarikat')->name('daftarAlamatSyarikat');
+Route::post('syarikat/alamatSyarikat/daftar/{id}/{nama_jabatan}/{kod_jabatan}', 'App\Http\Controllers\SyarikatController@daftarAlamatSyarikat')->name('daftarAlamatSyarikat');
 
 Auth::routes();
 

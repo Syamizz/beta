@@ -131,8 +131,8 @@
                                 Kakitangan
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Daftar Kakitangan</a></li>
-                                <li><a class="dropdown-item" href="#">Maklumat Kakitangan</a></li>
+                                <li><a class="dropdown-item" href="{{route('daftarKakitangan')}}">Daftar Kakitangan</a></li>
+                                <li><a class="dropdown-item" href="{{route('maklumatStaff')}}">Maklumat Kakitangan</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -293,7 +293,7 @@
                     </div>
                     <br><br>
                     <div class="col-md-8" id="kemaskiniDaftar" style="display: none">
-                        <form action="{{ route('maklumatSyarikatUpdate', $syarikat->id) }}" method="post"
+                        <form action="{{ url('syarikat/maklumatSyarikat/update/' .$syarikat->id.'/'.$syarikat->nama_jabatan.'/'.$syarikat->kod_jabatan.'/') }}" method="post"
                             enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <table style="background: white" class="table table-bordered table-striped">
@@ -340,7 +340,8 @@
                         <option value="semua">Semua</option>
                         <option value="alamat">Alamat</option>
                         <option value="perhubungan">Perhubungan</option>
-                        <option value="anggota">Anggota</option>
+                        <option value="pejabat">Pejabat</option>
+                        <option value="pembayarGaji">Pembayar Gaji</option>
                     </select>
                     <br>
                     <br>
@@ -381,7 +382,7 @@
 
                                 @if ($syarikatAlamat == true)
                                     <div class="col-md-10" id="kemaskiniAlamat" style="display: none">
-                                        <form action="{{ route('alamatSyarikatUpdate', $syarikatAlamat->id) }}"
+                                        <form action="{{ url('syarikat/maklumatSyarikat/update2/' .$syarikat->id.'/'.$syarikat->nama_jabatan.'/'.$syarikat->kod_jabatan.'/') }}"
                                             method="post" enctype="multipart/form-data">
                                             {{ csrf_field() }}
                                             <table>
@@ -433,7 +434,7 @@
                                 <div class="col-md-10" id="daftarAlamat" style="display: none">
                                     <br>
                                     <p>Daftar alamat</p>
-                                    <form action="{{ route('daftarAlamatSyarikat', $syarikat->id) }}"
+                                    <form action="{{ url('syarikat/alamatSyarikat/daftar/' .$syarikat->id.'/'.$syarikat->nama_jabatan.'/'.$syarikat->kod_jabatan.'/') }}"
                                         method="POST" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <table>
@@ -577,7 +578,7 @@
                                 <div class="col-md-12" id="kemaskini1" style="display: none">
                                     <br><br>
                                     <p>Kemaskini Tel(HP)</p>
-                                    <form action="{{ route('tel_HP_update', $syarikatPerhubungan->id) }}"
+                                    <form action="{{ url('syarikat/maklumatSyarikat/update3/' .$syarikat->id.'/'.$syarikat->nama_jabatan.'/'.$syarikat->kod_jabatan.'/') }}"
                                         method="post" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <table>
@@ -612,7 +613,7 @@
                                 <div class="col-md-12" id="kemaskini2" style="display: none">
                                     <br><br>
                                     <p>Kemaskini Tel(P)</p>
-                                    <form action="{{ route('tel_P_update', $syarikatPerhubungan->id) }}"
+                                    <form action="{{ url('syarikat/maklumatSyarikat/update4/' .$syarikat->id.'/'.$syarikat->nama_jabatan.'/'.$syarikat->kod_jabatan.'/') }}"
                                         method="post" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <table>
@@ -636,7 +637,7 @@
                                 <div class="col-md-12" id="kemaskini3" style="display: none">
                                     <br><br>
                                     <p>Kemaskini Tel(R)</p>
-                                    <form action="{{ route('tel_R_update', $syarikatPerhubungan->id) }}"
+                                    <form action="{{ url('syarikat/maklumatSyarikat/update5/' .$syarikat->id.'/'.$syarikat->nama_jabatan.'/'.$syarikat->kod_jabatan.'/') }}"
                                         method="post" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <table>
@@ -660,7 +661,7 @@
                                 <div class="col-md-12" id="kemaskini4" style="display: none">
                                     <br><br>
                                     <p>Kemaskini Faks</p>
-                                    <form action="{{ route('faks_update', $syarikatPerhubungan->id) }}"
+                                    <form action="{{ url('syarikat/maklumatSyarikat/update6/' .$syarikat->id.'/'.$syarikat->nama_jabatan.'/'.$syarikat->kod_jabatan.'/') }}"
                                         method="post" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <table>
@@ -684,7 +685,7 @@
                                 <div class="col-md-12" id="kemaskini5" style="display: none">
                                     <br><br>
                                     <p>Kemaskini Email</p>
-                                    <form action="{{ route('email_update', $syarikatPerhubungan->id) }}"
+                                    <form action="{{ url('syarikat/maklumatSyarikat/update7/' .$syarikat->id.'/'.$syarikat->nama_jabatan.'/'.$syarikat->kod_jabatan.'/') }}"
                                         method="post" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <table>
@@ -715,11 +716,10 @@
 
 
 
-                    <!-- Start maklumat anggota-->
-                    <div class="col-md-12" id="anggotaSyarikat">
-                        <br><br>
+                    <!-- Start maklumat ahli-->
+                    <div class="col-md-12" id="pejabatSyarikat" style="display: none;">
                         <div class="card">
-                            <div class="card-header">Maklumat Anggota </div>
+                            <div class="card-header">Maklumat Ahli </div>
                             <div class="card-body">
 
 
@@ -815,6 +815,105 @@
                         </div>
                     </div>
 
+                    <!--Maklumat pembayar gaji -->
+                    <div class="col-md-12" id="pembayarGaji" style="display: none;">
+                        <div class="card">
+                            <div class="card-header">Maklumat Pembayar Gaji </div>
+                            <div class="card-body">
+
+
+                                <select name="jenis_anggota2" id="jenis_anggota2" onclick="display3();">
+                                    <option value="semua">Semua</option>
+                                    <option value="ahli">Ahli</option>
+                                    <option value="kakitangan">Kakitangan</option>
+                                </select>
+
+                                <br><br>
+                                
+                                <div class="col-md-6" id="PGSemua">
+                                    <table  class="table table-bordered table-striped">
+                                        <tr>
+                                            <th style="width: 10%">No ahli</th>
+                                            <th style="width: 10%">No staff</th>
+                                            <th>Nama</th>
+                                            <th>No KP</th>
+                                            <th>No KP Lama</th>
+                                            <th>Jawatan</th>
+                                        </tr>
+                                        @foreach ($syarikatPembayarGaji as $ahli2)
+                                            <tr>
+                                                <td>{{ $ahli2->noAhli }}</td>
+                                                <td>{{ $ahli2->noStaff }}</td>
+                                                <td>{{ $ahli2->nama }}</td>
+                                                <td>{{ $ahli2->noKPBaru }}</td>
+                                                <td>{{ $ahli2->noKPLama }}</td>
+                                                <td>{{ $ahli2->jawatan }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
+                                </div>
+
+                                <div class="col-md-6" style="display: none;" id="PGAhli">
+                                    <table  class="table table-bordered table-striped">
+                                        <tr>
+                                            <th style="width: 10%">No ahli</th>
+                                            <th>Nama</th>
+                                            <th>No KP</th>
+                                            <th>No KP Lama</th>
+                                            <th>Jawatan</th>
+                                        </tr>
+                                        @foreach ($syarikatPembayarGaji as $ahli2)
+                                            @if($ahli2->noAhli==FALSE)
+                                            
+                                            @else
+                                            <tr>
+                                                <td>{{ $ahli2->noAhli }}</td>
+                                                <td>{{ $ahli2->nama }}</td>
+                                                <td>{{ $ahli2->noKPBaru }}</td>
+                                                <td>{{ $ahli2->noKPLama }}</td>
+                                                <td>{{ $ahli2->jawatan }}</td>
+                                            </tr>
+                                            @endif
+                                        @endforeach
+                                    </table>
+                                </div>
+                                
+                                <div class="col-md-6" style="display: none;" id="PGKakitangan">
+                                    <table  class="table table-bordered table-striped">
+                                        <tr>
+                                            <th style="width: 10%">No staff</th>
+                                            <th>Nama</th>
+                                            <th>No KP</th>
+                                            <th>No KP Lama</th>
+                                            <th>Jawatan</th>
+                                        </tr>
+                                        @foreach ($syarikatPembayarGaji as $ahli2)
+                                            @if($ahli2->noStaff==FALSE)
+                                            
+                                            @else
+                                            <tr>
+                                                <td>{{ $ahli2->noStaff }}</td>
+                                                <td>{{ $ahli2->nama }}</td>
+                                                <td>{{ $ahli2->noKPBaru }}</td>
+                                                <td>{{ $ahli2->noKPLama }}</td>
+                                                <td>{{ $ahli2->jawatan }}</td>
+                                            </tr>
+                                            @endif
+                                        @endforeach
+                                    </table>
+                                </div>
+                                
+
+                                <br><br>
+                                <a href="{{ route('daftarAhli') }}" class="btn btn-secondary">Daftar
+                                    ahli</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="{{ route('daftarKakitangan') }}" class="btn btn-secondary">Daftar
+                                    kakitangan</a>
+
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <!--End of card body -->
             </div>
@@ -843,7 +942,7 @@
                         'success'
                     )
                     @if ($syarikat == true)
-                        window.location = '{{ route('maklumatSyarikatDelete', $syarikat->id) }}';
+                        window.location = "{{ url('syarikat/maklumatSyarikat/delete/' .$syarikat->id.'/'.$syarikat->nama_jabatan.'/'.$syarikat->kod_jabatan.'/') }}";
                     @endif
                 }
 
@@ -872,7 +971,7 @@
                         'success'
                     )
                     @if ($syarikatAlamat == true)
-                        window.location = '{{ route('alamatSyarikatDelete', $syarikatAlamat->id) }}';
+                        window.location = "{{url('syarikat/alamatSyarikat/delete/' .$syarikat->id.'/'.$syarikat->nama_jabatan.'/'.$syarikat->kod_jabatan.'/')}}";
                     @endif
                 }
 
@@ -901,7 +1000,7 @@
                         'success'
                     )
                     @if ($syarikatPerhubungan == true)
-                        window.location = '{{ route('tel_HP_delete', $syarikatPerhubungan->id) }}';
+                        window.location = "{{url('syarikat/maklumatSyarikat/delete1/' .$syarikat->id.'/'.$syarikat->nama_jabatan.'/'.$syarikat->kod_jabatan.'/')}}";
                     @endif
                 }
 
@@ -930,7 +1029,7 @@
                         'success'
                     )
                     @if ($syarikatPerhubungan == true)
-                        window.location = '{{ route('tel_P_delete', $syarikatPerhubungan->id) }}';
+                        window.location = "{{url('syarikat/maklumatSyarikat/delete2/' .$syarikat->id.'/'.$syarikat->nama_jabatan.'/'.$syarikat->kod_jabatan.'/')}}";
                     @endif
                 }
 
@@ -959,7 +1058,7 @@
                         'success'
                     )
                     @if ($syarikatPerhubungan == true)
-                        window.location = '{{ route('tel_R_delete', $syarikatPerhubungan->id) }}';
+                        window.location = "{{url('syarikat/maklumatSyarikat/delete3/' .$syarikat->id.'/'.$syarikat->nama_jabatan.'/'.$syarikat->kod_jabatan.'/')}}";
                     @endif
                 }
 
@@ -988,7 +1087,7 @@
                         'success'
                     )
                     @if ($syarikatPerhubungan == true)
-                        window.location = '{{ route('faks_delete', $syarikatPerhubungan->id) }}';
+                        window.location = "{{url('syarikat/maklumatSyarikat/delete4/' .$syarikat->id.'/'.$syarikat->nama_jabatan.'/'.$syarikat->kod_jabatan.'/')}}";
                     @endif
                 }
 
@@ -1017,7 +1116,7 @@
                         'success'
                     )
                     @if ($syarikatPerhubungan == true)
-                        window.location = '{{ route('email_delete', $syarikatPerhubungan->id) }}';
+                        window.location = "{{url('syarikat/maklumatSyarikat/delete5/' .$syarikat->id.'/'.$syarikat->nama_jabatan.'/'.$syarikat->kod_jabatan.'/')}}";
                     @endif
                 }
 
@@ -1039,19 +1138,36 @@
 
             var alamat = document.getElementById('alamatSyarikat');
             var perhubungan = document.getElementById('perhubunganSyarikat');
+            var pejabat = document.getElementById('pejabatSyarikat');
+            var pembayar = document.getElementById('pembayarGaji');
 
             if (x == "semua") {
                 alamat.style.display = "block";
                 perhubungan.style.display = "block";
+                pejabat.style.display = "none";
+                pembayar.style.display = "none";
 
             } else if (x == "alamat") {
                 alamat.style.display = "block";
                 perhubungan.style.display = "none";
+                pejabat.style.display = "none";
+                pembayar.style.display = "none";
 
             } else if (x == "perhubungan") {
                 alamat.style.display = "none";
                 perhubungan.style.display = "block";
-
+                pejabat.style.display = "none";
+                pembayar.style.display = "none";
+            } else if (x == "pejabat") {
+                alamat.style.display = "none";
+                perhubungan.style.display = "none";
+                pejabat.style.display = "block";
+                pembayar.style.display = "none";
+            } else if (x == "pembayarGaji") {
+                alamat.style.display = "none";
+                perhubungan.style.display = "none";
+                pejabat.style.display = "none";
+                pembayar.style.display = "block";
             }
         }
 
@@ -1062,6 +1178,31 @@
             var semua = document.getElementById('anggotaSemua');
             var ahli = document.getElementById('anggotaAhli');
             var kakitangan = document.getElementById('anggotaKakitangan');
+
+            if (y == "semua") {
+                semua.style.display = "block";
+                ahli.style.display = "none";
+                kakitangan.style.display = "none";
+
+            } else if (y == "ahli") {
+                semua.style.display = "none";
+                ahli.style.display = "block";
+                kakitangan.style.display = "none";
+
+            } else if (y == "kakitangan") {
+                semua.style.display = "none";
+                ahli.style.display = "none";
+                kakitangan.style.display = "block";
+
+            }
+        }
+
+        function display3() {
+            var y = document.getElementById('jenis_anggota2').value;
+
+            var semua = document.getElementById('PGSemua');
+            var ahli = document.getElementById('PGAhli');
+            var kakitangan = document.getElementById('PGKakitangan');
 
             if (y == "semua") {
                 semua.style.display = "block";
