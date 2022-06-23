@@ -12,7 +12,9 @@
 
     <!-- Styles -->
     <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('public/css/bootstrap-4-navbar.css') }}" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{{ asset('public/js/bootstrap-4-navbar.js') }}"></script>
 
 </head>
 
@@ -32,27 +34,27 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Home</a>
+                        <li class="nav-item active">
+                            <a class="nav-link" aria-current="page" href="{{ route('home') }}">Home</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Ahli
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="{{ route('maklumatAhli') }}">Maklumat Ahli</a>
-                                </li>
-                                <li class="dropdown-submenu">
-                                    <a class="test" tabindex="-1" href="#">Pendaftaran <span
-                                            class="caret"></span></a>
+                            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ahli</a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li><a class="dropdown-item" href="{{ route('maklumatAhli') }}">Maklumat Ahli</a></li>
+                                <li><a class="dropdown-item dropdown-toggle" href="#">Pendaftaran {{--&raquo;--}}</a>
                                     <ul class="dropdown-menu">
-                                        <li><a tabindex="-1" href="{{ route('daftarAhli') }}">Daftar Ahli</a></li>
-                                        <li><a tabindex="-1" href="#">Yuran Pendaftaran</a></li>
-
+                                        <li><a class="dropdown-item" href="{{ route('daftarAhli') }}">Daftar Ahli</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('daftarYuran') }}">Yuran Pendaftaran</a></li>
                                     </ul>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Pemberhentian</a></li>
+                                <li>
+                                    <a class="dropdown-item dropdown-toggle" href="#">Pemberhentian</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{{ route('daftarBerhenti') }}">Daftar Berhenti</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('maklumatBerhenti') }}">Maklumat Berhenti</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('kelulusanPemberhentian') }}">Kemaskini Kelulusan Pemberhentian</a></li>
+                                    </ul>
+                                </li>
                                 <li><a class="dropdown-item" href="#">Laporan Keahlian</a></li>
                                 <li><a class="dropdown-item" href="#">Transaksi Ahli</a></li>
                                 <li><a class="dropdown-item" href="#">Penyata</a></li>
@@ -68,10 +70,9 @@
                                 Individu
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Daftar Individu</a>
+                                <li><a class="dropdown-item" href="{{ route('daftarIndividu') }}">Daftar Individu</a>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Maklumat
-                                        Individu</a></li>
+                                <li><a class="dropdown-item" href="{{ route('maklumatIndividu') }}">Maklumat Individu</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -80,9 +81,9 @@
                                 Syarikat
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Daftar Syarikat</a>
+                                <li><a class="dropdown-item" href="{{ route('daftarSyarikat') }}">Daftar Syarikat</a>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Maklumat Syarikat</a></li>
+                                <li><a class="dropdown-item" href="{{ route('maklumatSyarikat') }}">Maklumat Syarikat</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -100,8 +101,7 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Pelbagai
+                                data-bs-toggle="dropdown" aria-expanded="false"> Pelbagai
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="#">Perubatan</a></li>
@@ -118,8 +118,8 @@
                                 Kakitangan
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Daftar Kakitangan</a></li>
-                                <li><a class="dropdown-item" href="#">Maklumat Kakitangan</a></li>
+                                <li><a class="dropdown-item" href="{{ route('daftarKakitangan') }}">Daftar Kakitangan</a></li>
+                                <li><a class="dropdown-item" href="{{ route('maklumatStaff') }}">Maklumat Kakitangan</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -270,7 +270,7 @@
                             </tr>
                             <tr>
                                 <th scope="row"></th>
-                                <th>{{ $pekerjaan->noStaff }}</th>
+                                <th>{{ $staff->noStaff }}</th>
                                 <th>{{ $pekerjaan->tarikhMulaKerja }}</th>
                                 <th>{{ $staff->nama }}</th>
                                 <th>{{ $staff->noKPBaru }}</th>
@@ -294,8 +294,6 @@
                         <button class="btn btn-secondary btn-block" id="btn_saudara">Saudara Mara</button>
 
                         <button class="btn btn-secondary btn-block" id="btn_caruman">Caruman</button>
-
-                        <button class="btn btn-secondary btn-block" id="btn_perubatan">Perubatan</button>
                     </div>
 
                     <div class="card-body">
@@ -308,19 +306,23 @@
                                     <th scope="col">Poskod</th>
                                     <th scope="col">Bandar</th>
                                     <th scope="col">Negeri</th>
+                                    <th scope="col">Dicipta Oleh</th>
                                     <th scope="col">Dicipta pada</th>
                                     <th scope="col">Dikemaskini oleh</th>
+                                    <th scope="col">Dikemaskini pada</th>
                                     <th scope="col">Kemaskini</th>
                                     <th scope="col">Padam</th>
                                 </tr>
-                                @if($alamat2==TRUE)
+                                @if($alamat2 == true)
                                 <tr>
                                     <th scope="row">{{ $alamat2->jenisAlamat }}</th>
                                     <th>{{ $alamat2->alamat }}</th>
                                     <th>{{ $alamat2->poskod }}</th>
                                     <th>{{ $alamat2->daerah }}</th>
                                     <th>{{ $alamat2->negeri }}</th>
+                                    <th></th>
                                     <th>{{ $alamat2->created_at }}</th>
+                                    <th></th>
                                     <th>{{ $alamat2->updated_at }}</th>
                                     <th><a id="edit_alamat" class="btn btn-success btn-block">Kemaskini</a></th>
                                     <th>
@@ -334,7 +336,7 @@
                             <a id="daftar_alamat" class="btn btn-primary btn-block">Daftar Alamat</a>
                             <button id="closeAlamat" class="btn btn-danger">Close</button>
                             <br><br>
-                            @if($alamat2==TRUE)
+                            @if($alamat2 == true)
                             <div class="col-md-12" id="appearEditAlamat" style="display: none">
                                 <form action="{{ route('updateAlamatStaff', $alamat2->noKPBaru) }}" method="POST"
                                     enctype="multipart/form-data">
@@ -359,6 +361,8 @@
                                                     </option>
                                                     <option value="Kediaman">Kediaman</option>
                                                     <option value="Pejabat">Pejabat</option>
+                                                    <option value="ReturnR">Return-R</option>
+                                                    <option value="ReturnP">Return-P</option>
                                                 </select>
                                             </th>
                                             <th>
@@ -411,14 +415,14 @@
                             </div>
                             @endif
                             <br><br>
-                            @if($alamat2==FALSE)
+                            @if($alamat2 == false)
                             <div class="col-md-6" id="appearDaftarAlamat" style="display: none">
-                                <form action="{{ route('daftarAlamatStaff', $alamat2->noKPBaru) }}" method="POST"
+                                <form action="{{ route('daftarAlamatStaff', $staff->noKPBaru) }}" method="POST"
                                     enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     <table class="table table-bordered table-striped">
                                         <tr>
-                                            <input type="hidden" name="noStaff" value="{{ $alamat2->noAhli }}">
+                                            <input type="hidden" name="noStaff" value="{{ $staff->noStaff }}">
                                             <th style="width: 20%">
                                                 <label for="alamat">Alamat</label>
                                             </th>
@@ -436,10 +440,10 @@
                                         </tr>
                                         <tr>
                                             <th>
-                                                <label for="bandar">Bandar</label>
+                                                <label for="daerah">Bandar</label>
                                             </th>
                                             <td>
-                                                <input type="text" name="bandar" class="form-control">
+                                                <input type="text" name="daerah" class="form-control">
                                             </td>
                                         </tr>
                                         <tr>
@@ -495,7 +499,7 @@
                     </div>
 
                     <div class="card-body">
-                        <div class="col-md-12" id="appear_perhubungan" style="display: none">
+                        <div class="col-md-6" id="appear_perhubungan" style="display: none">
                             <h4>Maklumat Perhubungan</h4>
                             <table class="table table-bordered table-striped">
                                 <tr>
@@ -504,7 +508,6 @@
                                     <th scope="col">Kemaskini</th>
                                     <th scope="col">Padam</th>
                                 </tr>
-                                {{--@if($perhubungan->telRumah==TRUE)--}}
                                 <tr>
                                     <th scope="row">No Tel Rumah</th>
                                     <th>{{ $perhubungan->telRumah }}</th>
@@ -512,46 +515,39 @@
                                     <th><a href="{{ route('padamTelRStaff', $perhubungan->noKPBaru) }}"
                                             class="btn btn-danger btn-block">Padam</a></th>
                                 </tr>
-                                {{--@endif
-                                @if($perhubungan->telPejabat==TRUE)--}}
                                 <tr>
                                     <th scope="row">No Tel Pejabat</th>
                                     <th>{{ $perhubungan->telPejabat }}</th>
                                     <th> <a id="edit_telP" class="btn btn-success btn-block">Kemaskini</a></th>
-                                    <th><a href="{{route('padamTelPStaff',$perhubungan->noKPBaru)}}" class="btn btn-danger btn-block">Padam</a></th>
+                                    <th><a href="{{ route('padamTelPStaff', $perhubungan->noKPBaru) }}"
+                                        class="btn btn-danger btn-block">Padam</a></th>
                                 </tr>
-                                {{--@endif
-                                @if($perhubungan->telHP==TRUE)--}}
                                 <tr>
                                     <th scope="row">No Tel Bimbit</th>
                                     <th>{{ $perhubungan->telHP }}</th>
                                     <th> <a id="edit_telHP" class="btn btn-success btn-block">Kemaskini</a></th>
-                                    <th><a href="{{route('padamTelHPStaff',$perhubungan->noKPBaru)}}" class="btn btn-danger btn-block">Padam</a></th>
+                                    <th><a href="{{ route('padamTelHPStaff', $perhubungan->noKPBaru) }}"
+                                        class="btn btn-danger btn-block">Padam</a></th>
                                 </tr>
-                                {{--@endif
-                                @if($perhubungan->faks==TRUE)--}}
                                 <tr>
                                     <th scope="row">Faks</th>
                                     <th>{{ $perhubungan->faks }}</th>
                                     <th> <a id="edit_faks" class="btn btn-success btn-block">Kemaskini</a></th>
-                                    <th><a href="{{route('padamFaksStaff',$perhubungan->noKPBaru)}}" class="btn btn-danger btn-block">Padam</a></th>
+                                    <th><a href="{{ route('padamFaksStaff', $perhubungan->noKPBaru) }}"
+                                        class="btn btn-danger btn-block">Padam</a></th>
                                 </tr>
-                                {{--@endif
-                                @if($perhubungan->email==TRUE)--}}
                                 <tr>
                                     <th scope="row">E-mail</th>
                                     <th>{{ $perhubungan->email }}</th>
                                     <th> <a id="edit_email" class="btn btn-success btn-block">Kemaskini</a></th>
                                     <th><a href="{{ route('padamEmailStaff', $perhubungan->noKPBaru) }}"
-                                            class="btn btn-danger btn-block">Padam</a></th>
+                                        class="btn btn-danger btn-block">Padam</a></th>
                                 </tr>
-                                {{--@endif--}}
                             </table>
 
-                           {{-- <button id="daftarPerhubungan">Daftar Perhubungan</button>--}}
                             <button id="close_perhubungan" class="btn btn-danger">Close</button>
 
-                            <br>
+                            <br><br>
 
                             <div class="col-md-12" id="appearEditTelR" style="display: none">
                                 <form action="{{ route('updateTelRStaff', $perhubungan->noKPBaru) }}" method="POST"
@@ -618,6 +614,7 @@
                                         <tr>
                                             <th scope="col">Jenis Maklumat Perhubungan</th>
                                             <th scope="col">Maklumat Perhubungan</th>
+                                            <th scope="col">Kemaskini</th>
                                             <th scope="col">Batal</th>
                                         </tr>
                                         <tr>
@@ -715,6 +712,7 @@
                                     <th scope="col">Kemaskini</th>
                                     <th scope="col">Padam</th>
                                 </tr>
+                                @if($bank2 == true)
                                 <tr>
                                     <th scope="row">{{ $bank2->jenisBank }}</th>
                                     <th>{{ $bank2->noAkaunBank }}</th>
@@ -735,23 +733,21 @@
                                             class="btn btn-danger btn-block">Padam</a>
                                     </th>
                                 </tr>
+                                @endif
                             </table>
                             <button id="daftar_bank" class="btn btn-primary">Daftar Akaun No</button>
                             <button id="close_bank" class="btn btn-danger">Close</button>
                         </div>
                         <br>
-                        <div class="col-md-12" id="appearEditBank" style="display: none">
-                            <form action="{{ route('updateBankStaff', $bank2->noKPBaru) }}" method="POST"
+                        @if($bank2 == true)
+                        <div class="col-md-8" id="appearEditBank" style="display: none">
+                            <form action="{{ route('updateBankStaff', $staff->noKPBaru) }}" method="POST"
                                 enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <table class="table table-bordered table-striped">
                                     <tr>
                                         <th scope="col">Jenis Bank</th>
                                         <th scope="col">No Akaun</th>
-                                        <th scope="col">Dicipta Oleh</th>
-                                        <th scope="col">Dicipta pada</th>
-                                        <th scope="col">Dikemaskini oleh</th>
-                                        <th scope="col">Dikemaskini pada</th>
                                         <th scope="col">Akaun Bank Utama</th>
                                         <th scope="col"></th>
                                         <th scope="col"></th>
@@ -791,10 +787,6 @@
                                                 value="{{ $bank2->noAkaunBank }}">
                                         </th>
                                         <th></th>
-                                        <th>{{ $bank2->created_at }}</th>
-                                        <th></th>
-                                        <th>{{ $bank2->updated_at }}</th>
-                                        <th></th>
                                         <th>
                                             <a href="#">Set Akaun No Utama</a>
                                         </th>
@@ -811,9 +803,11 @@
                                 </table>
                             </form>
                         </div>
+                        @endif
                         <br>
+                        @if($bank2 == false)
                         <div class="col-md-8" id="appearDaftarBank" style="display: none">
-                            <form action="{{ route('daftarBankStaff', $bank2->noKPBaru) }}" method="POST"
+                            <form action="{{ route('daftarBankStaff', $staff->noKPBaru) }}" method="POST"
                                 enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <table class="table table-bordered table-striped">
@@ -824,7 +818,7 @@
                                         <th scope="col">Batal</th>
                                     </tr>
                                     <tr>
-                                        <input type="hidden" name="noAhli" value="{{ $bank2->noStaff }}">
+                                        <input type="hidden" name="noAhli" value="{{ $staff->noStaff }}">
                                         <th scope="row">
                                             <select name="jenisBank" class="form-select">
                                                 <option value="">Pilih</option>
@@ -863,6 +857,7 @@
                                 </table>
                             </form>
                         </div>
+                        @endif
                     </div>
 
                     <div class="card-body">
@@ -879,7 +874,7 @@
                                     <th scope="col">Kemaskini</th>
                                     <th scope="col">Padam</th>
                                 </tr>
-                                @if($pendidikan==TRUE)
+                                @if($pendidikan == true)
                                 <tr>
                                     <th scope="row">{{ $pendidikan->tarafPendidikan }}</th>
                                     <th>{{ $pendidikan->tahun }}</th>
@@ -899,7 +894,7 @@
                         </div>
                         <br>
 
-                        @if($pendidikan==TRUE)
+                        @if($pendidikan == true)
                         <div class="col-md-8" id="appearEditPendidikan" style="display: none">
                             <form action="{{ route('updatePendidikanStaff', $pendidikan->noKPBaru) }}" method="POST" enctype="multipart/form-data">
                                 {{ csrf_field() }}
@@ -945,9 +940,9 @@
                         </div>
                         @endif
                         <br>
-                        @if($pendidikan->tarafPendidikan==FALSE)
-                         <div class="col-md-12" id="appearDaftarPendidikan" style="display: none">
-                            <form action="{{ route('daftarPendidikanStaff', $bank2->noKPBaru) }}" method="POST"
+                        @if($pendidikan == false)
+                         <div class="col-md-6" id="appearDaftarPendidikan" style="display: none">
+                            <form action="{{ route('daftarPendidikanStaff', $staff->noKPBaru) }}" method="POST"
                                 enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <table class="table table-bordered table-striped">
@@ -956,7 +951,7 @@
                                         <th scope="col">Tahun</th>
                                     </tr>
                                     <tr>
-                                        <input type="hidden" name="noStaff" value="{{ $bank2->noStaff }}">
+                                        <input type="hidden" name="noStaff" value="{{ $staff->noStaff }}">
                                         <th scope="row">
                                             <select name="tarafPendidikan" class="form-select">
                                                 <option value="TIADA">TIADA</option>
@@ -982,6 +977,249 @@
                             </form>
                             <br>
                             <a id="closeDaftarPendidikan" class="btn btn-danger btn-block">Batal</a>
+                        </div>
+                        @endif
+                    </div>
+
+                    <div class="card-body">
+                        <div class="col-md-12" id="appear_saudara" style="display: none">
+                            <h4>Maklumat Saudara / Mara</h4>
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <th scope="col">Jenis Hubungan</th>
+                                    <th scope="col">Pewaris</th>
+                                    <th scope="col">Penerima Wasiat</th>
+                                    <th scope="col">Nama</th>
+                                    <th scope="col">No K/P Baru</th>
+                                    <th scope="col">No K/P Lama</th>
+                                    <th scope="col">Kemaskini</th>
+                                    <th scope="col">Padam</th>
+                                </tr>
+                                @if ($saudara == true)
+                                <tr>
+                                    <th scope="row">{{$saudara->jenisHubungan}}</th>
+                                    <th>{{$saudara->pewaris}}</th>
+                                    <th>{{$saudara->pemegangWasiat}}</th>
+                                    <th>{{$saudara->nama}}</th>
+                                    <th>{{$saudara->noKP}}</th>
+                                    <th></th>
+                                    <th><a id="edit_saudara" class="btn btn-success btn-block">Kemaskini</a></th>
+                                    <th><a href="{{route('padamSaudara', $staff->noKPBaru)}}" class="btn btn-danger btn-block">Padam</a></th>
+                                </tr>
+                                @endif
+                            </table>
+                            <button id="daftar_saudara" class="btn btn-primary">Daftar Saudara / Mara</button>
+                            <button id="closeSaudara" class="btn btn-danger">Close</button>
+                        </div>
+    
+                        <br>
+    
+                        @if ($saudara == true)
+                        <div class="col-md-12" id="appearEditSaudara" style="display: none">
+                            <form action="{{ route('updateSaudara', $staff->noKPBaru) }}" method="POST" enctype="multipart/form-data">
+                                {{ csrf_field() }}
+                                <h4>Carian</h4>
+                                <table>
+                                    <input type="hidden" name="noStaff" value="{{ $staff->noStaff }}">
+                                    <tr>
+                                        <th>Carian Individu</th>
+                                        <td>
+                                            <input type="text" name="cariIndi" class="form-control" value="{{$saudara->cariIndi}}">
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('daftarIndividu') }}" class="btn btn-primary">Daftar Individu</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Jenis Carian</th>
+                                        <td>
+                                            <select name="jenisCariIndi" class="form-select">
+                                                <option value="{{$saudara->jenisCariIndi}}">{{$saudara->jenisCariIndi}}</option>
+                                                <option value="No Ahli">No Ahli</option>
+                                                <option value="No KP">No KP</option>
+                                                <option value="No KP Lama">No KP Lama</option>
+                                                <option value="Nama">Nama</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <button class="btn btn-secondary btn-block">Cari</button>
+                                        </th>
+                                    </tr>
+                                </table>
+    
+                                <br>
+    
+                                <table style="width:30%">
+                                    <tr>
+                                        <th style="width: 40%">Jenis Hubungan</th>
+                                        <td>
+                                            <select name="jenisHubungan" class="form-select">
+                                                <option value="{{$saudara->jenisHubungan}}">{{$saudara->jenisHubungan}}</option>
+                                                <option value="SUAMI">Suami</option>
+                                                <option value="ISTERI">Isteri</option>
+                                                <option value="IBU">Ibu</option>
+                                                <option value="BAPA">Bapa</option>
+                                                <option value="ABANG">Abang</option>
+                                                <option value="KAKAK">Kakak</option>
+                                                <option value="ADIK">Adik</option>
+                                                <option value="ANAK">Anak</option>
+                                                <option value="BAPA SAUDARA">Bapa Saudara</option>
+                                                <option value="IBU SAUDARA">Ibu Saudara</option>
+                                                <option value="ANAK SAUDARA">Anak Saudara</option>
+                                                <option value="SEPUPU">Sepupu</option>
+                                                <option value="CUCU">Cucu</option>
+                                                <option value="ABANG IPAR">Abang Ipar</option>
+                                                <option value="KAKAK IPAR">Kakak Ipar</option>
+                                                <option value="ADIK IPAR">Adik Ipar</option>
+                                                <option value="TUNANG">Tunang</option>
+                                                <option value="WAKIL WARITH">Wakil Warith</option>
+                                                <option value="SAHABAT QARIB">Sahabat Qarib</option>
+                                                <option value="LAIN-LAIN">Lain-lain</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table style="width: 30%">
+                                    <tr>
+                                        <th style="width: 40%">
+                                            <label>Pewaris</label>
+                                        </th>
+                                        <td>
+                                            <label><input type="radio" name="pewaris" value="Ya" class="form-check-input" <?php if ($saudara->pewaris == "Ya") echo "checked" ?>>Ya</label>
+                                        </td>
+                                        <td>
+                                            <label><input type="radio" name="pewaris" value="Tidak" class="form-check-input" <?php if ($saudara->pewaris == "Tidak") echo "checked" ?>>Tidak</label>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table style="width: 30%">
+                                    <tr>
+                                        <th style="width: 40%">
+                                            <label>Pemegang Wasiat</label>
+                                        </th>
+                                        <td>
+                                            <label><input type="radio" name="pemegangWasiat" value="Ya" class="form-check-input" <?php if ($saudara->pemegangWasiat == "Ya") echo "checked" ?>>Ya</label>
+                                        </td>
+                                        <td>
+                                            <label><input type="radio" name="pemegangWasiat" value="Tidak" class="form-check-input" <?php if ($saudara->pemegangWasiat == "Tidak") echo "checked" ?>>Tidak</label>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <br>
+                                
+                                <button type="submit" class="btn btn-primary btn-block">Kemaskini Saudaara / Mara</button>
+                            </form>
+                            <br>
+                            <button id="closeEditSaudara" class="btn btn-danger">Close</button>
+                        </div>
+                        @endif
+    
+                        <br>
+    
+                        @if ($saudara == false)
+                        <div class="col-md-12" id="appearDaftarSaudara" style="display: none">
+                            <form action="{{ route('daftarSaudara', $staff->noKPBaru) }}" method="POST" enctype="multipart/form-data">
+                                {{ csrf_field() }}
+                                <h4>Carian</h4>
+                                <table>
+                                    <input type="hidden" name="noStaff" value="{{ $staff->noStaff }}">
+                                    <tr>
+                                        <th>Carian Individu</th>
+                                        <td>
+                                            <input type="text" name="cariIndi" class="form-control">
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('daftarIndividu') }}" class="btn btn-primary">Daftar
+                                                Individu</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Jenis Carian</th>
+                                        <td>
+                                            <select name="jenisCariIndi" class="form-select">
+                                                <option value="Pilih satu">Pilih satu</option>
+                                                <option value="No Ahli">No Ahli</option>
+                                                <option value="No KP">No KP</option>
+                                                <option value="No KP Lama">No KP Lama</option>
+                                                <option value="Nama">Nama</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <button class="btn btn-secondary btn-block">Cari</button>
+                                        </th>
+                                    </tr>
+                                </table>
+    
+                                <br>
+    
+                                <table style="width:30%">
+                                    <tr>
+                                        <th style="width: 40%">Jenis Hubungan</th>
+                                        <td>
+                                            <select name="jenisHubungan" class="form-select">
+                                                <option value="Pilih satu">Pilih satu</option>
+                                                <option value="SUAMI">Suami</option>
+                                                <option value="ISTERI">Isteri</option>
+                                                <option value="IBU">Ibu</option>
+                                                <option value="BAPA">Bapa</option>
+                                                <option value="ABANG">Abang</option>
+                                                <option value="KAKAK">Kakak</option>
+                                                <option value="ADIK">Adik</option>
+                                                <option value="ANAK">Anak</option>
+                                                <option value="BAPA SAUDARA">Bapa Saudara</option>
+                                                <option value="IBU SAUDARA">Ibu Saudara</option>
+                                                <option value="ANAK SAUDARA">Anak Saudara</option>
+                                                <option value="SEPUPU">Sepupu</option>
+                                                <option value="CUCU">Cucu</option>
+                                                <option value="ABANG IPAR">Abang Ipar</option>
+                                                <option value="KAKAK IPAR">Kakak Ipar</option>
+                                                <option value="ADIK IPAR">Adik Ipar</option>
+                                                <option value="TUNANG">Tunang</option>
+                                                <option value="WAKIL WARITH">Wakil Warith</option>
+                                                <option value="SAHABAT QARIB">Sahabat Qarib</option>
+                                                <option value="LAIN-LAIN">Lain-lain</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table style="width: 30%">
+                                    <tr>
+                                        <th style="width: 40%">
+                                            <label>Pewaris</label>
+                                        </th>
+                                        <td>
+                                            <label><input type="radio" name="pewaris" value="Ya" class="form-check-input">Ya</label>
+                                        </td>
+                                        <td>
+                                            <label><input type="radio" name="pewaris" value="Tidak" class="form-check-input">Tidak</label>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table style="width: 30%">
+                                    <tr>
+                                        <th style="width: 40%">
+                                            <label>Pemegang Wasiat</label>
+                                        </th>
+                                        <td>
+                                            <label><input type="radio" name="pemegangWasiat" value="Ya" class="form-check-input">Ya</label>
+                                        </td>
+                                        <td>
+                                            <label><input type="radio" name="pemegangWasiat" value="Tidak" class="form-check-input">Tidak</label>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <br>
+                                
+                                <button type="submit" class="btn btn-primary btn-block">Daftar Saudara / Mara</button>
+                            </form>
+                            <br>
+                            <button id="closeDaftarSaudara" class="btn btn-danger">Close</button>
                         </div>
                         @endif
                     </div>
@@ -1083,6 +1321,24 @@
             }
         );
 
+        $("#btn_saudara").click(
+            function() {
+                $("#appear_saudara").show();
+            }
+        );
+
+        $("#edit_saudara").click(
+            function() {
+                $("#appearEditSaudara").show();
+            }
+        );
+
+        $("#daftar_saudara").click(
+            function() {
+                $("#appearDaftarSaudara").show();
+            }
+        );
+
         $("#closeAlamat").click(
             function() {
                 $("#appearAlamat").hide();
@@ -1173,6 +1429,23 @@
             }
         );
 
+        $("#closeSaudara").click(
+            function() {
+                $("#appear_saudara").hide();
+            }
+        );
+
+        $("#closeEditSaudara").click(
+            function() {
+                $("#appearEditSaudara").hide();
+            }
+        );
+
+        $("#closeDaftarSaudara").click(
+            function() {
+                $("#appearDaftarSaudara").hide();
+            }
+        );
     </script>
 
     <script src="{{ asset('public/js/app.js') }}" defer></script>

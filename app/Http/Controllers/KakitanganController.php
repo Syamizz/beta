@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\ahli_syarikat;
 use App\Models\kakitangan_alamat;
 use App\Models\kakitangan_bank;
 use App\Models\kakitangan_daftar;
+use App\Models\kakitangan_individu;
 use App\Models\kakitangan_pekerjaan;
 use App\Models\kakitangan_pendidikan;
 use App\Models\kakitangan_perhubungan;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class KakitanganController extends Controller
 {
@@ -49,10 +51,10 @@ class KakitanganController extends Controller
             $email = $_POST['email'];
             $noAkaunBank = $_POST['noAkaunBank'];
             $jenisBank = $_POST['jenisBank'];
-            $carianPejabat = $_POST['carianPejabat'];
-            $jenisCarianPejabat = $_POST['jenisCarianPejabat'];
-            $carianPembayarGaji = $_POST['carianPembayarGaji'];
-            $jenisCarianPembayarGaji = $_POST['jenisCarianPembayarGaji'];
+            $cariP = $_POST['cariP'];
+            $jenisCariP = $_POST['jenisCariP'];
+            $cariPG = $_POST['cariPG'];
+            $jenisCariPG = $_POST['jenisCariPG'];
             $bahagian = $_POST['bahagian'];
             $noStaff = $_POST['noStaff'];
             $jawatan = $_POST['jawatan'];
@@ -85,10 +87,10 @@ class KakitanganController extends Controller
                 "email" => $email,
                 "noAkaunBank" => $noAkaunBank,
                 "jenisBank" => $jenisBank,
-                "carianPejabat" => $carianPejabat,
-                "carianPembayarGaji" => $carianPembayarGaji,
-                "jenisCarianPejabat" => $jenisCarianPejabat,
-                "jenisCarianPembayarGaji" => $jenisCarianPembayarGaji,
+                "cariP" => $cariP,
+                "cariPG" => $cariPG,
+                "jenisCariP" => $jenisCariP,
+                "jenisCariPG" => $jenisCariPG,
                 "bahagian" => $bahagian,
                 "noStaff" => $noStaff,
                 "jawatan" => $jawatan,
@@ -200,12 +202,27 @@ class KakitanganController extends Controller
         $pendidikan->noKPBaru = $request->noKPBaru;
         $pendidikan->user_id = Auth::user()->id;
 
+        $pejabat = new ahli_syarikat();
+
+        $pejabat->noStaff = $request->noStaff;
+        $pejabat->cariP = $request->cariP;
+        $pejabat->cariPG = $request->cariPG;
+        $pejabat->jenisCariP = $request->jenisCariP;
+        $pejabat->jenisCariPG = $request->jenisCariPG;
+        $pejabat->nama = $request->nama;
+        $pejabat->noKPBaru = $request->noKPBaru;
+        $pejabat->noKPLama = $request->noKPLama;
+        $pejabat->jawatan = $request->jawatan;
+        $pejabat->pangkat = $request->pangkat;
+        $pejabat->user_id = Auth::user()->id;
+
         $staff->save();
         $alamat2->save();
         $bank2->save();
         $perhubungan->save();
         $pekerjaan->save();
         $pendidikan->save();
+        $pejabat->save();
 
         $noStaff = $_POST['noStaff'];
         $nama = $_POST['nama'];
@@ -248,21 +265,53 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil', compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil', compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function maklumatStaffKemaskini(Request $request, $noKPBaru)
     {
         $staff = kakitangan_daftar::where("noKPBaru", $noKPBaru)->first();
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
+        $pejabat = ahli_syarikat::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffKemaskini', compact('staff', 'pekerjaan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffKemaskini', compact('staff', 'pekerjaan', 'pejabat', 'saudara'));
     }
 
     public function kemaskiniStaff(Request $request, $noKPBaru)
     {
         $staff = kakitangan_daftar::where("noKPBaru", $noKPBaru)->first();
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
+        $pejabat = ahli_syarikat::where("noKPBaru", $noKPBaru)->first();
 
         $staff->noStaff = $request->noStaff;
         $staff->nama = $request->nama;
@@ -273,8 +322,6 @@ class KakitanganController extends Controller
         $staff->agama = $request->agama;
         $staff->tarikhLahir = $request->tarikhLahir;
         $staff->tempatLahir = $request->tempatLahir;
-        $staff->carianPejabat = $request->carianPejabat;
-        $staff->carianPembayarGaji = $request->carianPembayarGaji;
         $pekerjaan->bahagian = $request->bahagian;
         $pekerjaan->jawatan = $request->jawatan;
         $pekerjaan->statusKerja = $request->statusKerja;
@@ -284,16 +331,38 @@ class KakitanganController extends Controller
         $pekerjaan->tarikhMulaKerja = $request->tarikhMulaKerja;
         $pekerjaan->tarikhAkhirKerja = $request->tarikhAkhirKerja;
         $pekerjaan->statusStaff = $request->statusStaff;
+        $pejabat->noStaff = $request->noStaff;
+        $pejabat->cariP = $request->cariP;
+        $pejabat->cariPG = $request->cariPG;
+        $pejabat->jenisCariP = $request->jenisCariP;
+        $pejabat->jenisCariPG = $request->jenisCariPG;
+        $pejabat->noKPBaru = $request->noKPBaru;
 
         $staff->save();
         $pekerjaan->save();
+        $pejabat->save();
 
         $alamat2 = kakitangan_alamat::where("noKPBaru", $noKPBaru)->first();
         $bank2 = kakitangan_bank::where("noKPBaru", $noKPBaru)->first();
         $perhubungan = kakitangan_perhubungan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'pejabat', 'saudara'));
     }
 
     public function padamAlamatStaff($noKPBaru)
@@ -306,7 +375,22 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function updateAlamatStaff(Request $request, $noKPBaru)
@@ -329,7 +413,22 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function daftarAlamatStaff(Request $request, $noKPBaru)
@@ -353,7 +452,22 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
 
@@ -371,7 +485,22 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function updateTelPStaff(Request $request, $noKPBaru)
@@ -388,7 +517,22 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function updateTelHPStaff(Request $request, $noKPBaru)
@@ -405,7 +549,22 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function updatefaksStaff(Request $request, $noKPBaru)
@@ -422,7 +581,22 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function updateEmailStaff(Request $request, $noKPBaru)
@@ -439,15 +613,29 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function padamTelRStaff(Request $request, $noKPBaru)
     {
-
         $perhubungan = kakitangan_perhubungan::where('noKPBaru', $noKPBaru)->first();
 
-        $reset=" ";
+        $reset = " ";
         $perhubungan->telRumah = $request->$reset;
 
         $perhubungan->save();
@@ -458,15 +646,29 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function padamTelPStaff(Request $request, $noKPBaru)
     {
-
         $perhubungan = kakitangan_perhubungan::where('noKPBaru', $noKPBaru)->first();
 
-        $reset=" ";
+        $reset = " ";
         $perhubungan->telPejabat = $request->$reset;
 
         $perhubungan->save();
@@ -477,15 +679,29 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function padamTelHPStaff(Request $request, $noKPBaru)
     {
-
         $perhubungan = kakitangan_perhubungan::where('noKPBaru', $noKPBaru)->first();
 
-        $reset=" ";
+        $reset = " ";
         $perhubungan->telHP = $request->$reset;
 
         $perhubungan->save();
@@ -496,15 +712,29 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function padamFaksStaff(Request $request, $noKPBaru)
     {
-
         $perhubungan = kakitangan_perhubungan::where('noKPBaru', $noKPBaru)->first();
 
-        $reset=" ";
+        $reset = " ";
         $perhubungan->faks = $request->$reset;
 
         $perhubungan->save();
@@ -515,7 +745,22 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function padamEmailStaff(Request $request, $noKPBaru)
@@ -523,7 +768,7 @@ class KakitanganController extends Controller
 
         $perhubungan = kakitangan_perhubungan::where('noKPBaru', $noKPBaru)->first();
 
-        $reset=" ";
+        $reset = " ";
         $perhubungan->email = $request->$reset;
 
         $perhubungan->save();
@@ -534,7 +779,22 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function updateBankStaff(Request $request, $noKPBaru)
@@ -554,7 +814,22 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function padamBankStaff($noKPBaru)
@@ -567,7 +842,22 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function daftarBankStaff(Request $request, $noKPBaru)
@@ -588,7 +878,22 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function updatePendidikanStaff(Request $request, $noKPBaru)
@@ -608,7 +913,22 @@ class KakitanganController extends Controller
         $bank2 = kakitangan_bank::where("noKPBaru", $noKPBaru)->first();
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function padamPendidikanStaff($noKPBaru)
@@ -621,7 +941,22 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $bank2 = kakitangan_bank::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 
     public function daftarPendidikanStaff(Request $request, $noKPBaru)
@@ -642,6 +977,132 @@ class KakitanganController extends Controller
         $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
         $bank2 = kakitangan_bank::where("noKPBaru", $noKPBaru)->first();
 
-        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan'));
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
+    }
+
+    public function daftarSaudara(Request $request, $noKPBaru)
+    {
+        $saudara = new kakitangan_individu();
+
+        $saudara->noStaff = $request->noStaff;
+        $saudara->noKPBaru = $request->noKPBaru;
+        $saudara->cariIndi = $request->cariIndi;
+        $saudara->jenisCariIndi = $request->jenisCariIndi;
+        $saudara->jenisHubungan = $request->jenisHubungan;
+        $saudara->pewaris = $request->pewaris;
+        $saudara->pemegangWasiat = $request->pemegangWasiat;
+        $saudara->user_id = Auth::user()->id;
+
+        $saudara->save();
+
+        $staff = kakitangan_daftar::where("noKPBaru", $noKPBaru)->first();
+        $alamat2 = kakitangan_alamat::where("noKPBaru", $noKPBaru)->first();
+        $perhubungan = kakitangan_perhubungan::where("noKPBaru", $noKPBaru)->first();
+        $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
+        $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
+        $bank2 = kakitangan_bank::where("noKPBaru", $noKPBaru)->first();
+
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.noKPBaru',
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
+    }
+
+    public function updateSaudara(Request $request, $noKPBaru)
+    {
+        $saudara = kakitangan_individu::where("noKPBaru", $noKPBaru)->first();
+
+        $saudara->noStaff = $request->noStaff;
+        $saudara->noKPBaru = $request->noKPBaru;
+        $saudara->cariIndi = $request->cariIndi;
+        $saudara->jenisCariIndi = $request->jenisCariIndi;
+        $saudara->jenisHubungan = $request->jenisHubungan;
+        $saudara->pewaris = $request->pewaris;
+        $saudara->pemegangWasiat = $request->pemegangWasiat;
+
+        $saudara->save();
+
+        $staff = kakitangan_daftar::where("noKPBaru", $noKPBaru)->first();
+        $alamat2 = kakitangan_alamat::where("noKPBaru", $noKPBaru)->first();
+        $perhubungan = kakitangan_perhubungan::where("noKPBaru", $noKPBaru)->first();
+        $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
+        $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
+        $bank2 = kakitangan_bank::where("noKPBaru", $noKPBaru)->first();
+
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.noKPBaru',
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
+    }
+
+    public function padamSaudara(Request $request, $noKPBaru)
+    {
+        $saudara = kakitangan_individu::where("noKPBaru", $noKPBaru)->delete();
+
+        $staff = kakitangan_daftar::where("noKPBaru", $noKPBaru)->first();
+        $alamat2 = kakitangan_alamat::where("noKPBaru", $noKPBaru)->first();
+        $perhubungan = kakitangan_perhubungan::where("noKPBaru", $noKPBaru)->first();
+        $pekerjaan = kakitangan_pekerjaan::where("noKPBaru", $noKPBaru)->first();
+        $pendidikan = kakitangan_pendidikan::where("noKPBaru", $noKPBaru)->first();
+        $bank2 = kakitangan_bank::where("noKPBaru", $noKPBaru)->first();
+
+        $saudara = DB::table('kakitangan_individus')
+            ->join('individu_daftars', 'kakitangan_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'kakitangan_individus.cariIndi',
+                'kakitangan_individus.jenisCariIndi',
+                'kakitangan_individus.jenisHubungan',
+                'kakitangan_individus.pewaris',
+                'kakitangan_individus.pemegangWasiat',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+            )
+            ->where('kakitangan_individus.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('kakitangan.maklumatStaffHasil')->with(compact('staff', 'alamat2', 'bank2', 'perhubungan', 'pekerjaan', 'pendidikan', 'saudara'));
     }
 }

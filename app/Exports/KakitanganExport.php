@@ -2,13 +2,12 @@
 
 namespace App\Exports;
 
-use App\Models\kakitangan_daftar;
-use App\Models\kakitangan_alamat;
+
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Illuminate\Support\Facades\DB;
 
-class KakitanganExport implements FromCollection
+class KakitanganExport implements FromCollection,WithHeadings
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -23,7 +22,7 @@ class KakitanganExport implements FromCollection
             'Daerah',
             'Negeri' 
         ];
-    }
+    } 
     public function collection()
     {
         $kakitangan = DB::table('kakitangan_daftars')

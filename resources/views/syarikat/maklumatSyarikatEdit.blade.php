@@ -28,7 +28,6 @@
         border: 1px solid black;
         border-collapse: collapse;
     }
-
 </style>
 
 <body>
@@ -268,7 +267,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">KOPERASI - Maklumat Syarikat</div>
-                <div class="card-body" >
+                <div class="card-body">
                     <p>Kemaskini Maklumat Syarikat</p>
                     <br>
                     <div class="col-md-8">
@@ -322,16 +321,17 @@
                                             <option value="Pusat Gaji">Pusat Gaji</option>
                                             <option value="Pejabat">Pejabat</option>
                                         </select></td>
-                                        <td><button type="submit" class="btn btn-primary">Simpan</button></td>
+                                    <td><button type="submit" class="btn btn-primary">Simpan</button></td>
                                 </tr>
                             </table>
                             <br><br>
-                            
-                            <button class="btn btn-danger">Batal</button>
+
+
                         </form>
-    
+                        <button id="closeKemaskiniDaftar" class="btn btn-danger">Batal</button>
+                        <br><br>
+                        <br><br>
                     </div>
-                    <br><br>
 
                     <!--Search selection -->
                     <label for="jenis_maklumat">Jenis Maklumat:</label>
@@ -340,10 +340,12 @@
                         <option value="semua">Semua</option>
                         <option value="alamat">Alamat</option>
                         <option value="perhubungan">Perhubungan</option>
+                        <option value="anggota">Anggota</option>
                     </select>
                     <br>
                     <br>
 
+                    <!--Start of alamat syarikat -->
                     <div class="col-md-12" id="alamatSyarikat" style="display: none">
                         <div class="card">
                             <div class="card-header">Maklumat Alamat</div>
@@ -368,7 +370,8 @@
                                             <td id="td">{{ $syarikatAlamat->negeri }}</td>
                                             <td id="td"><button id="updateAlamat"
                                                     class="btn btn-success">Kemaskini</button></td>
-                                            <td id="td"><a id="alamatSyarikatDelete" class="btn btn-danger">Padam</a>
+                                            <td id="td"><a id="alamatSyarikatDelete"
+                                                    class="btn btn-danger">Padam</a>
                                             </td>
                                         </tr>
                                     @endif
@@ -398,13 +401,17 @@
                                                             <option value="KEDIAMAN">Kediaman</option>
                                                             <option value="PEJABAT">Pejabat</option>
                                                         </select></td>
-                                                    <td id="td"><input type="text" name="alamat" class="form-control"
+                                                    <td id="td"><input type="text" name="alamat"
+                                                            class="form-control"
                                                             value="{{ $syarikatAlamat->alamat }}"></td>
-                                                    <td id="td"><input type="text" name="poskod" class="form-control"
+                                                    <td id="td"><input type="text" name="poskod"
+                                                            class="form-control"
                                                             value="{{ $syarikatAlamat->poskod }}"></td>
-                                                    <td id="td"><input type="text" name="daerah" class="form-control"
+                                                    <td id="td"><input type="text" name="daerah"
+                                                            class="form-control"
                                                             value="{{ $syarikatAlamat->daerah }}"></td>
-                                                    <td id="td"><input type="text" name="negeri" class="form-control"
+                                                    <td id="td"><input type="text" name="negeri"
+                                                            class="form-control"
                                                             value="{{ $syarikatAlamat->negeri }}"></td>
                                                     <td id="td"><button type="submit"
                                                             class="btn btn-primary">Simpan</button></td>
@@ -426,8 +433,8 @@
                                 <div class="col-md-10" id="daftarAlamat" style="display: none">
                                     <br>
                                     <p>Daftar alamat</p>
-                                    <form action="{{ route('daftarAlamatSyarikat', $syarikat->id) }}" method="POST"
-                                        enctype="multipart/form-data">
+                                    <form action="{{ route('daftarAlamatSyarikat', $syarikat->id) }}"
+                                        method="POST" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <table>
                                             <tr>
@@ -450,11 +457,14 @@
                                                 <th>Negeri</th>
                                                 <td><select name="negeri" id="negeri" class="form-select">
                                                         <option value="">Pilih Satu</option>
-                                                        <option value="PERAK DARUL RIDZUAN">PERAK DARUL RIDZUAN</option>
+                                                        <option value="PERAK DARUL RIDZUAN">PERAK DARUL RIDZUAN
+                                                        </option>
                                                         <option value="SELANGOR DARUL EHSAN">SELANGOR DARUL EHSAN
                                                         </option>
-                                                        <option value="PAHANG DARUL MAKMUR">PAHANG DARUL MAKMUR</option>
-                                                        <option value="KELANTAN DARUL NAIM">KELANTAN DARUL NAIM</option>
+                                                        <option value="PAHANG DARUL MAKMUR">PAHANG DARUL MAKMUR
+                                                        </option>
+                                                        <option value="KELANTAN DARUL NAIM">KELANTAN DARUL NAIM
+                                                        </option>
                                                         <option value="JOHOR DARUL TAKZIM">JOHOR DARUL TAKZIM</option>
                                                         <option value="KEDAH DARUL AMAN">KEDAH DARUL AMAN</option>
                                                         <option value="W.P. LABUAN">W.P. LABUAN</option>
@@ -515,7 +525,8 @@
                                         <td id="td">Tel(HP)</td>
                                         <td id="td">{{ $syarikatPerhubungan->tel_HP }}</td>
                                         <td id="td">{{ $syarikatPerhubungan->tel_HP_type }}</td>
-                                        <td id="td"><button class="btn btn-success" id="update1">Kemaskini</button>
+                                        <td id="td"><button class="btn btn-success"
+                                                id="update1">Kemaskini</button>
                                         </td>
                                         <td id="td"><a id="padamTelHP" class="btn btn-danger">Padam</a></td>
                                     </tr>
@@ -524,7 +535,8 @@
                                         <td id="td">Tel(P)</td>
                                         <td id="td">{{ $syarikatPerhubungan->tel_P }}</td>
                                         <td id="td"></td>
-                                        <td id="td"><button class="btn btn-success" id="update2">Kemaskini</button>
+                                        <td id="td"><button class="btn btn-success"
+                                                id="update2">Kemaskini</button>
                                         </td>
                                         <td id="td"><a id="padamTelP" class="btn btn-danger">Padam</a></td>
                                     </tr>
@@ -533,7 +545,8 @@
                                         <td id="td">Tel(R)</td>
                                         <td id="td">{{ $syarikatPerhubungan->tel_R }}</td>
                                         <td id="td"></td>
-                                        <td id="td"><button class="btn btn-success" id="update3">Kemaskini</button>
+                                        <td id="td"><button class="btn btn-success"
+                                                id="update3">Kemaskini</button>
                                         </td>
                                         <td id="td"><a id="padamTelR" class="btn btn-danger">Padam</a></td>
                                     </tr>
@@ -542,7 +555,8 @@
                                         <td id="td">Faks</td>
                                         <td id="td">{{ $syarikatPerhubungan->faks }}</td>
                                         <td id="td"></td>
-                                        <td id="td"><button class="btn btn-success" id="update4">Kemaskini</button>
+                                        <td id="td"><button class="btn btn-success"
+                                                id="update4">Kemaskini</button>
                                         </td>
                                         <td id="td"><a id="padamFaks" class="btn btn-danger">Padam</a></td>
                                     </tr>
@@ -551,7 +565,8 @@
                                         <td id="td">E-mail</td>
                                         <td id="td">{{ $syarikatPerhubungan->email }}</td>
                                         <td id="td"></td>
-                                        <td id="td"><button class="btn btn-success" id="update5">Kemaskini</button>
+                                        <td id="td"><button class="btn btn-success"
+                                                id="update5">Kemaskini</button>
                                         </td>
                                         <td id="td"><a id="padamEmail" class="btn btn-danger">Padam</a></td>
                                     </tr>
@@ -562,8 +577,8 @@
                                 <div class="col-md-12" id="kemaskini1" style="display: none">
                                     <br><br>
                                     <p>Kemaskini Tel(HP)</p>
-                                    <form action="{{ route('tel_HP_update', $syarikatPerhubungan->id) }}" method="post"
-                                        enctype="multipart/form-data">
+                                    <form action="{{ route('tel_HP_update', $syarikatPerhubungan->id) }}"
+                                        method="post" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <table>
                                             <tr>
@@ -597,8 +612,8 @@
                                 <div class="col-md-12" id="kemaskini2" style="display: none">
                                     <br><br>
                                     <p>Kemaskini Tel(P)</p>
-                                    <form action="{{ route('tel_P_update', $syarikatPerhubungan->id) }}" method="post"
-                                        enctype="multipart/form-data">
+                                    <form action="{{ route('tel_P_update', $syarikatPerhubungan->id) }}"
+                                        method="post" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <table>
                                             <tr>
@@ -621,8 +636,8 @@
                                 <div class="col-md-12" id="kemaskini3" style="display: none">
                                     <br><br>
                                     <p>Kemaskini Tel(R)</p>
-                                    <form action="{{ route('tel_R_update', $syarikatPerhubungan->id) }}" method="post"
-                                        enctype="multipart/form-data">
+                                    <form action="{{ route('tel_R_update', $syarikatPerhubungan->id) }}"
+                                        method="post" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <table>
                                             <tr>
@@ -645,8 +660,8 @@
                                 <div class="col-md-12" id="kemaskini4" style="display: none">
                                     <br><br>
                                     <p>Kemaskini Faks</p>
-                                    <form action="{{ route('faks_update', $syarikatPerhubungan->id) }}" method="post"
-                                        enctype="multipart/form-data">
+                                    <form action="{{ route('faks_update', $syarikatPerhubungan->id) }}"
+                                        method="post" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <table>
                                             <tr>
@@ -669,8 +684,8 @@
                                 <div class="col-md-12" id="kemaskini5" style="display: none">
                                     <br><br>
                                     <p>Kemaskini Email</p>
-                                    <form action="{{ route('email_update', $syarikatPerhubungan->id) }}" method="post"
-                                        enctype="multipart/form-data">
+                                    <form action="{{ route('email_update', $syarikatPerhubungan->id) }}"
+                                        method="post" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <table>
                                             <tr>
@@ -697,6 +712,108 @@
                         </div>
                     </div>
                     <!-- End of maklumat perhubungan-->
+
+
+
+                    <!-- Start maklumat anggota-->
+                    <div class="col-md-12" id="anggotaSyarikat">
+                        <br><br>
+                        <div class="card">
+                            <div class="card-header">Maklumat Anggota </div>
+                            <div class="card-body">
+
+
+                                <select name="jenis_anggota" id="jenis_anggota" onclick="display2();">
+                                    <option value="semua">Semua</option>
+                                    <option value="ahli">Ahli</option>
+                                    <option value="kakitangan">Kakitangan</option>
+                                </select>
+
+                                <br><br>
+                                
+                                <div class="col-md-6" id="anggotaSemua">
+                                    <table  class="table table-bordered table-striped">
+                                        <tr>
+                                            <th style="width: 10%">No ahli</th>
+                                            <th style="width: 10%">No staff</th>
+                                            <th>Nama</th>
+                                            <th>No KP</th>
+                                            <th>No KP Lama</th>
+                                            <th>Jawatan</th>
+                                        </tr>
+                                        @foreach ($syarikatAnggota as $ahli)
+                                            <tr>
+                                                <td>{{ $ahli->noAhli }}</td>
+                                                <td>{{ $ahli->noStaff }}</td>
+                                                <td>{{ $ahli->nama }}</td>
+                                                <td>{{ $ahli->noKPBaru }}</td>
+                                                <td>{{ $ahli->noKPLama }}</td>
+                                                <td>{{ $ahli->jawatan }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
+                                </div>
+
+                                <div class="col-md-6" style="display: none;" id="anggotaAhli">
+                                    <table  class="table table-bordered table-striped">
+                                        <tr>
+                                            <th style="width: 10%">No ahli</th>
+                                            <th>Nama</th>
+                                            <th>No KP</th>
+                                            <th>No KP Lama</th>
+                                            <th>Jawatan</th>
+                                        </tr>
+                                        @foreach ($syarikatAnggota as $ahli)
+                                            @if($ahli->noAhli==FALSE)
+                                            
+                                            @else
+                                            <tr>
+                                                <td>{{ $ahli->noAhli }}</td>
+                                                <td>{{ $ahli->nama }}</td>
+                                                <td>{{ $ahli->noKPBaru }}</td>
+                                                <td>{{ $ahli->noKPLama }}</td>
+                                                <td>{{ $ahli->jawatan }}</td>
+                                            </tr>
+                                            @endif
+                                        @endforeach
+                                    </table>
+                                </div>
+                                
+                                <div class="col-md-6" style="display: none;" id="anggotaKakitangan">
+                                    <table  class="table table-bordered table-striped">
+                                        <tr>
+                                            <th style="width: 10%">No staff</th>
+                                            <th>Nama</th>
+                                            <th>No KP</th>
+                                            <th>No KP Lama</th>
+                                            <th>Jawatan</th>
+                                        </tr>
+                                        @foreach ($syarikatAnggota as $ahli)
+                                            @if($ahli->noStaff==FALSE)
+                                            
+                                            @else
+                                            <tr>
+                                                <td>{{ $ahli->noStaff }}</td>
+                                                <td>{{ $ahli->nama }}</td>
+                                                <td>{{ $ahli->noKPBaru }}</td>
+                                                <td>{{ $ahli->noKPLama }}</td>
+                                                <td>{{ $ahli->jawatan }}</td>
+                                            </tr>
+                                            @endif
+                                        @endforeach
+                                    </table>
+                                </div>
+                                
+
+                                <br><br>
+                                <a href="{{ route('daftarAhli') }}" class="btn btn-secondary">Daftar
+                                    ahli</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="{{ route('daftarKakitangan') }}" class="btn btn-secondary">Daftar
+                                    kakitangan</a>
+
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
                 <!--End of card body -->
@@ -907,8 +1024,6 @@
             })
 
         })
-
-
     </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -917,6 +1032,8 @@
 
     <!--New Script 23/4/2022 -->
     <script type="text/javascript">
+
+        //jenis maklumat
         function display() {
             var x = document.getElementById('jenis_maklumat').value;
 
@@ -937,6 +1054,32 @@
 
             }
         }
+
+        //jenis anggota
+        function display2() {
+            var y = document.getElementById('jenis_anggota').value;
+
+            var semua = document.getElementById('anggotaSemua');
+            var ahli = document.getElementById('anggotaAhli');
+            var kakitangan = document.getElementById('anggotaKakitangan');
+
+            if (y == "semua") {
+                semua.style.display = "block";
+                ahli.style.display = "none";
+                kakitangan.style.display = "none";
+
+            } else if (y == "ahli") {
+                semua.style.display = "none";
+                ahli.style.display = "block";
+                kakitangan.style.display = "none";
+
+            } else if (y == "kakitangan") {
+                semua.style.display = "none";
+                ahli.style.display = "none";
+                kakitangan.style.display = "block";
+
+            }
+        }
     </script>
 
     <script type="text/javascript">
@@ -948,8 +1091,14 @@
         );
 
         $('#updateDaftar').click(
-            function(){
+            function() {
                 $('#kemaskiniDaftar').show();
+            }
+        );
+
+        $('#closeKemaskiniDaftar').click(
+            function() {
+                $('#kemaskiniDaftar').hide();
             }
         );
 

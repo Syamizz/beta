@@ -36,6 +36,11 @@
                         </td>
                     </tr>
                 </table>
+                <br>
+                <a href="{{ route('kakitangan.export') }}" class="btn btn-primary">
+                    Export Data
+               </a>
+
                 </form>
                 <br><br>
                 <div class="col-md-8">

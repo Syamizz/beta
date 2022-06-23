@@ -297,7 +297,7 @@
                             </tr>
                             @foreach ($syarikat as $info)
                                 <tr>
-                                    <td id="t"><a class="btn btn-success" href="{{ route('maklumatSyarikatEdit', $info->id) }}">Kemaskini</a></td>
+                                    <td id="t"><a class="btn btn-success" href="maklumatSyarikat/edit/{{$info->id}}/{{$info->nama_jabatan}}/{{$info->kod_jabatan}}">Kemaskini</a></td>
                                     <td id="t">{{ $info->nama_jabatan }}</td>
                                     <td id="t">{{ $info->kod_jabatan }}</td>
                                     <td id="t">{{ $info->maklumat_jabatan }}</td>

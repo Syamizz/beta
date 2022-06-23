@@ -9,7 +9,7 @@
                     {{ csrf_field() }}
                     <table>
                         <tr>
-                            <td rowspan="3" style="padding: 15px">Masukkan Carian Anda</td>
+                            <td rowspan="2" style="padding: 15px">Masukkan Carian Anda</td>
                             <td><input type="text" name="search" class="form-control"></td>
                         </tr>
                         <tr>

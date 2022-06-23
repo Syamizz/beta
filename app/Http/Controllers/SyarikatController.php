@@ -6,7 +6,12 @@ use App\Models\SyarikatDaftar;
 use App\Models\SyarikatAlamat;
 use App\Models\SyarikatPerhubungan;
 
+use App\Models\ahli_syarikat;
+
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
 class SyarikatController extends Controller
 {
@@ -132,12 +137,16 @@ class SyarikatController extends Controller
         return redirect()->route('home');
     }
 
-    public function maklumatSyarikatEdit($id)
+    public function maklumatSyarikatEdit($id,$nama_jabatan,$kod_jabatan)
     {
         $syarikat = SyarikatDaftar::find($id);
         $syarikatAlamat = SyarikatAlamat::find($id);
         $syarikatPerhubungan = SyarikatPerhubungan::find($id);
-        return view('syarikat.maklumatSyarikatEdit',compact('syarikat','syarikatAlamat','syarikatPerhubungan'));
+        $syarikatAnggota = DB::table('ahli_syarikats')
+        ->where('cariP', $nama_jabatan)
+        ->orWhere('cariP', $kod_jabatan)
+        ->get();
+        return view('syarikat.maklumatSyarikatEdit',compact('syarikat','syarikatAlamat','syarikatPerhubungan','syarikatAnggota'));
     }
 
     //update maklumat syarikat
@@ -299,5 +308,12 @@ class SyarikatController extends Controller
         $daftarAlamat->save();
 
         return redirect()->route('maklumatSyarikatEdit',$id);
+    }
+
+    //21.6.2022 - daftar anggota
+    public function daftarAnggota(Request $request,$id,$nama_jabatan,$kod_jabatan)
+    {
+        $daftarAnggota = new ahli_syarikat;
+
     }
 }

@@ -88,7 +88,7 @@ Route::post('syarikat/carianSyarikat', 'App\Http\Controllers\SyarikatController@
 Route::get('syarikat/maklumatSyarikat/delete/{id}', 'App\Http\Controllers\SyarikatController@maklumatSyarikatDelete')->name('maklumatSyarikatDelete');
 
 //Route edit & update maklumat syarikat
-Route::get('syarikat/maklumatSyarikat/edit/{id}', 'App\Http\Controllers\SyarikatController@maklumatSyarikatEdit')->name('maklumatSyarikatEdit');
+Route::get('syarikat/maklumatSyarikat/edit/{id}/{nama_jabatan}/{kod_jabatan}', 'App\Http\Controllers\SyarikatController@maklumatSyarikatEdit')->name('maklumatSyarikatEdit');
 Route::post('syarikat/maklumatSyarikat/update/{id}', 'App\Http\Controllers\SyarikatController@maklumatSyarikatUpdate')->name('maklumatSyarikatUpdate');
 
 Route::post('syarikat/maklumatSyarikat/update2/{id}', 'App\Http\Controllers\SyarikatController@alamatSyarikatUpdate')->name('alamatSyarikatUpdate');
@@ -222,6 +222,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('kakitangan/padamFaksStaff/{noKPBaru}', 'App\Http\Controllers\KakitanganController@padamFaksStaff')->name('padamFaksStaff');
         Route::get('kakitangan/padamEmailStaff/{noKPBaru}', 'App\Http\Controllers\KakitanganController@padamEmailStaff')->name('padamEmailStaff');
 
+        //Route saudara kakitangan
+        Route::post('kakitangan/daftarSaudara/{noKPBaru}', 'App\Http\Controllers\KakitanganController@daftarSaudara')->name('daftarSaudara');
+        Route::post('kakitangan/updateSaudara/{noKPBaru}', 'App\Http\Controllers\KakitanganController@updateSaudara')->name('updateSaudara');
+        Route::get('kakitangan/padamSaudara/{noKPBaru}', 'App\Http\Controllers\KakitanganController@padamSaudara')->name('padamSaudara');
+
+
         //Route akaun bank ahli
         Route::post('kakitangan/updateBankStaff/{noKPBaru}', 'App\Http\Controllers\KakitanganController@updateBankStaff')->name('updateBankStaff');
         Route::get('kakitangan/padamBankStaff/{noKPBaru}', 'App\Http\Controllers\KakitanganController@padamBankStaff')->name('padamBankStaff');
@@ -243,5 +249,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('student_export','App\Http\Controllers\StudentController@get_student_data')->name('student.export');
     
         Route::get('laporan/data','App\Http\Controllers\LaporanController@maklumatLaporan')->name('maklumatLaporan');
+        Route::post('laporan/download','App\Http\Controllers\ExcelController@jenisLaporan')->name('jenisLaporan');
+
+        //Excel
+        Route::get('kakitangan_export','App\Http\Controllers\ExcelController@get_kakitangan_data')->name('kakitangan.export');
+        Route::get('berhenti_export','App\Http\Controllers\ExcelController@get_berhenti_data')->name('berhenti.export');
     });
 });
