@@ -7,6 +7,7 @@ use App\Models\IndividuPerhubungan;
 use App\Models\IndividuAkaun;
 use Illuminate\Http\Request;
 
+use App\Exports\AhliExport;
 use App\Exports\IndividuExport;
 use App\Exports\KakitanganExport;
 use App\Exports\BerhentiExport;
@@ -42,15 +43,20 @@ class ExcelController extends Controller
     public function jenisLaporan()
     {
         $jenisLaporan = $_POST['jenis_laporan'];
-        return redirect()->route($jenisLaporan);
+        $tarikhStart = $_POST['tarikhStart'];
+        $tarikhEnd = $_POST['tarikhEnd'];
+        return redirect()->route($jenisLaporan,[$tarikhStart,$tarikhEnd]);
+    }
+
+    public function get_ahliBaru_data($tarikhStart,$tarikhEnd)
+    {
+        return Excel::download(new AhliExport($tarikhStart,$tarikhEnd),'laporan anggota baru.xlsx');
     }
 
     public function get_kakitangan_data()
     {
         return Excel::download(new KakitanganExport,'laporan kakitangan.xlsx');
     }
-
-    
 
     public function get_berhenti_data()
     {

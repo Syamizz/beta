@@ -18,6 +18,10 @@
     <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+    <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('public/css/bootstrap-4-navbar.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{{ asset('public/js/bootstrap-4-navbar.js') }}"></script>
     <!--
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -45,14 +49,23 @@
                             <a class="nav-link active" aria-current="page" href="{{route('home')}}">Home</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Ahli
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="{{route('maklumatAhli')}}">Maklumat Ahli</a></li>
-                                <li><a class="dropdown-item" href="{{route('daftarAhli')}}">Daftar Ahli</a></li>
-                                <li><a class="dropdown-item" href="#">Yuran Pendaftaran</a></li>
-                                <li><a class="dropdown-item" href="#">Pemberhentian</a></li>
+                            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ahli</a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li><a class="dropdown-item" href="{{ route('maklumatAhli') }}">Maklumat Ahli</a></li>
+                                <li><a class="dropdown-item dropdown-toggle" href="#">Pendaftaran {{--&raquo;--}}</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{{ route('daftarAhli') }}">Daftar Ahli</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('daftarYuran') }}">Yuran Pendaftaran</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item dropdown-toggle" href="#">Pemberhentian</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{{ route('daftarBerhenti') }}">Daftar Berhenti</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('maklumatBerhenti') }}">Maklumat Berhenti</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('kelulusanPemberhentian') }}">Kemaskini Kelulusan Pemberhentian</a></li>
+                                    </ul>
+                                </li>
                                 <li><a class="dropdown-item" href="{{route('maklumatLaporan')}}">Laporan Keahlian</a></li>
                                 <li><a class="dropdown-item" href="#">Transaksi Ahli</a></li>
                                 <li><a class="dropdown-item" href="#">Penyata</a></li>
@@ -236,8 +249,42 @@
         </main>
     </div>
 
-    <!-- Scripts -->
-    <script src="{{ asset('public/js/app.js') }}" defer></script>
+     <!-- Scripts -->
+     <script src="{{ asset('public/js/app.js') }}" defer>
+        document.addEventListener("DOMContentLoaded", function() {
+            // make it as accordion for smaller screens
+            if (window.innerWidth < 992) {
+
+                // close all inner dropdowns when parent is closed
+                document.querySelectorAll('.navbar .dropdown').forEach(function(everydropdown) {
+                    everydropdown.addEventListener('hidden.bs.dropdown', function() {
+                        // after dropdown is hidden, then find all submenus
+                        this.querySelectorAll('.submenu').forEach(function(everysubmenu) {
+                            // hide every submenu as well
+                            everysubmenu.style.display = 'none';
+                        });
+                    })
+                });
+
+                document.querySelectorAll('.dropdown-menu a').forEach(function(element) {
+                    element.addEventListener('click', function(e) {
+                        let nextEl = this.nextElementSibling;
+                        if (nextEl && nextEl.classList.contains('submenu')) {
+                            // prevent opening link if link needs to open dropdown
+                            e.preventDefault();
+                            if (nextEl.style.display == 'block') {
+                                nextEl.style.display = 'none';
+                            } else {
+                                nextEl.style.display = 'block';
+                            }
+
+                        }
+                    });
+                })
+            }
+            // end if innerWidth
+        });
+    </script>
 
 </body>
 

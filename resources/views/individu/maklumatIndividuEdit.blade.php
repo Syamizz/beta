@@ -745,7 +745,6 @@
                                             </tr>
                                             @if ($individuAkaun == true)
                                                 <tr>
-
                                                     <td id="td">{{ $individuAkaun->jenis_akaun }}</td>
                                                     <td id="td">{{ $individuAkaun->no_akaun }}</td>
                                                     <td id="td">Tidak</td>

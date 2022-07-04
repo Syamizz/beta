@@ -178,10 +178,6 @@
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <a class="btn btn-primary" href="{{route('student.index')}}">EXCEL TEST</a>
-            </div>
-
         </div>
     </div>
 @endsection

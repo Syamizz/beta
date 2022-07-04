@@ -121,13 +121,10 @@ Route::get('individu/displayIndividu', 'App\Http\Controllers\IndividuController@
 Route::get('individu/alamatIndividu', 'App\Http\Controllers\MainController@alamatIndividu')->name('alamatIndividu');
 
 
-
-
-//
 //
 //Route untuk maklumat ahli
 //
-//
+
 Route::post('ahli/cariMaklumat', 'App\Http\Controllers\AhliController@cariMaklumatPejabat')->name('cariMaklumatPejabat');
 
 Route::group(['middleware' => 'auth'], function () {
@@ -136,6 +133,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::match(['get', 'post'], 'ahli/pengesahanAhli', 'App\Http\Controllers\MainController@pengesahanAhli')->name('pengesahanAhli');
         Route::post('ahli/simpanAhli', 'App\Http\Controllers\MainController@simpanAhli')->name('simpanAhli');
         Route::get('ahli/statusDaftar', 'App\Http\Controllers\MainController@statusDaftar')->name('statusDaftar');
+
+        Route::get('ahli/daftarAhli/pejabat/{cariP}/{jenisCariP}', 'App\Http\Controllers\MainController@daftarAhli2')->name('daftarAhli2');
 
         //Route maklumat ahli
         Route::get('ahli/maklumatAhli', 'App\Http\Controllers\MainController@maklumatAhli')->name('maklumatAhli');
@@ -178,6 +177,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('ahli/daftarBerhenti', 'App\Http\Controllers\MainController@daftarBerhenti')->name('daftarBerhenti');
         Route::get('ahli/daftarBerhenti2', 'App\Http\Controllers\MainController@daftarBerhenti2')->name('daftarBerhenti2');
         Route::post('ahli/cariAhliBerhenti', 'App\Http\Controllers\MainController@cariAhliBerhenti')->name('cariAhliBerhenti');
+        Route::get('ahli/daftarBerhentiForm/{noKPBaru}', 'App\Http\Controllers\MainController@daftarBerhentiForm')->name('daftarBerhentiForm');
         Route::post('ahli/daftarBerhentiTambah', 'App\Http\Controllers\MainController@daftarBerhentiTambah')->name('daftarBerhentiTambah');
 
         //Route maklumat pemberhentian
@@ -186,11 +186,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('ahli/cariMaklumatBerhenti', 'App\Http\Controllers\MainController@cariMaklumatBerhenti')->name('cariMaklumatBerhenti');
         Route::get('ahli/maklumatBerhentiUpdate/{noKPBaru}', 'App\Http\Controllers\MainController@maklumatBerhentiUpdate')->name('maklumatBerhentiUpdate');
         Route::post('ahli/kemaskiniBerhenti/{noKPBaru}', 'App\Http\Controllers\MainController@kemaskiniBerhenti')->name('kemaskiniBerhenti');
+        Route::get('ahli/padamMaklumatBerhenti/{id}', 'App\Http\Controllers\MainController@padamMaklumatBerhenti')->name('padamMaklumatBerhenti');
 
         //Route Kelulusan Pemberhentian
         Route::get('ahli/kelulusanPemberhentian', 'App\Http\Controllers\MainController@kelulusanPemberhentian')->name('kelulusanPemberhentian');
         Route::get('ahli/kelulusanPemberhentian2', 'App\Http\Controllers\MainController@kelulusanPemberhentian2')->name('kelulusanPemberhentian2');
+        Route::get('ahli/kelulusanPemberhentianEdit/{noKPBaru}', 'App\Http\Controllers\MainController@kelulusanPemberhentianEdit')->name('kelulusanPemberhentianEdit');
         Route::post('ahli/lulusBerhentiCari', 'App\Http\Controllers\MainController@lulusBerhentiCari')->name('lulusBerhentiCari');
+        Route::post('ahli/kelulusanPemberhentianUpdate/{noKPBaru}', 'App\Http\Controllers\MainController@kelulusanPemberhentianUpdate')->name('kelulusanPemberhentianUpdate');
+
 
         //Route Daftar Kakitangan
         Route::get('kakitangan/daftarKakitangan', 'App\Http\Controllers\KakitanganController@daftarKakitangan')->name('daftarKakitangan');
@@ -241,18 +245,19 @@ Route::group(['middleware' => 'auth'], function () {
 
         //Excel test
         Route::resource('individu', 'App\Http\Controllers\ExcelController');
-        Route::get('individu_export','App\Http\Controllers\ExcelController@get_individu_data')->name('individu.export');
-    
+        Route::get('individu_export', 'App\Http\Controllers\ExcelController@get_individu_data')->name('individu.export');
+
         //TESTING EXCEL
         Route::get('student/index', 'App\Http\Controllers\ExcelController@studentPage')->name('studentPage');
         Route::resource('student', 'App\Http\Controllers\StudentController');
-        Route::get('student_export','App\Http\Controllers\StudentController@get_student_data')->name('student.export');
-    
-        Route::get('laporan/data','App\Http\Controllers\LaporanController@maklumatLaporan')->name('maklumatLaporan');
-        Route::post('laporan/download','App\Http\Controllers\ExcelController@jenisLaporan')->name('jenisLaporan');
+        Route::get('student_export', 'App\Http\Controllers\StudentController@get_student_data')->name('student.export');
+
+        Route::get('laporan/data', 'App\Http\Controllers\LaporanController@maklumatLaporan')->name('maklumatLaporan');
+        Route::post('laporan/download', 'App\Http\Controllers\ExcelController@jenisLaporan')->name('jenisLaporan');
 
         //Excel
-        Route::get('kakitangan_export','App\Http\Controllers\ExcelController@get_kakitangan_data')->name('kakitangan.export');
-        Route::get('berhenti_export','App\Http\Controllers\ExcelController@get_berhenti_data')->name('berhenti.export');
+        Route::get('anggotaBaru_export/{tarikhStart}/{tarikhEnd}', 'App\Http\Controllers\ExcelController@get_ahliBaru_data')->name('ahliBaru.export');
+        Route::get('kakitangan_export', 'App\Http\Controllers\ExcelController@get_kakitangan_data')->name('kakitangan.export');
+        Route::get('berhenti_export', 'App\Http\Controllers\ExcelController@get_berhenti_data')->name('berhenti.export');
     });
 });

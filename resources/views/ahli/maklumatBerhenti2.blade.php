@@ -62,31 +62,31 @@
                                 <th>Kemaskini</th>
                                 <th>Padam</th>
                             </tr>
-                            {{--@foreach ($ahli as $item)--}}
+                            @foreach ($ahli as $item)
                                 <tr>
-                                    <td>{{ $ahli->noAhli }}</td>
-                                    <td>{{ $ahli->nama }}</td>
-                                    <td>{{ $ahli->noKPBaru }}</td>
-                                    <td></td>
-                                    <td>{{ $ahli->tarikhMohon }}</td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>{{ $item->noAhli }}</td>
+                                    <td>{{ $item->nama }}</td>
+                                    <td>{{ $item->noKPBaru }}</td>
+                                    <td>{{ $item->noKPLama }}</td>
+                                    <td>{{ $item->tarikhMohon }}</td>
+                                    <td>{{ $item->tarikhLulus }}</td>
+                                    <td>{{ $item->tarikhBerhenti }}</td>
                                     <td>Daftar Berhenti</td>
+                                    <td>{{ $item->statusKelulusan }}</td>
+                                    <td>{{ $item->statusBerhenti }}</td>
                                     <td></td>
-                                    <td>{{ $ahli->statusBerhenti }}</td>
                                     <td></td>
+                                    <td>{{ $item->created_at }}</td>
                                     <td></td>
-                                    <td>{{ $ahli->created_at }}</td>
-                                    <td></td>
-                                    <td>{{ $ahli->updated_at }}</td>
+                                    <td>{{ $item->updated_at }}</td>
                                     <td>
-                                        <a href="{{ route('maklumatBerhentiUpdate', $ahli->noKPBaru) }}" class="btn btn-secondary btn-block">Kemaskini</a>
+                                        <a href="{{ route('maklumatBerhentiUpdate', $item->noKPBaru) }}" class="btn btn-success btn-block">Kemaskini</a>
                                     </td>
                                     <td>
-                                        {{-- <a href="{{ route('padamMaklumatBerhenti', $item->noKPBaru) }}" class="btn btn-danger btn-block">Padam</a> --}}
+                                        <a href="{{ route('padamMaklumatBerhenti', $item->id) }}" class="btn btn-danger btn-block">Padam</a>
                                     </td>
                                 </tr>
-                           {{-- @endforeach --}} 
+                           @endforeach
                         </table>
                     </div>
                 </div>

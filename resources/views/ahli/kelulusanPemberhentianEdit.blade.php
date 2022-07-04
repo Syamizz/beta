@@ -12,15 +12,9 @@
 
     <!-- Styles -->
     <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('public/css/bootstrap-4-navbar.css') }}" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-    <style>
-        #t {
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-
-    </style>
+    <script src="{{ asset('public/js/bootstrap-4-navbar.js') }}"></script>
 
 </head>
 
@@ -29,37 +23,47 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ __('Inter XS') }}
+                    {{ 'Inter XS' }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    aria-expanded="false" aria-label="{{ 'Toggle navigation' }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Home</a>
+                        <li class="nav-item active">
+                            <a class="nav-link" aria-current="page" href="{{ route('home') }}">Home</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Ahli
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Maklumat Ahli</a></li>
-                                <li class="dropdown-submenu">
-                                    <a class="test" tabindex="-1" href="#">Pendaftaran <span
-                                            class="caret"></span></a>
+                            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ahli</a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li><a class="dropdown-item" href="{{ route('maklumatAhli') }}">Maklumat Ahli</a>
+                                </li>
+                                <li><a class="dropdown-item dropdown-toggle" href="#">Pendaftaran
+                                        {{-- &raquo; --}}</a>
                                     <ul class="dropdown-menu">
-                                        <li><a tabindex="-1" href="#">Daftar Ahli</a></li>
-                                        <li><a tabindex="-1" href="#">Yuran Pendaftaran</a></li>
-
+                                        <li><a class="dropdown-item" href="{{ route('daftarAhli') }}">Daftar Ahli</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="{{ route('daftarYuran') }}">Yuran
+                                                Pendaftaran</a></li>
                                     </ul>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Pemberhentian</a></li>
+                                <li>
+                                    <a class="dropdown-item dropdown-toggle" href="#">Pemberhentian</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{{ route('daftarBerhenti') }}">Daftar
+                                                Berhenti</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('maklumatBerhenti') }}">Maklumat
+                                                Berhenti</a></li>
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('kelulusanPemberhentian') }}">Kemaskini Kelulusan
+                                                Pemberhentian</a></li>
+                                    </ul>
+                                </li>
                                 <li><a class="dropdown-item" href="#">Laporan Keahlian</a></li>
                                 <li><a class="dropdown-item" href="#">Transaksi Ahli</a></li>
                                 <li><a class="dropdown-item" href="#">Penyata</a></li>
@@ -77,8 +81,7 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="{{ route('daftarIndividu') }}">Daftar Individu</a>
                                 </li>
-                                <li><a class="dropdown-item" href="{{ route('maklumatIndividu') }}">Maklumat
-                                        Individu</a></li>
+                                <li><a class="dropdown-item" href="{{ route('maklumatIndividu') }}">Maklumat Individu</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -89,7 +92,7 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="{{ route('daftarSyarikat') }}">Daftar Syarikat</a>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Maklumat Syarikat</a></li>
+                                <li><a class="dropdown-item" href="{{ route('maklumatSyarikat') }}">Maklumat Syarikat</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -118,14 +121,17 @@
                                 <li><a class="dropdown-item" href="#">Keuntungan Pembiayaan</a></li>
                             </ul>
                         </li>
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 Kakitangan
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Daftar Kakitangan</a></li>
-                                <li><a class="dropdown-item" href="#">Maklumat Kakitangan</a></li>
+                                <li><a class="dropdown-item" href="{{ route('daftarKakitangan') }}">Daftar
+                                        Kakitangan</a></li>
+                                <li><a class="dropdown-item" href="{{ route('maklumatStaff') }}">Maklumat
+                                        Kakitangan</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -175,6 +181,7 @@
                                 <li><a class="dropdown-item" href="#">Laporan Penerimaan Harian</a></li>
                             </ul>
                         </li>
+
                         <li class="nav-item">
                             <a class="nav-link" href="#">i-Akaun</a>
                         </li>
@@ -219,13 +226,13 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}">{{ 'Login' }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ 'Register' }}</a>
                                 </li>
                             @endif
                         @else
@@ -236,8 +243,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                                 document.getElementById('logout-form').submit();">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                                                     document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 
@@ -253,68 +261,116 @@
             </div>
         </nav>
     </div>
-
-
-    <!-- content -->
     <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">KOPERASI - Maklumat Syarikat</div>
-                <div class="card-body">
+        <div class="col-md-10">
+            <h2>Koperasi - Kemaskini Kelulusan Pemberhentian</h2>
 
-                    <p>Carian Jabatan/Syarikat</p>
-                    <form action="{{ route('carianSyarikat') }}" method="post" enctype="multipart/form-data">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Kemaskini Status Anggota Berhenti</h4>
+                    <hr>
+                    <form action="{{ route('lulusBerhentiCari') }}" method="POST" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <table>
                             <tr>
-                                <td rowspan="3" style="padding: 15px">Masukkan Carian Anda</td>
-                                <td><input type="text" name="search" class="form-control"></td>
-                            </tr>
-                            <tr>
+                                <th>
+                                    <label for="carian">No Anggota</label>
+                                </th>
                                 <td>
-                                    <select name="query" id="query" class="form-select">
-                                        <option value="kod_jabatan">Kod Jabatan/Syarikat</option>
-                                        <option value="nama_jabatan">Nama Jabatan/Syarikat</option>
-                                    </select>
+                                    <input type="text" name="carian" class="form-control">
                                 </td>
                             </tr>
                             <tr>
-                                <td><button class="btn btn-secondary" type="submit">Cari</button></td>
+                                <td colspan="2">
+                                    <button type="submit" class="btn btn-secondary">Cari</button>
+                                </td>
                             </tr>
                         </table>
                     </form>
-                    
+
                     <br><br>
-
-                    <div class="col-md-7">
-                        <table style="background: white" class="table table-bordered table-striped">
+                    
+                        <table class="table table-bordered table-striped">
                             <tr>
-                                <th id="t">Tindakan</th>
-                                <th id="t">Nama Jabatan/Syarikat</th>
-                                <th id="t">Kod Jabatan/Syarikat</th>
-                                <th id="t">Maklumat Jabatan/Syarikat</th>
-                                <th id="t">Penerimaan</th>
+                                <th>Kemaskini</th>
+                                <th>No Ahli</th>
+                                <th>Nama</th>
+                                <th>No KP Baru</th>
+                                <th>No KP Lama</th>
+                                <th>Tarikh Mohon</th>
+                                <th>Sebab Berhenti</th>
+                                <th>Nota Berhenti</th>
+                                <th>Status Pemberhentian</th>
+                                
                             </tr>
-                            @foreach ($syarikat as $info)
-                                <tr>
-                                    <td id="t"><a class="btn btn-success" href="maklumatSyarikat/edit/{{$info->id}}/{{$info->nama_jabatan}}/{{$info->kod_jabatan}}">Kemaskini</a></td>
-                                    <td id="t">{{ $info->nama_jabatan }}</td>
-                                    <td id="t">{{ $info->kod_jabatan }}</td>
-                                    <td id="t">{{ $info->maklumat_jabatan }}</td>
-                                    <td id="t">Penerimaan</td>
-                                </tr>
-                            @endforeach
-                        </table>
-                    </div>fff
+                            <tr>
+                                <td><button class="btn btn-secondary btn-block" id="btn_edit">Kemaskini</button></td>
+                                <td>{{ $ahli->noAhli }}</td>
+                                <td>{{ $ahli->nama }}</td>
+                                <td>{{ $ahli->noKPBaru }}</td>
+                                <td>{{ $ahli->noKPLama}}</td>
+                                <td>{{ $ahli->tarikhMohon }}</td>
+                                <td>{{ $ahli->statusBerhenti }}</td>
+                                <td>{{ $ahli->sebabBerhenti }}</td>
 
+                                <form action="{{ route('kelulusanPemberhentianUpdate', $ahli->noKPBaru) }}" method="POST" enctype="multipart/form-data">
+                                    {{ csrf_field() }}
+                                <td>
+                                    <select name="statusKelulusan" class="form-select">
+                                        <option value="{{ $ahli->statusKelulusan }}">{{ $ahli->statusKelulusan }}
+                                        </option>
+                                        <option value="Belum Diluluskan">Belum Diluluskan</option>
+                                        <option value="Telah Diluluskan">Telah Diluluskan</option>
+                                        <option value="Telah Dibatalkan">Telah Dibatalkan</option>
+                                        <option value="Telah Diluluskan Dengan Penyegeraan">Telah Diluluskan Dengan Penyegeraan</option>
+                                        <option value="Tidak Diluluskan">Tidak Diluluskan</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                        <div class="col-md-8" id="appearEdit" style="display: none">
+                            <table>
+                                <tr>
+                                    <th>
+                                        <label for="tarikhLulus">Tarikh Lulus</label>
+                                    </th>
+                                    <td>
+                                        <input type="date" name="tarikhLulus" class="form-control"
+                                            value="{{ $ahli->tarikhLulus }}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label for="tarikhBerhenti">Tarikh Berhenti</label>
+                                    </th>
+                                    <td>
+                                        <input type="date" name="tarikhBerhenti" class="form-control"
+                                            value="{{ $ahli->tarikhBerhenti }}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th colspan="2">
+                                        <button type="submit" class="btn btn-secondary">Simpan</button>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
                 </div>
+
+                <script>
+                    $("#btn_edit").click(
+                        function() {
+                            $("#appearEdit").show();
+                        }
+                    );
+                </script>
+
+                <!-- Scripts -->
+                <script src="{{ asset('public/js/app.js') }}" defer></script>
             </div>
         </div>
     </div>
-
-
-    <!-- Scripts -->
-    <script src="{{ asset('public/js/app.js') }}" defer></script>
+    </div>
 </body>
-
-</html>

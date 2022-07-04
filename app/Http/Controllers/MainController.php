@@ -6,13 +6,8 @@ use App\Models\ahli_daftar;
 use App\Models\ahli_alamat;
 use App\Models\ahli_bank;
 use App\Models\ahli_berhenti;
-use App\Models\kakitangan_alamat;
-use App\Models\kakitangan_bank;
-use App\Models\kakitangan_daftar;
-use App\Models\kakitangan_pekerjaan;
-use App\Models\kakitangan_pendidikan;
-use App\Models\kakitangan_perhubungan;
 use App\Models\ahli_perhubungan;
+use App\Models\ahli_syarikat;
 use Laravel\Ui\Presets\React;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -62,8 +57,10 @@ class MainController extends Controller
             $email = $_POST['email'];
             $noAkaunBank = $_POST['noAkaunBank'];
             $jenisBank = $_POST['jenisBank'];
-            $carianPejabat = $_POST['carianPejabat'];
-            $carianPembayarGaji = $_POST['carianPembayarGaji'];
+            $cariP = $_POST['cariP'];
+            $jenisCariP = $_POST['jenisCariP'];
+            $cariPG = $_POST['cariPG'];
+            $jenisCariPG = $_POST['jenisCariPG'];
             $jawatan = $_POST['jawatan'];
             $tarikMulaKerja = $_POST['tarikhMulaKerja'];
             $noGaji = $_POST['noGaji'];
@@ -97,8 +94,10 @@ class MainController extends Controller
                 "email" => $email,
                 "noAkaunBank" => $noAkaunBank,
                 "jenisBank" => $jenisBank,
-                "carianPejabat" => $carianPejabat,
-                "carianPembayarGaji" => $carianPembayarGaji,
+                "cariP" => $cariP,
+                "jenisCariP" => $jenisCariP,
+                "cariPG" => $cariPG,
+                "jenisCariPG" => $jenisCariPG,
                 "jawatan" => $jawatan,
                 "tarikhMulaKerja" => $tarikMulaKerja,
                 "noGaji" => $noGaji,
@@ -191,10 +190,25 @@ class MainController extends Controller
         $noTelefon->noKPBaru = $request->noKPBaru;
         $noTelefon->user_id = Auth::user()->id;
 
+        $pejabat = new ahli_syarikat();
+
+        $pejabat->noAhli = $request->noAhli;
+        $pejabat->cariP = $request->cariP;
+        $pejabat->cariPG = $request->cariPG;
+        $pejabat->jenisCariP = $request->jenisCariP;
+        $pejabat->jenisCariPG = $request->jenisCariPG;
+        $pejabat->nama = $request->nama;
+        $pejabat->noKPBaru = $request->noKPBaru;
+        $pejabat->noKPLama = $request->noKPLama;
+        $pejabat->jawatan = $request->jawatan;
+        $pejabat->pangkat = $request->pangkat;
+        $pejabat->user_id = Auth::user()->id;
+
         $ahli->save();
         $alamat->save();
         $bank->save();
         $noTelefon->save();
+        $pejabat->save();
 
         $noAhli = $_POST['noAhli'];
         $nama = $_POST['nama'];
@@ -217,33 +231,6 @@ class MainController extends Controller
     {
         return view('ahli.maklumatAhli');
     }
-
-    /*
-    public function maklumatAhliCari()
-    {
-        $carian = $_POST['carian'];
-        $jenisCarian = $_POST['jenisCarian'];
-
-        $ahli = ahli_daftar::where($jenisCarian, 'LIKE', '%' . $carian . '%')->first();
-        $alamat = ahli_alamat::where($jenisCarian, 'LIKE', '%' . $carian . '%')->first();
-        $bank = ahli_bank::where($jenisCarian, 'LIKE', '%' . $carian . '%')->first();
-        $noTelefon = ahli_perhubungan::where($jenisCarian, 'LIKE', '%' . $carian . '%')->first();
-
-        //dd($ahli->toArray());
-        return view('ahli.maklumatAhliHasil', compact('ahli', 'alamat', 'bank', 'noTelefon'));
-    }
-
-
-    public function maklumatAhliHasil()
-    {
-        $ahli = ahli_daftar::all();
-        $alamat = ahli_alamat::all();
-        $bank = ahli_bank::all();
-        $noTelefon = ahli_perhubungan::all();
-
-        return view('ahli.maklumatAhliHasil', compact('ahli', 'alamat', 'bank', 'noTelefon'));
-    }
-    */
 
     public function maklumatAhliKemaskini(Request $request, $noKPBaru)
     {
@@ -283,11 +270,75 @@ class MainController extends Controller
         $bank = ahli_bank::where("noKPBaru", $noKPBaru)->first();
         $noTelefon = ahli_perhubungan::where("noKPBaru", $noKPBaru)->first();
 
-        //$message = "Kemaskini Berjaya";
+        $pejabat = DB::table('syarikat_daftars')
+            ->join('ahli_syarikats', 'syarikat_daftars.kod_jabatan', '=', 'ahli_syarikats.cariP')
+            ->join('syarikat_alamats', 'syarikat_daftars.id', '=', 'syarikat_alamats.id')
+            ->select(
+                'syarikat_daftars.kod_jabatan',
+                'syarikat_daftars.nama_jabatan',
+                'syarikat_alamats.alamat',
+                'syarikat_alamats.poskod',
+                'syarikat_alamats.daerah',
+                'syarikat_alamats.negeri',
+            )
+            ->where('ahli_syarikats.noKPBaru', $noKPBaru)
+            ->get();
 
-        //return redirect()->route('maklumatAhliHasil', compact('ahli'))->with(['message' => 'Kemaskini Berjaya.']);
+            $pembayarGaji = DB::table('syarikat_daftars')
+            ->join('ahli_syarikats', 'syarikat_daftars.kod_jabatan', '=', 'ahli_syarikats.cariPG')
+            ->join('syarikat_alamats', 'syarikat_daftars.id', '=', 'syarikat_alamats.id')
+            ->select(
+                'syarikat_daftars.kod_jabatan',
+                'syarikat_daftars.nama_jabatan',
+                'syarikat_alamats.alamat',
+                'syarikat_alamats.poskod',
+                'syarikat_alamats.daerah',
+                'syarikat_alamats.negeri',
+            )
+            ->where('ahli_syarikats.noKPBaru', $noKPBaru)
+            ->get();
 
-        return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon'));
+        /* $waris = DB::table('ahli_individus')
+            ->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.noKP')
+            //->join('individu_daftars', 'ahli_individus.cariIndi', '=', 'individu_daftars.nama')
+            ->select(
+                'ahli_individus.noKPBaru',
+                'ahli_individus.cariIndi',
+                'ahli_individus.jenisCariIndi',
+                'ahli_individus.jenisHubungan',
+                'ahli_individus.pewaris',
+                'ahli_individus.pemegangWasiat',
+                'ahli_individus.pembahagian',
+                'individu_daftars.nama',
+                'individu_daftars.noKP',
+                'individu_daftars.jantina',
+            )
+            ->where('ahli_individus.noKPBaru', $noKPBaru)
+            ->first(); */
+
+            $waris = DB::table('individu_daftars as a')
+            ->leftJoin('ahli_individus as b', function($join){
+                $join->on('a.noKP', 'b.cariIndi')
+                ->orOn('a.nama', 'b.cariIndi')
+                ->orOn('a.noKPlama', 'b.cariIndi');
+            })
+            ->select(
+                'b.noKPBaru',
+                'b.cariIndi',
+                'b.jenisCariIndi',
+                'b.jenisHubungan',
+                'b.pewaris',
+                'b.pemegangWasiat',
+                'b.pembahagian',
+                'a.nama',
+                'a.noKP',
+                'a.noKPlama',
+                'a.jantina',
+            )
+            ->where('b.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon', 'pejabat', 'waris', 'pembayarGaji'));
 
 
         /*?>
@@ -606,11 +657,11 @@ class MainController extends Controller
         return view('ahli.daftarBerhenti2', compact('ahli',));
     }
 
-    public function daftarBerhenti2()
+    public function daftarBerhentiForm($noKPBaru)
     {
-        $ahli = ahli_daftar::all();
+        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
 
-        return view('ahli.daftarBerhenti2', compact('ahli'));
+        return view('ahli.daftarBerhentiForm', compact('ahli'));
     }
 
     public function daftarBerhentiTambah(Request $request)
@@ -645,21 +696,24 @@ class MainController extends Controller
         $carian = $_POST['carian'];
         $jenisCarian = $_POST['jenisCarian'];
 
-        //$ahli = ahli::where($jenisCarian, 'LIKE', '%' . $carian . '%')->get();
-
-        $ahli = DB::table('ahlis')
+        $ahli = DB::table('ahli_daftars')
+            ->join('ahli_berhentis', 'ahli_daftars.noKPBaru', '=', 'ahli_berhentis.noKPBaru')
             ->select(
-                'ahlis.noAhli',
-                'ahlis.nama',
-                'ahlis.noKPBaru',
-                'berhentis.tarikhMohon',
-                'berhentis.statusBerhenti',
-                'berhentis.sebabBerhenti',
-                'berhentis.created_at',
-                'berhentis.updated_at',
+                'ahli_daftars.noAhli',
+                'ahli_daftars.nama',
+                'ahli_daftars.noKPBaru',
+                'ahli_daftars.noKPLama',
+                'ahli_berhentis.id',
+                'ahli_berhentis.tarikhMohon',
+                'ahli_berhentis.tarikhLulus',
+                'ahli_berhentis.tarikhBerhenti',
+                'ahli_berhentis.statusBerhenti',
+                'ahli_berhentis.statusKelulusan',
+                'ahli_berhentis.sebabBerhenti',
+                'ahli_berhentis.created_at',
+                'ahli_berhentis.updated_at',
             )
-            ->join("berhentis", "berhentis.noAhli", "=", "ahlis.noAhli")
-            ->where($jenisCarian, 'LIKE', '%' . $carian . '%')
+            ->where('ahli_daftars'.".".$jenisCarian,'LIKE', "%".$carian."%")
             ->get();
 
         return view('ahli.maklumatBerhenti2', compact('ahli'));
@@ -667,40 +721,44 @@ class MainController extends Controller
 
     public function maklumatBerhenti2()
     {
-        $ahli = DB::table('ahlis')
-            ->join("berhentis", "berhentis.noKPBaru", "=", "ahlis.noKPBaru")
+        $ahli = DB::table('ahli_daftars')
+            ->join('ahli_berhentis', 'ahli_daftars.noKPBaru', '=', 'ahli_berhentis.noKPBaru')
             ->select(
-                'ahlis.noAhli',
-                'ahlis.nama',
-                'ahlis.noKPBaru',
-                'berhentis.tarikhMohon',
-                'berhentis.statusBerhenti',
-                'berhentis.sebabBerhenti',
-                'berhentis.created_at',
-                'berhentis.updated_at',
+                'ahli_daftars.noAhli',
+                'ahli_daftars.nama',
+                'ahli_daftars.noKPBaru',
+                'ahli_daftars.noKPLama',
+                'ahli_berhentis.id',
+                'ahli_berhentis.tarikhMohon',
+                'ahli_berhentis.tarikhLulus',
+                'ahli_berhentis.statusBerhenti',
+                'ahli_berhentis.sebabBerhenti',
+                'ahli_berhentis.created_at',
+                'ahli_berhentis.updated_at',
             )
-            ->first();
+            ->get();
 
         return view('ahli.maklumatBerhenti2', compact('ahli'));
     }
 
     public function maklumatBerhentiUpdate(Request $request, $noKPBaru)
     {
-        $ahli = DB::table('ahlis')
-            ->join("berhentis", "berhentis.noKPBaru", "=", "ahlis.noKPBaru")
+        $ahli = DB::table('ahli_daftars')
+            ->join("ahli_berhentis", "ahli_berhentis.noKPBaru", "=", "ahli_daftars.noKPBaru")
             ->select(
-                'ahlis.noAhli',
-                'ahlis.tarikhDaftar',
-                'berhentis.tarikhBerhenti',
-                'berhentis.tarikhMohon',
-                'berhentis.statusBerhenti',
-                'berhentis.sebabBerhenti',
-                'berhentis.akhirPotongan',
-                'berhentis.tarikhPengembalian',
-                'ahlis.nama',
-                'ahlis.noKPBaru',
-                'ahlis.noKPLama',
+                'ahli_daftars.noAhli',
+                'ahli_daftars.tarikhDaftar',
+                'ahli_berhentis.tarikhBerhenti',
+                'ahli_berhentis.tarikhMohon',
+                'ahli_berhentis.statusBerhenti',
+                'ahli_berhentis.sebabBerhenti',
+                'ahli_berhentis.akhirPotongan',
+                'ahli_berhentis.tarikhPengembalian',
+                'ahli_daftars.nama',
+                'ahli_daftars.noKPBaru',
+                'ahli_daftars.noKPLama',
             )
+            ->where('ahli_daftars.noKPBaru', $noKPBaru)
             ->first();
 
         return view('ahli.maklumatBerhentiUpdate')->with(compact('ahli'));
@@ -721,6 +779,15 @@ class MainController extends Controller
         return redirect()->route('maklumatBerhenti')->with(['message' => 'Kemaskini Berjaya.']);
     }
 
+    public function padamMaklumatBerhenti($id)
+    {
+        $berhenti = ahli_berhenti::where("id", $id)->first();
+
+        $berhenti->delete();
+
+        return redirect()->route('maklumatBerhenti');
+    }
+
     public function kelulusanPemberhentian()
     {
         return view('ahli.kelulusanPemberhentian');
@@ -730,28 +797,59 @@ class MainController extends Controller
     {
         $carian = $_POST['carian'];
 
-        //$ahli = ahli::where('noAhli', 'LIKE', '%' . $carian . '%')->get();
-
-        $ahli = DB::table('ahlis')
-            ->join("berhentis", "berhentis.noAhli", "=", "ahlis.noAhli")
+        $ahli = DB::table('ahli_daftars')
+            ->join("ahli_berhentis", "ahli_berhentis.noAhli", "=", "ahli_daftars.noAhli")
             ->select(
-                'ahlis.noAhli',
-                'ahlis.nama',
-                'ahlis.noKPBaru',
-                'berhentis.tarikhMohon',
-                'berhentis.statusBerhenti',
-                'berhentis.created_at',
-                'berhentis.updated_at',
+                'ahli_daftars.noAhli',
+                'ahli_daftars.nama',
+                'ahli_daftars.noKPBaru',
+                'ahli_daftars.noKPLama',
+                'ahli_berhentis.tarikhMohon',
+                'ahli_berhentis.statusBerhenti',
+                'ahli_berhentis.created_at',
+                'ahli_berhentis.updated_at',
             )
-            ->where('noAhli', 'LIKE', '%' . $carian . '%')
-            ->first();
+            ->where('ahli_daftars.noAhli', 'LIKE', "%".$carian."%")
+            ->get();
 
         return view('ahli.kelulusanPemberhentian2')->with(compact('ahli'));
     }
 
-    public function kelulusanPemberhentian2()
+    public function kelulusanPemberhentianEdit($noKPBaru)
     {
-        return view('ahli.kelulusanPemberhentian2');
+        $ahli = DB::table('ahli_daftars')
+            ->join("ahli_berhentis", "ahli_berhentis.noAhli", "=", "ahli_daftars.noAhli")
+            ->select(
+                'ahli_daftars.noAhli',
+                'ahli_daftars.nama',
+                'ahli_daftars.noKPBaru',
+                'ahli_daftars.noKPLama',
+                'ahli_berhentis.tarikhMohon',
+                'ahli_berhentis.statusBerhenti',
+                'ahli_berhentis.sebabBerhenti',
+                'ahli_berhentis.statusKelulusan',
+                'ahli_berhentis.tarikhLulus',
+                'ahli_berhentis.tarikhBerhenti',
+                'ahli_berhentis.created_at',
+                'ahli_berhentis.updated_at',
+            )
+            ->where('ahli_daftars.noKPBaru', $noKPBaru)
+            ->first();
+
+        return view('ahli.kelulusanPemberhentianEdit', compact('ahli'));
+    }
+
+    public function kelulusanPemberhentianUpdate(Request $request, $noKPBaru)
+    {
+        $berhenti = ahli_berhenti::where("noKPBaru", $noKPBaru)->first();
+
+        $berhenti->tarikhLulus = $request->tarikhLulus;
+        $berhenti->tarikhBerhenti = $request->tarikhBerhenti;
+        $berhenti->statusKelulusan = $request->statusKelulusan;
+
+        $berhenti->save();
+
+        return redirect()->route('kelulusanPemberhentian');
     }
 
     

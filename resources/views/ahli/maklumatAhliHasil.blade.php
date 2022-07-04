@@ -957,19 +957,21 @@
                                 <th scope="col">Kemaskini</th>
                                 <th scope="col">Padam</th>
                             </tr>
+                            @if ($waris == true)
                             <tr>
-                                <th scope="row"></th>
+                                <th scope="row">{{$waris->jenisHubungan}}</th>
+                                <th>{{$waris->pewaris}}</th>
+                                <th>{{$waris->pemegangWasiat}}</th>
+                                <th>{{$waris->pembahagian}}</th>
+                                <th>{{$waris->nama}}</th>
+                                <th>{{$waris->noKP}}</th>
+                                <th>{{$waris->noKPlama}}</th>
+                                <th>{{$waris->jantina}}</th>
                                 <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th><a href="" class="btn btn-success btn-block">Kemaskini</a></th>
-                                <th><a href="" class="btn btn-danger btn-block">Padam</a></th>
+                                <th><a id="edit_waris" class="btn btn-success btn-block">Kemaskini</a></th>
+                                <th><a id="padamWaris" class="btn btn-danger btn-block">Padam</a></th>
                             </tr>
+                            @endif
                         </table>
                         <button id="close4" class="btn btn-danger">Close</button>
                     </div>
