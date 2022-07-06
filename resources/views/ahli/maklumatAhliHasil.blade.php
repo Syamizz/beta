@@ -12,11 +12,12 @@
 
     <!-- Styles -->
     <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('public/css/bootstrap-4-navbar.css') }}" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{{ asset('public/js/bootstrap-4-navbar.js') }}"></script>
 
     <!-- Alert -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.css">
-
 </head>
 
 <body>
@@ -35,27 +36,36 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Home</a>
+                        <li class="nav-item active">
+                            <a class="nav-link" aria-current="page" href="{{ route('home') }}">Home</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Ahli
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ahli</a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item" href="{{ route('maklumatAhli') }}">Maklumat Ahli</a>
                                 </li>
-                                <li class="dropdown-submenu">
-                                    <a class="test" tabindex="-1" href="#">Pendaftaran <span
-                                            class="caret"></span></a>
+                                <li><a class="dropdown-item dropdown-toggle" href="#">Pendaftaran
+                                        {{-- &raquo; --}}</a>
                                     <ul class="dropdown-menu">
-                                        <li><a tabindex="-1" href="{{ route('daftarAhli') }}">Daftar Ahli</a></li>
-                                        <li><a tabindex="-1" href="#">Yuran Pendaftaran</a></li>
-
+                                        <li><a class="dropdown-item" href="{{ route('daftarAhli') }}">Daftar Ahli</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="{{ route('daftarYuran') }}">Yuran
+                                                Pendaftaran</a></li>
                                     </ul>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Pemberhentian</a></li>
+                                <li>
+                                    <a class="dropdown-item dropdown-toggle" href="#">Pemberhentian</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{{ route('daftarBerhenti') }}">Daftar
+                                                Berhenti</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('maklumatBerhenti') }}">Maklumat
+                                                Berhenti</a></li>
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('kelulusanPemberhentian') }}">Kemaskini Kelulusan
+                                                Pemberhentian</a></li>
+                                    </ul>
+                                </li>
                                 <li><a class="dropdown-item" href="#">Laporan Keahlian</a></li>
                                 <li><a class="dropdown-item" href="#">Transaksi Ahli</a></li>
                                 <li><a class="dropdown-item" href="#">Penyata</a></li>
@@ -71,9 +81,10 @@
                                 Individu
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Daftar Individu</a>
+                                <li><a class="dropdown-item" href="{{ route('daftarIndividu') }}">Daftar
+                                        Individu</a>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Maklumat
+                                <li><a class="dropdown-item" href="{{ route('maklumatIndividu') }}">Maklumat
                                         Individu</a></li>
                             </ul>
                         </li>
@@ -83,9 +94,11 @@
                                 Syarikat
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Daftar Syarikat</a>
+                                <li><a class="dropdown-item" href="{{ route('daftarSyarikat') }}">Daftar
+                                        Syarikat</a>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Maklumat Syarikat</a></li>
+                                <li><a class="dropdown-item" href="{{ route('maklumatSyarikat') }}">Maklumat
+                                        Syarikat</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -121,8 +134,10 @@
                                 Kakitangan
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Daftar Kakitangan</a></li>
-                                <li><a class="dropdown-item" href="#">Maklumat Kakitangan</a></li>
+                                <li><a class="dropdown-item" href="{{ route('daftarKakitangan') }}">Daftar
+                                        Kakitangan</a></li>
+                                <li><a class="dropdown-item" href="{{ route('maklumatStaff') }}">Maklumat
+                                        Kakitangan</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -236,7 +251,7 @@
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
-                                                                                         document.getElementById('logout-form').submit();">
+                                                                                             document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 
@@ -283,7 +298,6 @@
                             <th>{{ $ahli->jawatan }}</th>
                             <th>{{ $ahli->statusAhli }}</th>
                             <th>{{ $ahli->caraPembayaran }}</th>
-                            {{-- <input type="hidden" name="noKPBaru" value="{{$ahli->noKPBaru}}"> --}}
                             <th>
                                 <a href="{{ route('maklumatAhliKemaskini', $ahli->noKPBaru) }}"
                                     class="btn btn-success btn-block">Kemaskini</a>
@@ -295,7 +309,7 @@
 
                     <button class="btn btn-secondary btn-block" id="btn_pejabat">Pejabat/Pembayar Gaji</button>
 
-                    <button class="btn btn-secondary btn-block" id="btn_noTel">No Telefon</button>
+                    <button class="btn btn-secondary btn-block" id="btn_noTel">Perhubungan</button>
 
                     <button class="btn btn-secondary btn-block" id="btn_akaun">Akaun Bank</button>
 
@@ -308,7 +322,7 @@
                 </div>
 
                 <div class="card-body">
-                    <div class="col-md-12" id="appear" style="display: none">
+                    <div class="col-md-12" id="appearAlamat" style="display: none">
                         <h4>Maklumat Alamat</h4>
                         <table class="table table-bordered table-striped">
                             <tr>
@@ -317,7 +331,9 @@
                                 <th scope="col">Poskod</th>
                                 <th scope="col">Bandar</th>
                                 <th scope="col">Negeri</th>
+                                <th scope="col">Dicipta Oleh</th>
                                 <th scope="col">Dicipta pada</th>
+                                <th scope="col">Dikemaskini oleh</th>
                                 <th scope="col">Dikemaskini pada</th>
                                 <th scope="col">Kemaskini</th>
                                 <th scope="col">Padam</th>
@@ -330,22 +346,23 @@
                                     <th>{{ $alamat->poskod }}</th>
                                     <th>{{ $alamat->bandar }}</th>
                                     <th>{{ $alamat->negeri }}</th>
+                                    <th></th>
                                     <th>{{ $alamat->created_at }}</th>
+                                    <th></th>
                                     <th>{{ $alamat->updated_at }}</th>
                                     <th><a id="edit_alamat" class="btn btn-success btn-block">Kemaskini</a></th>
                                     <th>
-                                        <a id="alamatDelete"
-                                            class="btn btn-danger btn-block">Padam</a>
+                                        <a id="padamAlamat" class="btn btn-danger btn-block">Padam</a>
                                     </th>
                                 </tr>
                             @endif
                         </table>
 
                         <a id="daftar_alamat" class="btn btn-primary btn-block">Daftar Alamat</a>
-                        <button id="close" class="btn btn-danger">Close</button>
+                        <button id="closeAlamat" class="btn btn-danger">Close</button>
                         <br><br>
                         @if ($alamat == true)
-                            <div class="col-md-12" id="appear7" style="display: none">
+                            <div class="col-md-12" id="appearEditAlamat" style="display: none">
                                 <form action="{{ route('updateAlamat', $alamat->noKPBaru) }}" method="POST"
                                     enctype="multipart/form-data">
                                     {{ csrf_field() }}
@@ -414,7 +431,7 @@
                                                     type="submit">Kemaskini</button>
                                             </th>
                                             <th>
-                                                <a id="close7" class="btn btn-danger btn-block">Batal</a>
+                                                <a id="closeEditAlamat" class="btn btn-danger btn-block">Batal</a>
                                             </th>
                                         </tr>
                                     </table>
@@ -423,7 +440,7 @@
                         @endif
                         <br><br>
                         @if ($alamat == false)
-                            <div class="col-md-6" id="appear8" style="display: none">
+                            <div class="col-md-6" id="appearDaftarAlamat" style="display: none">
                                 <form action="{{ route('daftarAlamat', $ahli->noKPBaru) }}" method="POST"
                                     enctype="multipart/form-data">
                                     {{ csrf_field() }}
@@ -499,14 +516,14 @@
                                     <button class="btn btn-success btn-block" type="submit">Submit</button>
                                     <br><br>
                                 </form>
-                                <button id="close8" class="btn btn-danger">Close</button>
+                                <button id="closeDaftarAlamat" class="btn btn-danger">Close</button>
                             </div>
                         @endif
                     </div>
                 </div>
 
                 <div class="card-body">
-                    <div class="col-md-8" id="appear1" style="display: none">
+                    <div class="col-md-8" id="appearPejabat" style="display: none">
                         <h4>Maklumat Pejabat</h4>
                         <table class="table table-bordered table-striped">
                             <tr>
@@ -515,10 +532,15 @@
                                 <th scope="col">Alamat</th>
 
                             </tr>
-                            <tr>
-                                <th scope="row"></th>
-                                <th></th>
-                                <th></th>
+                                @foreach ($pejabat as $info)
+                                    <tr>
+                                        <th scope="row">{{ $info->kod_jabatan }}</th>
+                                        <th>{{ $info->nama_jabatan }}</th>
+                                        <th>{{ $info->alamat }} , {{ $info->poskod }} ,
+                                        {{ $info->daerah }} , {{ $info->negeri }} .</th>
+                                    </tr>
+                                @endforeach
+
                         </table>
                         <br>
                         <h4>Maklumat Pembayar Gaji</h4>
@@ -527,74 +549,68 @@
                                 <th scope="col">Kod</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">Alamat</th>
+
                             </tr>
-                            <tr>
-                                <th scope="row"></th>
-                                <th></th>
-                                <th></th>
+                            @foreach ($pembayarGaji as $info)
+                                <tr>
+                                    <th scope="row">{{ $info->kod_jabatan }}</th>
+                                    <th>{{ $info->nama_jabatan }}</th>
+                                    <th>{{ $info->alamat }} , {{ $info->poskod }} ,
+                                        {{ $info->daerah }} , {{ $info->negeri }} .</th>
+                                </tr>
+                            @endforeach
                         </table>
-                        <button id="close1" class="btn btn-danger">Close</button>
+                        <button id="closePejabat" class="btn btn-danger">Close</button>
                     </div>
                 </div>
 
                 <div class="card-body">
-                    <div class="col-md-8" id="appear2" style="display: none">
+                    <div class="col-md-6" id="appearPerhubungan" style="display: none">
                         <h4>Maklumat Perhubungan</h4>
                         <table class="table table-bordered table-striped">
                             <tr>
                                 <th scope="col">Jenis Maklumat Perhubungan</th>
                                 <th scope="col">Maklumat Perhubungan</th>
-                                <th scope="col">Telco</th>
                                 <th scope="col">Kemaskini</th>
                                 <th scope="col">Padam</th>
                             </tr>
                             <tr>
                                 <th scope="row">No Tel Rumah</th>
                                 <th>{{ $noTelefon->telRumah }}</th>
-                                <th></th>
                                 <th> <a id="edit_telR" class="btn btn-success btn-block">Kemaskini</a></th>
-                                <th><a href="{{ route('padamTelRAhli', $noTelefon->noKPBaru) }}"
-                                        class="btn btn-danger btn-block">Padam</a></th>
+                                <th><a id="padamTelR" class="btn btn-danger btn-block">Padam</a></th>
                             </tr>
                             <tr>
                                 <th scope="row">No Tel Pejabat</th>
                                 <th>{{ $noTelefon->telPejabat }}</th>
-                                <th></th>
                                 <th> <a id="edit_telP" class="btn btn-success btn-block">Kemaskini</a></th>
-                                <th><a href="{{ route('padamTelPAhli', $noTelefon->noKPBaru) }}"
-                                        class="btn btn-danger btn-block">Padam</a></th>
+                                <th><a id="padamTelP" class="btn btn-danger btn-block">Padam</a></th>
                             </tr>
                             <tr>
                                 <th scope="row">No Tel Bimbit</th>
                                 <th>{{ $noTelefon->telHP }}</th>
-                                <th></th>
                                 <th> <a id="edit_telHP" class="btn btn-success btn-block">Kemaskini</a></th>
-                                <th><a href="{{ route('padamTelHPAhli', $noTelefon->noKPBaru) }}"
-                                        class="btn btn-danger btn-block">Padam</a></th>
+                                <th><a id="padamTelHP" class="btn btn-danger btn-block">Padam</a></th>
                             </tr>
                             <tr>
                                 <th scope="row">Faks</th>
                                 <th>{{ $noTelefon->faks }}</th>
-                                <th></th>
                                 <th> <a id="edit_faks" class="btn btn-success btn-block">Kemaskini</a></th>
-                                <th><a href="{{ route('padamFaksAhli', $noTelefon->noKPBaru) }}"
-                                        class="btn btn-danger btn-block">Padam</a></th>
+                                <th><a id="padamFaks" class="btn btn-danger btn-block">Padam</a></th>
                             </tr>
                             <tr>
                                 <th scope="row">E-mail</th>
                                 <th>{{ $noTelefon->email }}</th>
-                                <th></th>
                                 <th> <a id="edit_email" class="btn btn-success btn-block">Kemaskini</a></th>
-                                <th><a href="{{ route('padamEmailAhli', $noTelefon->noKPBaru) }}"
-                                        class="btn btn-danger btn-block">Padam</a></th>
+                                <th><a id="padamEmail" class="btn btn-danger btn-block">Padam</a></th>
                             </tr>
                         </table>
 
-                        <button id="close2" class="btn btn-danger">Close</button>
+                        <button id="closePerhubungan" class="btn btn-danger">Close</button>
 
                         <br><br>
 
-                        <div class="col-md-12" id="appear9" style="display: none">
+                        <div class="col-md-12" id="appearEditTelR" style="display: none">
                             <form action="{{ route('updateTelR', $noTelefon->noKPBaru) }}" method="POST"
                                 enctype="multipart/form-data">
                                 {{ csrf_field() }}
@@ -602,25 +618,13 @@
                                     <tr>
                                         <th scope="col">Jenis Maklumat Perhubungan</th>
                                         <th scope="col">Maklumat Perhubungan</th>
-                                        <th scope="col">Telco</th>
                                         <th scope="col">Kemaskini</th>
                                         <th scope="col">Batal</th>
                                     </tr>
                                     <tr>
                                         <th scope="row">No Tel Rumah</th>
                                         <th>
-                                            <input type="text" name="telRumah" value="{{ $noTelefon->telRumah }}"
-                                                class="form-control">
-                                        </th>
-                                        <th>
-                                            <select name="telco" class="form-select">
-                                                <option value=""></option>
-                                                <option value="Maxis">Maxis</option>
-                                                <option value="Celcom">Celcom</option>
-                                                <option value="Digi">Digi</option>
-                                                <option value="U-Mobile">U-Mobile</option>
-                                                <option value="TuneTalk">Tune Talk</option>
-                                            </select>
+                                            <input type="text" name="telRumah" value="{{ $noTelefon->telRumah }}" class="form-control">
                                         </th>
                                         <th>
                                             <button type="submit" class="btn btn-success btn-block">Kemaskini</button>
@@ -633,7 +637,7 @@
                             </form>
                         </div>
                         <br>
-                        <div class="col-md-12" id="appear10" style="display: none">
+                        <div class="col-md-12" id="appearEditTelP" style="display: none">
                             <form action="{{ route('updateTelP', $noTelefon->noKPBaru) }}" method="POST"
                                 enctype="multipart/form-data">
                                 {{ csrf_field() }}
@@ -641,26 +645,13 @@
                                     <tr>
                                         <th scope="col">Jenis Maklumat Perhubungan</th>
                                         <th scope="col">Maklumat Perhubungan</th>
-                                        <th scope="col">Telco</th>
                                         <th scope="col">Kemaskini</th>
                                         <th scope="col">Batal</th>
                                     </tr>
                                     <tr>
-                                        {{-- <input type="hidden" name="noKPBaru" value="{{$noTelefon->noKPBaru}}"> --}}
                                         <th scope="row">No Tel Pejabat</th>
                                         <th>
-                                            <input type="text" name="telPejabat" value="{{ $noTelefon->telPejabat }}"
-                                                class="form-control">
-                                        </th>
-                                        <th>
-                                            <select name="telco" class="form-select">
-                                                <option value=""></option>
-                                                <option value="Maxis">Maxis</option>
-                                                <option value="Celcom">Celcom</option>
-                                                <option value="Digi">Digi</option>
-                                                <option value="U-Mobile">U-Mobile</option>
-                                                <option value="TuneTalk">Tune Talk</option>
-                                            </select>
+                                            <input type="text" name="telPejabat" value="{{ $noTelefon->telPejabat }}" class="form-control">
                                         </th>
                                         <th>
                                             <button type="submit" class="btn btn-success btn-block">Kemaskini</button>
@@ -673,7 +664,7 @@
                             </form>
                         </div>
                         <br>
-                        <div class="col-md-12" id="appear11" style="display: none">
+                        <div class="col-md-12" id="appearEditTelHP" style="display: none">
                             <form action="{{ route('updateTelHP', $noTelefon->noKPBaru) }}" method="POST"
                                 enctype="multipart/form-data">
                                 {{ csrf_field() }}
@@ -681,26 +672,13 @@
                                     <tr>
                                         <th scope="col">Jenis Maklumat Perhubungan</th>
                                         <th scope="col">Maklumat Perhubungan</th>
-                                        <th scope="col">Telco</th>
                                         <th scope="col">Kemaskini</th>
                                         <th scope="col">Batal</th>
                                     </tr>
                                     <tr>
-                                        {{-- <input type="hidden" name="noKPBaru" value="{{$noTelefon->noKPBaru}}"> --}}
                                         <th scope="row">No Tel Bimbit</th>
                                         <th>
-                                            <input type="text" name="telHP" value="{{ $noTelefon->telHP }}"
-                                                class="form-control">
-                                        </th>
-                                        <th>
-                                            <select name="telco" class="form-select">
-                                                <option value=""></option>
-                                                <option value="Maxis">Maxis</option>
-                                                <option value="Celcom">Celcom</option>
-                                                <option value="Digi">Digi</option>
-                                                <option value="U-Mobile">U-Mobile</option>
-                                                <option value="TuneTalk">Tune Talk</option>
-                                            </select>
+                                            <input type="text" name="telHP" value="{{ $noTelefon->telHP }}" class="form-control">
                                         </th>
                                         <th>
                                             <button type="submit" class="btn btn-success btn-block">Kemaskini</button>
@@ -713,7 +691,7 @@
                             </form>
                         </div>
                         <br>
-                        <div class="col-md-12" id="appear12" style="display: none">
+                        <div class="col-md-12" id="appearEditFaks" style="display: none">
                             <form action="{{ route('updatefaks', $noTelefon->noKPBaru) }}" method="POST"
                                 enctype="multipart/form-data">
                                 {{ csrf_field() }}
@@ -727,8 +705,7 @@
                                     <tr>
                                         <th scope="row">Faks</th>
                                         <th>
-                                            <input type="text" name="faks" value="{{ $noTelefon->faks }}"
-                                                class="form-control">
+                                            <input type="text" name="faks" value="{{ $noTelefon->faks }}" class="form-control">
                                         </th>
                                         <th>
                                             <button type="submit" class="btn btn-success btn-block">Kemaskini</button>
@@ -741,7 +718,7 @@
                             </form>
                         </div>
                         <br>
-                        <div class="col-md-12" id="appear13" style="display: none">
+                        <div class="col-md-12" id="appearEditEmail" style="display: none">
                             <form action="{{ route('updateEmail', $noTelefon->noKPBaru) }}" method="POST"
                                 enctype="multipart/form-data">
                                 {{ csrf_field() }}
@@ -755,8 +732,7 @@
                                     <tr>
                                         <th scope="row">Email</th>
                                         <th>
-                                            <input type="text" name="email" value="{{ $noTelefon->email }}"
-                                                class="form-control">
+                                            <input type="text" name="email" value="{{ $noTelefon->email }}" class="form-control">
                                         </th>
                                         <th>
                                             <button type="submit" class="btn btn-success btn-block">Kemaskini</button>
@@ -772,13 +748,15 @@
                 </div>
 
                 <div class="card-body">
-                    <div class="col-md-12" id="appear3" style="display: none">
+                    <div class="col-md-12" id="appearBank" style="display: none">
                         <h4>Maklumat Akaun No Bank</h4>
                         <table class="table table-bordered table-striped">
                             <tr>
                                 <th scope="col">Jenis Bank</th>
                                 <th scope="col">No Akaun</th>
+                                <th scope="col">Dicipta Oleh</th>
                                 <th scope="col">Dicipta pada</th>
+                                <th scope="col">Dikemaskini oleh</th>
                                 <th scope="col">Dikemaskini pada</th>
                                 <th scope="col">Akaun Bank Utama</th>
                                 <th scope="col"></th>
@@ -790,7 +768,9 @@
                                 <tr>
                                     <th scope="row">{{ $bank->jenisBank }}</th>
                                     <th>{{ $bank->noAkaunBank }}</th>
+                                    <th></th>
                                     <th>{{ $bank->created_at }}</th>
+                                    <th></th>
                                     <th>{{ $bank->updated_at }}</th>
                                     <th></th>
                                     <th>
@@ -801,14 +781,13 @@
                                     </th>
                                     <th><a id="edit_bank" class="btn btn-success btn-block">Kemaskini</a></th>
                                     <th>
-                                        <a href="{{ route('padamBankAhli', $bank->noKPBaru) }}"
-                                            class="btn btn-danger btn-block">Padam</a>
+                                        <a id="padamBank" class="btn btn-danger btn-block">Padam</a>
                                     </th>
                                 </tr>
                             @endif
                         </table>
                         <button id="daftarBank" class="btn btn-primary">Daftar Akaun No</button>
-                        <button id="close3" class="btn btn-danger">Close</button>
+                        <button id="closeBank" class="btn btn-danger">Close</button>
                     </div>
                     <br>
                     @if ($bank == true)
@@ -859,8 +838,7 @@
                                             </select>
                                         </th>
                                         <th>
-                                            <input type="text" name="noAkaunBank" class="form-control"
-                                                value="{{ $bank->noAkaunBank }}">
+                                            <input type="text" name="noAkaunBank" class="form-control" value="{{ $bank->noAkaunBank }}">
                                         </th>
                                         <th></th>
                                         <th>{{ $bank->created_at }}</th>
@@ -894,7 +872,7 @@
                                     <tr>
                                         <th scope="col">Jenis Bank</th>
                                         <th scope="col">No Akaun</th>
-                                        <th scope="col">Kemaskini</th>
+                                        <th scope="col">Daftar</th>
                                         <th scope="col">Batal</th>
                                     </tr>
                                     <tr>
@@ -941,7 +919,7 @@
                 </div>
 
                 <div class="card-body">
-                    <div class="col-md-12" id="appear4" style="display: none">
+                    <div class="col-md-12" id="appearWaris" style="display: none">
                         <h4>Maklumat Tanggungan Waris</h4>
                         <table class="table table-bordered table-striped">
                             <tr>
@@ -973,116 +951,298 @@
                             </tr>
                             @endif
                         </table>
-                        <button id="close4" class="btn btn-danger">Close</button>
+                        <button id="daftarWaris" class="btn btn-primary">Daftar Tanggungan Waris</button>
+                        <button id="closeWaris" class="btn btn-danger">Close</button>
                     </div>
 
-                    <div class="card-body">
-                        <div class="col-md-12" id="appear5" style="display: none">
-                            <h4>Maklumat Caruman</h4>
-                            <table class="table table-bordered table-striped">
+                    <br>
+
+                    @if ($waris == true)
+                    <div class="col-md-12" id="appearEditWaris" style="display: none">
+                        <form action="{{ route('updateWaris', $ahli->noKPBaru) }}" method="POST" enctype="multipart/form-data">
+                            {{ csrf_field() }}
+                            <h4>Carian</h4>
+                            <table>
+                                <input type="hidden" name="noAhli" value="{{ $ahli->noAhli }}">
                                 <tr>
-                                    <th scope="col">Transaksi</th>
-                                    <th scope="col">Kod</th>
-                                    <th scope="col">Keterangan Caruman</th>
-                                    <th scope="col">Caruman Bulanan</th>
-                                    <th scope="col">Tarikh Mula</th>
-                                    <th scope="col">Caruman Bulanan Baru</th>
-                                    <th scope="col">Tarikh Berkuatkuasa</th>
-                                    <th scope="col">Baki Semasa</th>
-                                    <th scope="col">Kemaskini</th>
+                                    <th>Carian Individu</th>
+                                    <td>
+                                        <input type="text" name="cariIndi" class="form-control" value="{{$waris->cariIndi}}">
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('daftarIndividu') }}" class="btn btn-primary">Daftar Individu</a>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <th scope="row"></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th><a href="" class="btn btn-success btn-block">Kemaskini</a></th>
+                                    <th>Jenis Carian</th>
+                                    <td>
+                                        <select name="jenisCariIndi" class="form-select">
+                                            <option value="{{$waris->jenisCariIndi}}">{{$waris->jenisCariIndi}}</option>
+                                            <option value="No Ahli">No Ahli</option>
+                                            <option value="No KP">No KP</option>
+                                            <option value="No KP Lama">No KP Lama</option>
+                                            <option value="Nama">Nama</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <button class="btn btn-secondary btn-block">Cari</button>
+                                    </th>
                                 </tr>
                             </table>
-                            <button id="close5" class="btn btn-danger">Close</button>
-                        </div>
-                    </div>
 
-                    <div class="card-body">
-                        <div class="col-md-12" id="appear6" style="display: none">
-                            <div class="table-responsive">
-                                <h4>Maklumat Pembiayaan</h4>
-                                <table class="table table-bordered table-striped">
-                                    <tr>
-                                        <th scope="col"></th>
-                                        <th scope="col"></th>
-                                        <th scope="col">Transaksi</th>
-                                        <th scope="col">No Rujukan</th>
-                                        <th scope="col">No Anggota</th>
-                                        <th scope="col">Nama Pemohon</th>
-                                        <th scope="col">Kod</th>
-                                        <th scope="col">Keterangan</th>
-                                        <th scope="col">Jumlah Mohon</th>
-                                        <th scope="col">Jumlah Biaya</th>
-                                        <th scope="col">Jumlah Untung</th>
-                                        <th scope="col">Tempoh</th>
-                                        <th scope="col">Ansuran</th>
-                                        <th scope="col">Baki Pembiayaan</th>
-                                        <th scope="col">Tarikh Mula</th>
-                                        <th scope="col">Tarikh Akhir</th>
-                                        <th scope="col">Tarikh Lulus</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Cipta Akaun</th>
-                                        <th scope="col">Dicipta Oleh</th>
-                                        <th scope="col">Dicipta Pada</th>
-                                        <th scope="col">Dikemaskini Oleh</th>
-                                        <th scope="col">Dikemaskini Pada</th>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row"></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </table>
-                            </div>
                             <br>
-                            <h4>Maklumat Sebagai Penjamin</h4>
+
+                            <table style="width:30%">
+                                <tr>
+                                    <th style="width: 40%">Hubungan</th>
+                                    <td>
+                                        <select name="jenisHubungan" class="form-select">
+                                            <option value="{{$waris->jenisHubungan}}">{{$waris->jenisHubungan}}</option>
+                                            <option value="SUAMI">Suami</option>
+                                            <option value="ISTERI">Isteri</option>
+                                            <option value="IBU">Ibu</option>
+                                            <option value="BAPA">Bapa</option>
+                                            <option value="ABANG">Abang</option>
+                                            <option value="KAKAK">Kakak</option>
+                                            <option value="ADIK">Adik</option>
+                                            <option value="ANAK">Anak</option>
+                                            <option value="BAPA SAUDARA">Bapa Saudara</option>
+                                            <option value="IBU SAUDARA">Ibu Saudara</option>
+                                            <option value="ANAK SAUDARA">Anak Saudara</option>
+                                            <option value="SEPUPU">Sepupu</option>
+                                            <option value="CUCU">Cucu</option>
+                                            <option value="ABANG IPAR">Abang Ipar</option>
+                                            <option value="KAKAK IPAR">Kakak Ipar</option>
+                                            <option value="ADIK IPAR">Adik Ipar</option>
+                                            <option value="TUNANG">Tunang</option>
+                                            <option value="WAKIL WARITH">Wakil Warith</option>
+                                            <option value="SAHABAT QARIB">Sahabat Qarib</option>
+                                            <option value="LAIN-LAIN">Lain-lain</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="width: 30%">
+                                <tr>
+                                    <th style="width: 40%">
+                                        <label>Pewaris</label>
+                                    </th>
+                                    <td>
+                                        <label><input type="radio" name="pewaris" value="Ya" class="form-check-input" <?php if ($waris->pewaris == "Ya") echo "checked" ?>>Ya</label>
+                                    </td>
+                                    <td>
+                                        <label><input type="radio" name="pewaris" value="Tidak" class="form-check-input" <?php if ($waris->pewaris == "Tidak") echo "checked" ?>>Tidak</label>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="width: 30%">
+                                <tr>
+                                    <th style="width: 40%">
+                                        <label>Pemegang Wasiat</label>
+                                    </th>
+                                    <td>
+                                        <label><input type="radio" name="pemegangWasiat" value="Ya" class="form-check-input" <?php if ($waris->pemegangWasiat == "Ya") echo "checked" ?>>Ya</label>
+                                    </td>
+                                    <td>
+                                        <label><input type="radio" name="pemegangWasiat" value="Tidak" class="form-check-input" <?php if ($waris->pemegangWasiat == "Tidak") echo "checked" ?>>Tidak</label>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="width: 30%">
+                                <tr>
+                                    <th style="width: 40%">Pembahagian (%)</th>
+                                    <td>
+                                        <input type="text" name="pembahagian" class="form-control" value="{{$waris->pembahagian }}">
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <br>
+                            
+                            <button type="submit" class="btn btn-primary btn-block">Kemaskini Tanggungan Waris</button>
+                        </form>
+                        <br>
+                        <button id="closeEditWaris" class="btn btn-danger">Close</button>
+                    </div>
+                    @endif
+
+                    <br>
+
+                    @if ($waris == false)
+                    <div class="col-md-12" id="appearDaftarWaris" style="display: none">
+                        <form action="{{ route('daftarWaris', $ahli->noKPBaru) }}" method="POST" enctype="multipart/form-data">
+                            {{ csrf_field() }}
+                            <h4>Carian</h4>
+                            <table>
+                                <input type="hidden" name="noAhli" value="{{ $ahli->noAhli }}">
+                                <tr>
+                                    <th>Carian Individu</th>
+                                    <td>
+                                        <input type="text" name="cariIndi" class="form-control">
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('daftarIndividu') }}" class="btn btn-primary">Daftar
+                                            Individu</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Jenis Carian</th>
+                                    <td>
+                                        <select name="jenisCariIndi" class="form-select">
+                                            <option value="Pilih satu">Pilih satu</option>
+                                            <option value="No Ahli">No Ahli</option>
+                                            <option value="No KP">No KP</option>
+                                            <option value="No KP Lama">No KP Lama</option>
+                                            <option value="Nama">Nama</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <button class="btn btn-secondary btn-block">Cari</button>
+                                    </th>
+                                </tr>
+                            </table>
+
+                            <br>
+
+                            <table style="width:30%">
+                                <tr>
+                                    <th style="width: 40%">Hubungan</th>
+                                    <td>
+                                        <select name="jenisHubungan" class="form-select">
+                                            <option value="Pilih satu">Pilih satu</option>
+                                            <option value="SUAMI">Suami</option>
+                                            <option value="ISTERI">Isteri</option>
+                                            <option value="IBU">Ibu</option>
+                                            <option value="BAPA">Bapa</option>
+                                            <option value="ABANG">Abang</option>
+                                            <option value="KAKAK">Kakak</option>
+                                            <option value="ADIK">Adik</option>
+                                            <option value="ANAK">Anak</option>
+                                            <option value="BAPA SAUDARA">Bapa Saudara</option>
+                                            <option value="IBU SAUDARA">Ibu Saudara</option>
+                                            <option value="ANAK SAUDARA">Anak Saudara</option>
+                                            <option value="SEPUPU">Sepupu</option>
+                                            <option value="CUCU">Cucu</option>
+                                            <option value="ABANG IPAR">Abang Ipar</option>
+                                            <option value="KAKAK IPAR">Kakak Ipar</option>
+                                            <option value="ADIK IPAR">Adik Ipar</option>
+                                            <option value="TUNANG">Tunang</option>
+                                            <option value="WAKIL WARITH">Wakil Warith</option>
+                                            <option value="SAHABAT QARIB">Sahabat Qarib</option>
+                                            <option value="LAIN-LAIN">Lain-lain</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="width: 30%">
+                                <tr>
+                                    <th style="width: 40%">
+                                        <label>Pewaris</label>
+                                    </th>
+                                    <td>
+                                        <label><input type="radio" name="pewaris" value="Ya" class="form-check-input">Ya</label>
+                                    </td>
+                                    <td>
+                                        <label><input type="radio" name="pewaris" value="Tidak" class="form-check-input">Tidak</label>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="width: 30%">
+                                <tr>
+                                    <th style="width: 40%">
+                                        <label>Pemegang Wasiat</label>
+                                    </th>
+                                    <td>
+                                        <label><input type="radio" name="pemegangWasiat" value="Ya" class="form-check-input">Ya</label>
+                                    </td>
+                                    <td>
+                                        <label><input type="radio" name="pemegangWasiat" value="Tidak" class="form-check-input">Tidak</label>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="width: 30%">
+                                <tr>
+                                    <th style="width: 40%">Pembahagian (%)</th>
+                                    <td>
+                                        <input type="text" name="pembahagian" class="form-control">
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <br>
+                            
+                            <button type="submit" class="btn btn-secondary btn-block">Daftar Tanggungan Waris</button>
+                        </form>
+                        <br>
+                        <button id="closeDaftarWaris" class="btn btn-danger">Close</button>
+                    </div>
+                    @endif
+                </div>
+
+                <div class="card-body">
+                    <div class="col-md-12" id="appearCaruman" style="display: none">
+                        <h4>Maklumat Caruman</h4>
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <th scope="col">Transaksi</th>
+                                <th scope="col">Kod</th>
+                                <th scope="col">Keterangan Caruman</th>
+                                <th scope="col">Caruman Bulanan</th>
+                                <th scope="col">Tarikh Mula</th>
+                                <th scope="col">Caruman Bulanan Baru</th>
+                                <th scope="col">Tarikh Berkuatkuasa</th>
+                                <th scope="col">Baki Semasa</th>
+                                <th scope="col">Kemaskini</th>
+                            </tr>
+                            <tr>
+                                <th scope="row"></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th><a href="" class="btn btn-success btn-block">Kemaskini</a></th>
+                            </tr>
+                        </table>
+                        <button id="closeCaruman" class="btn btn-danger">Close</button>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="col-md-12" id="appearPembiayaan" style="display: none">
+                        <div class="table-responsive">
+                            <h4>Maklumat Pembiayaan</h4>
                             <table class="table table-bordered table-striped">
                                 <tr>
-                                    <th scope="col">No Anggota</th>
-                                    <th scope="col">Nama</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    <th scope="col">Transaksi</th>
                                     <th scope="col">No Rujukan</th>
-                                    <th scope="col">No Anggota Peminjam</th>
-                                    <th scope="col">Nama Peminjam</th>
+                                    <th scope="col">No Anggota</th>
+                                    <th scope="col">Nama Pemohon</th>
                                     <th scope="col">Kod</th>
                                     <th scope="col">Keterangan</th>
                                     <th scope="col">Jumlah Mohon</th>
                                     <th scope="col">Jumlah Biaya</th>
                                     <th scope="col">Jumlah Untung</th>
-                                    <th scope="col">Tempoh (Bulan)</th>
+                                    <th scope="col">Tempoh</th>
+                                    <th scope="col">Ansuran</th>
                                     <th scope="col">Baki Pembiayaan</th>
                                     <th scope="col">Tarikh Mula</th>
                                     <th scope="col">Tarikh Akhir</th>
+                                    <th scope="col">Tarikh Lulus</th>
                                     <th scope="col">Status</th>
+                                    <th scope="col">Cipta Akaun</th>
+                                    <th scope="col">Dicipta Oleh</th>
+                                    <th scope="col">Dicipta Pada</th>
+                                    <th scope="col">Dikemaskini Oleh</th>
+                                    <th scope="col">Dikemaskini Pada</th>
                                 </tr>
                                 <tr>
                                     <th scope="row"></th>
@@ -1100,23 +1260,70 @@
                                     <th></th>
                                     <th></th>
                                     <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                             </table>
-                            <button id="close6" class="btn btn-danger">Close</button>
                         </div>
+                        <br>
+                        <h4>Maklumat Sebagai Penjamin</h4>
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <th scope="col">No Anggota</th>
+                                <th scope="col">Nama</th>
+                                <th scope="col">No Rujukan</th>
+                                <th scope="col">No Anggota Peminjam</th>
+                                <th scope="col">Nama Peminjam</th>
+                                <th scope="col">Kod</th>
+                                <th scope="col">Keterangan</th>
+                                <th scope="col">Jumlah Mohon</th>
+                                <th scope="col">Jumlah Biaya</th>
+                                <th scope="col">Jumlah Untung</th>
+                                <th scope="col">Tempoh (Bulan)</th>
+                                <th scope="col">Baki Pembiayaan</th>
+                                <th scope="col">Tarikh Mula</th>
+                                <th scope="col">Tarikh Akhir</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                            <tr>
+                                <th scope="row"></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </table>
+                        <button id="closePembiayaan" class="btn btn-danger">Close</button>
                     </div>
-
                 </div>
+
             </div>
         </div>
+    </div>
 
-        <!-- ALERT -->
-        <script type="text/javascript">
-            $('#alamatDelete').on('click', function() {
+    <!-- Script pop-up -->
+    <script type="text/javascript">
+        $('#padamWaris').on('click', function() {
                 console.log("btn click");
                 Swal.fire({
-                    title: 'Anda ingin memadam alamat ini ?',
-                    text: "Data tidak akan dapat dikembalikan!",
+                    title: 'Anda pasti ingin memadam data ini?',
+                    text: "Data yang dipadam tidak akan dapat dikembalikan!",
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
@@ -1128,218 +1335,445 @@
                     } else {
                         Swal.fire(
                             'Telah dipadam!',
-                            'Alamat anda telah dipadam.',
+                            'Maklumat Tanggungan Waris anda telah dipadam.',
                             'success'
                         )
-                        @if ($alamat == true)
-                            window.location = '{{ route('padamAlamat', $alamat->id) }}';
+                        @if ($waris == true)
+                            window.location =
+                                '{{ route('padamWarisAhli', $waris->noKPBaru) }}';
                         @endif
                     }
     
                 })
     
             })
-            </script>
 
-        <script type="text/javascript">
-            $("#btn_alamat").click(
-                function() {
-                    $("#appear").show();
-                }
-            );
+            $('#padamBank').on('click', function() {
+                console.log("btn click");
+                Swal.fire({
+                    title: 'Anda pasti ingin memadam data ini?',
+                    text: "Data yang dipadam tidak akan dapat dikembalikan!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Padam'
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.cancel) {
+    
+                    } else {
+                        Swal.fire(
+                            'Telah dipadam!',
+                            'Maklumat Bank anda telah dipadamkan.',
+                            'success'
+                        )
+                        @if ($bank == true)
+                            window.location =
+                                '{{route('padamBankAhli', $bank->noKPBaru) }}';
+                        @endif
+                    }
+    
+                })
+    
+            })
 
-            $("#btn_pejabat").click(
-                function() {
-                    $("#appear1").show();
-                }
-            );
+            $('#padamEmail').on('click', function() {
+                console.log("btn click");
+                Swal.fire({
+                    title: 'Anda pasti ingin memadam data ini?',
+                    text: "Data yang dipadam tidak akan dapat dikembalikan!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Padam'
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.cancel) {
+    
+                    } else {
+                        Swal.fire(
+                            'Telah dipadam!',
+                            'Email anda telah dipadamkan.',
+                            'success'
+                        )
+                        @if ($noTelefon == true)
+                            window.location =
+                                '{{ route('padamEmailAhli', $noTelefon->noKPBaru) }}';
+                        @endif
+                    }
+    
+                })
+    
+            })
 
-            $("#btn_noTel").click(
-                function() {
-                    $("#appear2").show();
-                }
-            );
+            $('#padamFaks').on('click', function() {
+                console.log("btn click");
+                Swal.fire({
+                    title: 'Anda pasti ingin memadam data ini?',
+                    text: "Data yang dipadam tidak akan dapat dikembalikan!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Padam'
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.cancel) {
+    
+                    } else {
+                        Swal.fire(
+                            'Telah dipadam!',
+                            'Faks anda telah dipadamkan.',
+                            'success'
+                        )
+                        @if ($noTelefon == true)
+                            window.location =
+                                '{{ route('padamFaksAhli', $noTelefon->noKPBaru) }}';
+                        @endif
+                    }
+    
+                })
+    
+            })
 
-            $("#btn_akaun").click(
-                function() {
-                    $("#appear3").show();
-                }
-            );
+            $('#padamTelHP').on('click', function() {
+                console.log("btn click");
+                Swal.fire({
+                    title: 'Anda pasti ingin memadam data ini?',
+                    text: "Data yang dipadam tidak akan dapat dikembalikan!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Padam'
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.cancel) {
+    
+                    } else {
+                        Swal.fire(
+                            'Telah dipadam!',
+                            'No Telefon Bimbit anda telah dipadamkan.',
+                            'success'
+                        )
+                        @if ($noTelefon == true)
+                            window.location =
+                                '{{ route('padamTelHPAhli', $noTelefon->noKPBaru) }}';
+                        @endif
+                    }
+    
+                })
+    
+            })
 
-            $("#btn_waris").click(
-                function() {
-                    $("#appear4").show();
-                }
-            );
+             $('#padamTelP').on('click', function() {
+                console.log("btn click");
+                Swal.fire({
+                    title: 'Anda pasti ingin memadam data ini?',
+                    text: "Data yang dipadam tidak akan dapat dikembalikan!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Padam'
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.cancel) {
+    
+                    } else {
+                        Swal.fire(
+                            'Telah dipadam!',
+                            'No Telefon Pejabat anda telah dipadamkan.',
+                            'success'
+                        )
+                        @if ($noTelefon == true)
+                            window.location =
+                                '{{ route('padamTelPAhli', $noTelefon->noKPBaru) }}';
+                        @endif
+                    }
+    
+                })
+    
+            })
 
-            $("#btn_caruman").click(
-                function() {
-                    $("#appear5").show();
-                }
-            );
+             $('#padamTelR').on('click', function() {
+                console.log("btn click");
+                Swal.fire({
+                    title: 'Anda pasti ingin memadam data ini?',
+                    text: "Data yang dipadam tidak akan dapat dikembalikan!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Padam'
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.cancel) {
+    
+                    } else {
+                        Swal.fire(
+                            'Telah dipadam!',
+                            'No Telefon Rumah anda telah dipadamkan.',
+                            'success'
+                        )
+                        @if ($noTelefon == true)
+                            window.location =
+                                '{{ route('padamTelRAhli', $noTelefon->noKPBaru) }}';
+                        @endif
+                    }
+    
+                })
+    
+            })
 
-            $("#btn_pembiayaan").click(
-                function() {
-                    $("#appear6").show();
-                }
-            );
-
-            $("#edit_alamat").click(
-                function() {
-                    $("#appear7").show();
-                }
-            );
-
-            $("#daftar_alamat").click(
-                function() {
-                    $("#appear8").show();
-                }
-            );
-
-            $("#edit_telR").click(
-                function() {
-                    $("#appear9").show();
-                }
-            );
-
-            $("#edit_telP").click(
-                function() {
-                    $("#appear10").show();
-                }
-            );
-
-            $("#edit_telHP").click(
-                function() {
-                    $("#appear11").show();
-                }
-            );
-
-            $("#edit_faks").click(
-                function() {
-                    $("#appear12").show();
-                }
-            );
-
-            $("#edit_email").click(
-                function() {
-                    $("#appear13").show();
-                }
-            );
-
-            $("#edit_bank").click(
-                function() {
-                    $("#appearEditBank").show();
-                }
-            );
-
-            $("#daftarBank").click(
-                function() {
-                    $("#appearDaftarBank").show();
-                }
-            );
-
-            $("#close").click(
-                function() {
-                    $("#appear").hide();
-                }
-            );
-
-            $("#close1").click(
-                function() {
-                    $("#appear1").hide();
-                }
-            );
-
-            $("#close2").click(
-                function() {
-                    $("#appear2").hide();
-                }
-            );
-
-            $("#close3").click(
-                function() {
-                    $("#appear3").hide();
-                }
-            );
-
-            $("#close4").click(
-                function() {
-                    $("#appear4").hide();
-                }
-            );
-
-            $("#close5").click(
-                function() {
-                    $("#appear5").hide();
-                }
-            );
-
-            $("#close6").click(
-                function() {
-                    $("#appear6").hide();
-                }
-            );
-
-            $("#close7").click(
-                function() {
-                    $("#appear7").hide();
-                }
-            );
-
-            $("#close8").click(
-                function() {
-                    $("#appear8").hide();
-                }
-            );
-
-            $("#closeEditTelR").click(
-                function() {
-                    $("#appear9").hide();
-                }
-            );
-
-            $("#closeEditTelP").click(
-                function() {
-                    $("#appear10").hide();
-                }
-            );
-
-            $("#closeEditTelHP").click(
-                function() {
-                    $("#appear11").hide();
-                }
-            );
-
-            $("#closeEditFaks").click(
-                function() {
-                    $("#appear12").hide();
-                }
-            );
-
-            $("#closeEditEmail").click(
-                function() {
-                    $("#appear13").hide();
-                }
-            );
-
-            $("#closeEditBank").click(
-                function() {
-                    $("#appearEditBank").hide();
-                }
-            );
-
-            $("#closeDaftarBank").click(
-                function() {
-                    $("#appearDaftarBank").hide();
-                }
-            );
+            $('#padamAlamat').on('click', function() {
+                console.log("btn click");
+                Swal.fire({
+                    title: 'Anda pasti ingin memadam data ini?',
+                    text: "Data yang dipadam tidak akan dapat dikembalikan!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Padam'
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.cancel) {
+    
+                    } else {
+                        Swal.fire(
+                            'Telah dipadam!',
+                            'Alamat anda telah dipadamkan.',
+                            'success'
+                        )
+                        @if ($alamat == true)
+                            window.location =
+                                '{{ route('padamAlamat', $alamat->noKPBaru) }}';
+                        @endif
+                    }
+    
+                })
+    
+            })
         </script>
 
-        <!-- Scripts -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-                integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.js"></script>
-        <script src="{{ asset('public/js/app.js') }}" defer></script>
+    <script type="text/javascript">
+        $("#btn_alamat").click(
+            function() {
+                $("#appearAlamat").show();
+            }
+        );
+
+        $("#btn_pejabat").click(
+            function() {
+                $("#appearPejabat").show();
+            }
+        );
+
+        $("#btn_noTel").click(
+            function() {
+                $("#appearPerhubungan").show();
+            }
+        );
+
+        $("#btn_akaun").click(
+            function() {
+                $("#appearBank").show();
+            }
+        );
+
+        $("#btn_waris").click(
+            function() {
+                $("#appearWaris").show();
+            }
+        );
+
+        $("#btn_caruman").click(
+            function() {
+                $("#appearCaruman").show();
+            }
+        );
+
+        $("#btn_pembiayaan").click(
+            function() {
+                $("#appearPembiayaan").show();
+            }
+        );
+
+        $("#edit_alamat").click(
+            function() {
+                $("#appearEditAlamat").show();
+            }
+        );
+
+        $("#daftar_alamat").click(
+            function() {
+                $("#appearDaftarAlamat").show();
+            }
+        );
+
+        $("#edit_telR").click(
+            function() {
+                $("#appearEditTelR").show();
+            }
+        );
+
+        $("#edit_telP").click(
+            function() {
+                $("#appearEditTelP").show();
+            }
+        );
+
+        $("#edit_telHP").click(
+            function() {
+                $("#appearEditTelHP").show();
+            }
+        );
+
+        $("#edit_faks").click(
+            function() {
+                $("#appearEditFaks").show();
+            }
+        );
+
+        $("#edit_email").click(
+            function() {
+                $("#appearEditEmail").show();
+            }
+        );
+
+        $("#edit_bank").click(
+            function() {
+                $("#appearEditBank").show();
+            }
+        );
+
+        $("#daftarBank").click(
+            function() {
+                $("#appearDaftarBank").show();
+            }
+        );
+
+        $("#edit_waris").click(
+            function() {
+                $("#appearEditWaris").show();
+            }
+        );
+
+        $("#daftarWaris").click(
+            function() {
+                $("#appearDaftarWaris").show();
+            }
+        );
+
+        $("#closeAlamat").click(
+            function() {
+                $("#appearAlamat").hide();
+            }
+        );
+
+        $("#closePejabat").click(
+            function() {
+                $("#appearPejabat").hide();
+            }
+        );
+
+        $("#closePerhubungan").click(
+            function() {
+                $("#appearPerhubungan").hide();
+            }
+        );
+
+        $("#closeBank").click(
+            function() {
+                $("#appearBank").hide();
+            }
+        );
+
+        $("#closeWaris").click(
+            function() {
+                $("#appearWaris").hide();
+            }
+        );
+
+        $("#closeCaruman").click(
+            function() {
+                $("#appearCaruman").hide();
+            }
+        );
+
+        $("#closePembiayaan").click(
+            function() {
+                $("#appearPembiayaan").hide();
+            }
+        );
+
+        $("#closeEditAlamat").click(
+            function() {
+                $("#appearEditAlamat").hide();
+            }
+        );
+
+        $("#closeDaftarAlamat").click(
+            function() {
+                $("#appearDaftarAlamat").hide();
+            }
+        );
+
+        $("#closeEditTelR").click(
+            function() {
+                $("#appearEditTelR").hide();
+            }
+        );
+
+        $("#closeEditTelP").click(
+            function() {
+                $("#appearTelP").hide();
+            }
+        );
+
+        $("#closeEditTelHP").click(
+            function() {
+                $("#appearEditTelHP").hide();
+            }
+        );
+
+        $("#closeEditFaks").click(
+            function() {
+                $("#appearEditFaks").hide();
+            }
+        );
+
+        $("#closeEditEmail").click(
+            function() {
+                $("#appearEditEmail").hide();
+            }
+        );
+
+        $("#closeEditBank").click(
+            function() {
+                $("#appearEditBank").hide();
+            }
+        );
+
+        $("#closeDaftarBank").click(
+            function() {
+                $("#appearDaftarBank").hide();
+            }
+        );
+
+        $("#closeEditWaris").click(
+            function() {
+                $("#appearEditWaris").hide();
+            }
+        );
+
+        $("#closeDaftarWaris").click(
+            function() {
+                $("#appearDaftarWaris").hide();
+            }
+        );
+    </script>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.min.js"></script>
+    <script src="{{ asset('public/js/app.js') }}" defer></script>
     </div>
 </body>
 

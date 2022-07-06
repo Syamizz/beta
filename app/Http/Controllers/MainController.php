@@ -8,11 +8,13 @@ use App\Models\ahli_bank;
 use App\Models\ahli_berhenti;
 use App\Models\ahli_perhubungan;
 use App\Models\ahli_syarikat;
-use Laravel\Ui\Presets\React;
+use App\Models\ahli_individu;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-class MainController extends Controller
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+
+class AhliController extends Controller
 {
     public function daftarAhli()
     {
@@ -21,7 +23,6 @@ class MainController extends Controller
 
     public function pengesahanAhli()
     {
-        //error_reporting(E_ALL ^ E_WARNING || E_NOTICE);
         if (
             isset($_POST['statusAhli']) ||  isset($_POST['noAhli']) || isset($_POST['tarikhDaftar']) || isset($_POST['nama']) ||
             isset($_POST['noKPBaru']) || isset($_POST['jantina']) || isset($_POST['bangsa']) || isset($_POST['agama']) ||
@@ -95,8 +96,8 @@ class MainController extends Controller
                 "noAkaunBank" => $noAkaunBank,
                 "jenisBank" => $jenisBank,
                 "cariP" => $cariP,
-                "jenisCariP" => $jenisCariP,
                 "cariPG" => $cariPG,
+                "jenisCariP" => $jenisCariP,
                 "jenisCariPG" => $jenisCariPG,
                 "jawatan" => $jawatan,
                 "tarikhMulaKerja" => $tarikMulaKerja,
@@ -136,6 +137,7 @@ class MainController extends Controller
             'noGaji' => 'required',
             'Gaji' => 'required',
             'potongan' => 'required',
+            'perakuan' => 'required',
         ]);
 
         $ahli = new ahli_daftar();
@@ -146,6 +148,7 @@ class MainController extends Controller
         $ahli->tarikhDaftar = $request->tarikhDaftar;
         $ahli->nama = $request->nama;
         $ahli->noKPBaru = $request->noKPBaru;
+        $ahli->noKPLama = $request->noKPLama;
         $ahli->jantina = $request->jantina;
         $ahli->bangsa = $request->bangsa;
         $ahli->agama = $request->agama;
@@ -232,40 +235,20 @@ class MainController extends Controller
         return view('ahli.maklumatAhli');
     }
 
-    public function maklumatAhliKemaskini(Request $request, $noKPBaru)
+    public function maklumatAhliCari()
     {
-        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
+        $carian = $_POST['carian'];
+        $jenisCarian = $_POST['jenisCarian'];
 
-        return view('ahli.maklumatAhliKemaskini', compact('ahli'));
+        $ahli = ahli_daftar::where($jenisCarian, 'LIKE', '%' . $carian . '%')->get();
+        $waris = ahli_individu::where($jenisCarian, 'LIKE', '%' . $carian . '%')->first();
+
+        return view('ahli.maklumatAhli2', compact('ahli', 'waris'));
     }
 
-    public function kemaskiniAhli(Request $request, $noKPBaru)
+    public function maklumatAhliHasil($noKPBaru)
     {
         $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
-
-        $ahli->statusAhli = $request->statusAhli;
-        $ahli->noAhliTerkini = $request->noAhliTerkini;
-        $ahli->noAhli = $request->noAhli;
-        $ahli->tarikhDaftar = $request->tarikhDaftar;
-        $ahli->nama = $request->nama;
-        $ahli->noKPBaru = $request->noKPBaru;
-        $ahli->jantina = $request->jantina;
-        $ahli->bangsa = $request->bangsa;
-        $ahli->agama = $request->agama;
-        $ahli->tarikhLahir = $request->tarikhLahir;
-        $ahli->tempatLahir = $request->tempatLahir;
-        $ahli->caraPembayaran = $request->caraPembayaran;
-        $ahli->carianPejabat = $request->carianPejabat;
-        $ahli->carianPembayarGaji = $request->carianPembayarGaji;
-        $ahli->jawatan = $request->jawatan;
-        $ahli->tarikhMulaKerja = $request->tarikhMulaKerja;
-        $ahli->noGaji = $request->noGaji;
-        $ahli->Gaji = $request->Gaji;
-        $ahli->potongan = $request->potongan;
-        $ahli->perakuan = $request->perakuan;
-
-        $ahli->save();
-
         $alamat = ahli_alamat::where("noKPBaru", $noKPBaru)->first();
         $bank = ahli_bank::where("noKPBaru", $noKPBaru)->first();
         $noTelefon = ahli_perhubungan::where("noKPBaru", $noKPBaru)->first();
@@ -339,21 +322,63 @@ class MainController extends Controller
             ->first();
 
         return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon', 'pejabat', 'waris', 'pembayarGaji'));
-
-
-        /*?>
-        @isset($message)
-        <div class="alert alert-success">
-        <strong>{{$message}}</strong>
-        </div>
-        <?php*/
     }
 
-    public function padamAlamat($id)
+    public function maklumatAhliKemaskini(Request $request, $noKPBaru)
     {
-        $alamat = ahli_alamat::where("id", $id)->delete();
+        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
+        $pejabat = ahli_syarikat::where("noKPBaru", $noKPBaru)->first();
 
-        return redirect()->route('maklumatAhli');
+        return view('ahli.maklumatAhliKemaskini', compact('ahli', 'pejabat'));
+    }
+
+    public function kemaskiniAhli(Request $request, $noKPBaru)
+    {
+        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
+
+        $ahli->statusAhli = $request->statusAhli;
+        $ahli->noAhliTerkini = $request->noAhliTerkini;
+        $ahli->noAhli = $request->noAhli;
+        $ahli->tarikhDaftar = $request->tarikhDaftar;
+        $ahli->nama = $request->nama;
+        $ahli->noKPBaru = $request->noKPBaru;
+        $ahli->jantina = $request->jantina;
+        $ahli->bangsa = $request->bangsa;
+        $ahli->agama = $request->agama;
+        $ahli->tarikhLahir = $request->tarikhLahir;
+        $ahli->tempatLahir = $request->tempatLahir;
+        $ahli->caraPembayaran = $request->caraPembayaran;
+        $ahli->carianPejabat = $request->carianPejabat;
+        $ahli->carianPembayarGaji = $request->carianPembayarGaji;
+        $ahli->jawatan = $request->jawatan;
+        $ahli->tarikhMulaKerja = $request->tarikhMulaKerja;
+        $ahli->noGaji = $request->noGaji;
+        $ahli->Gaji = $request->Gaji;
+        $ahli->potongan = $request->potongan;
+        $ahli->perakuan = $request->perakuan;
+
+        $ahli->save();
+
+        $pejabat = ahli_syarikat::where("noKPBaru", $noKPBaru)->first();
+
+        $pejabat->noAhli = $request->noAhli;
+        $pejabat->cariP = $request->cariP;
+        $pejabat->cariPG = $request->cariPG;
+        $pejabat->jenisCariP = $request->jenisCariP;
+        $pejabat->jenisCariPG = $request->jenisCariPG;
+        $pejabat->noKPBaru = $request->noKPBaru;
+
+        $pejabat->save();
+
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
+    }
+
+    public function padamAlamat($noKPBaru)
+    {
+        $alamat = ahli_alamat::where('noKPBaru', $noKPBaru);
+        $alamat->delete();
+
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
     }
 
     public function updateAlamat(Request $request, $noKPBaru)
@@ -370,11 +395,7 @@ class MainController extends Controller
 
         $alamat->save();
 
-        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
-        $bank = ahli_bank::where("noKPBaru", $noKPBaru)->first();
-        $noTelefon = ahli_perhubungan::where("noKPBaru", $noKPBaru)->first();
-
-        return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon'));
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
     }
 
     public function daftarAlamat(Request $request, $noKPBaru)
@@ -392,11 +413,7 @@ class MainController extends Controller
 
         $alamat->save();
 
-        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
-        $bank = ahli_bank::where("noKPBaru", $noKPBaru)->first();
-        $noTelefon = ahli_perhubungan::where("noKPBaru", $noKPBaru)->first();
-
-        return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon'));
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
     }
 
     public function updateTelR(Request $request, $noKPBaru)
@@ -407,11 +424,7 @@ class MainController extends Controller
 
         $noTelefon->save();
 
-        $alamat = ahli_alamat::where("noKPBaru", $noKPBaru)->first();
-        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
-        $bank = ahli_bank::where("noKPBaru", $noKPBaru)->first();
-
-        return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon'));
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
     }
 
     public function updateTelP(Request $request, $noKPBaru)
@@ -422,11 +435,7 @@ class MainController extends Controller
 
         $noTelefon->save();
 
-        $alamat = ahli_alamat::where("noKPBaru", $noKPBaru)->first();
-        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
-        $bank = ahli_bank::where("noKPBaru", $noKPBaru)->first();
-
-        return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon'));
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
     }
 
     public function updateTelHP(Request $request, $noKPBaru)
@@ -437,11 +446,7 @@ class MainController extends Controller
 
         $noTelefon->save();
 
-        $alamat = ahli_alamat::where("noKPBaru", $noKPBaru)->first();
-        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
-        $bank = ahli_bank::where("noKPBaru", $noKPBaru)->first();
-
-        return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon'));
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
     }
 
     public function updatefaks(Request $request, $noKPBaru)
@@ -452,11 +457,7 @@ class MainController extends Controller
 
         $noTelefon->save();
 
-        $alamat = ahli_alamat::where("noKPBaru", $noKPBaru)->first();
-        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
-        $bank = ahli_bank::where("noKPBaru", $noKPBaru)->first();
-
-        return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon'));
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
     }
 
     public function updateEmail(Request $request, $noKPBaru)
@@ -467,91 +468,67 @@ class MainController extends Controller
 
         $noTelefon->save();
 
-        $alamat = ahli_alamat::where("noKPBaru", $noKPBaru)->first();
-        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
-        $bank = ahli_bank::where("noKPBaru", $noKPBaru)->first();
-
-        return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon'))->with(['message' => 'Kemaskini Berjaya.']);
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
     }
 
     public function padamTelRAhli(Request $request, $noKPBaru)
     {
         $noTelefon = ahli_perhubungan::where('noKPBaru', $noKPBaru)->first();
 
-        $reset=" ";
+        $reset = " ";
         $noTelefon->telRumah = $request->$reset;
 
         $noTelefon->save();
 
-        $alamat = ahli_alamat::where("noKPBaru", $noKPBaru)->first();
-        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
-        $bank = ahli_bank::where("noKPBaru", $noKPBaru)->first();
-
-        return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon'))->with(['message' => 'Padam no telefon Pejabat Berjaya.']);
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
     }
 
     public function padamTelPAhli(Request $request, $noKPBaru)
     {
         $noTelefon = ahli_perhubungan::where('noKPBaru', $noKPBaru)->first();
 
-        $reset=" ";
+        $reset = " ";
         $noTelefon->telPejabat = $request->$reset;
 
         $noTelefon->save();
 
-        $alamat = ahli_alamat::where("noKPBaru", $noKPBaru)->first();
-        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
-        $bank = ahli_bank::where("noKPBaru", $noKPBaru)->first();
-
-        return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon'))->with(['message' => 'Padam no telefon Pejabat Berjaya.']);
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
     }
 
     public function padamTelHPAhli(Request $request, $noKPBaru)
     {
         $noTelefon = ahli_perhubungan::where('noKPBaru', $noKPBaru)->first();
 
-        $reset=" ";
+        $reset = " ";
         $noTelefon->telHP = $request->$reset;
 
         $noTelefon->save();
 
-        $alamat = ahli_alamat::where("noKPBaru", $noKPBaru)->first();
-        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
-        $bank = ahli_bank::where("noKPBaru", $noKPBaru)->first();
-
-        return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon'))->with(['message' => 'Padam no telefon Pejabat Berjaya.']);
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
     }
 
     public function padamFaksAhli(Request $request, $noKPBaru)
     {
         $noTelefon = ahli_perhubungan::where('noKPBaru', $noKPBaru)->first();
 
-        $reset=" ";
+        $reset = " ";
         $noTelefon->faks = $request->$reset;
 
         $noTelefon->save();
 
-        $alamat = ahli_alamat::where("noKPBaru", $noKPBaru)->first();
-        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
-        $bank = ahli_bank::where("noKPBaru", $noKPBaru)->first();
-
-        return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon'))->with(['message' => 'Padam no telefon Pejabat Berjaya.']);
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
     }
 
     public function padamEmailAhli(Request $request, $noKPBaru)
     {
         $noTelefon = ahli_perhubungan::where('noKPBaru', $noKPBaru)->first();
 
-        $reset=" ";
+        $reset = " ";
         $noTelefon->email = $request->$reset;
 
         $noTelefon->save();
 
-        $alamat = ahli_alamat::where("noKPBaru", $noKPBaru)->first();
-        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
-        $bank = ahli_bank::where("noKPBaru", $noKPBaru)->first();
-
-        return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon'))->with(['message' => 'Padam no telefon Pejabat Berjaya.']);
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
     }
 
     public function updateBank(Request $request, $noKPBaru)
@@ -565,22 +542,15 @@ class MainController extends Controller
 
         $bank->save();
 
-        $alamat = ahli_alamat::where("noKPBaru", $noKPBaru)->first();
-        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
-        $noTelefon = ahli_perhubungan::where("noKPBaru", $noKPBaru)->first();
-
-        return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon'));
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
     }
 
     public function padamBankAhli($noKPBaru)
     {
-        $bank = ahli_bank::where("noKPBaru", $noKPBaru)->delete();
+        $bank = ahli_bank::where("noKPBaru", $noKPBaru);
+        $bank->delete();
 
-        $alamat =ahli_alamat::where("noKPBaru", $noKPBaru)->first();
-        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
-        $noTelefon = ahli_perhubungan::where("noKPBaru", $noKPBaru)->first();
-
-        return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon'));
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
     }
 
     public function daftarBank(Request $request, $noKPBaru)
@@ -595,11 +565,52 @@ class MainController extends Controller
 
         $bank->save();
 
-        $ahli = ahli_daftar::where("noKPBaru", $noKPBaru)->first();
-        $alamat = ahli_alamat::where("noKPBaru", $noKPBaru)->first();
-        $noTelefon = ahli_perhubungan::where("noKPBaru", $noKPBaru)->first();
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
+    }
 
-        return view('ahli.maklumatAhliHasil')->with(compact('ahli', 'alamat', 'bank', 'noTelefon'));
+    public function daftarWaris(Request $request, $noKPBaru)
+    {
+        $waris = new ahli_individu();
+
+        $waris->noAhli = $request->noAhli;
+        $waris->noKPBaru = $request->noKPBaru;
+        $waris->cariIndi = $request->cariIndi;
+        $waris->jenisCariIndi = $request->jenisCariIndi;
+        $waris->jenisHubungan = $request->jenisHubungan;
+        $waris->pewaris = $request->pewaris;
+        $waris->pemegangWasiat = $request->pemegangWasiat;
+        $waris->pembahagian = $request->pembahagian;
+        $waris->user_id = Auth::user()->id;
+
+        $waris->save();
+
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
+    }
+
+    public function updateWaris(Request $request, $noKPBaru)
+    {
+        $waris = ahli_individu::where("noKPBaru", $noKPBaru)->first();
+
+        $waris->noAhli = $request->noAhli;
+        $waris->noKPBaru = $request->noKPBaru;
+        $waris->cariIndi = $request->cariIndi;
+        $waris->jenisCariIndi = $request->jenisCariIndi;
+        $waris->jenisHubungan = $request->jenisHubungan;
+        $waris->pewaris = $request->pewaris;
+        $waris->pemegangWasiat = $request->pemegangWasiat;
+        $waris->pembahagian = $request->pembahagian;
+
+        $waris->save();
+
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
+    }
+
+    public function padamWarisAhli($noKPBaru)
+    {
+        $waris = ahli_individu::where("noKPBaru", $noKPBaru);
+        $waris->delete();
+
+        return redirect()->route('maklumatAhliHasil', $noKPBaru);
     }
 
     public function daftarYuran()
@@ -809,7 +820,7 @@ class MainController extends Controller
                 'ahli_berhentis.created_at',
                 'ahli_berhentis.updated_at',
             )
-            ->where('ahli_daftars.noAhli', 'LIKE', "%".$carian."%")
+            ->where('ahli_daftars.noAhli', $carian)
             ->get();
 
         return view('ahli.kelulusanPemberhentian2')->with(compact('ahli'));
@@ -851,6 +862,5 @@ class MainController extends Controller
 
         return redirect()->route('kelulusanPemberhentian');
     }
-
-    
 }
+//1719

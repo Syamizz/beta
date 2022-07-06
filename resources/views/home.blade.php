@@ -171,7 +171,7 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        <h2>TOTAL CO-OPERATIVE INFORMATION SYSTEM 2</h2>
+                        <h2>TOTAL CO-OPERATIVE INFORMATION SYSTEM </h2>
                         <h2>(TCIS)</h2>
                         <img src="{{ asset('resources/photo/ixs_banner.jpg') }}" alt="inter xs" width="80%">
                     </div>
