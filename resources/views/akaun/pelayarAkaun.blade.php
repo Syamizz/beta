@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Inter XS</title>
+    <title>TCIS</title>
 </head>
 <link rel="dns-prefetch" href="//fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -261,6 +261,17 @@
             </div>
         </nav>
     </div>
+
+
+	<!-- CONTENT -->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header">KOPERASI - Pelayar Akaun</div>
+				<div class="card-body"></div>
+			</div>
+		</div>
+	</div>
 
 
     
