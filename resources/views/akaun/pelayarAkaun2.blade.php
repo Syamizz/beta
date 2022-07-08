@@ -320,15 +320,18 @@
                         </div>
 
                         <div class="col-md-4">
+                            @if($infoAkaun==TRUE)
                             <p>Info</p>
                             <table id="info_akaun" border="1">
-                                
                                 <tr>
                                     <td>No akaun</td>
                                     <td><input type="text" class="form-control" name="noAkaun" id="noAkaun"
                                             readonly></td>
                                 </tr>
                             </table>
+                            @else
+                            <p>No data</p>
+                            @endif
                         </div>
                     </div>
 
@@ -376,13 +379,12 @@
                 noAcc2 = reverseString(reverseAcc2)
                 document.getElementById("noAkaun").value = noAcc2;
 
-                
+                function infoAkaun(){
+                    window.location = '{{route('infoAkaun','noAcc2')}}';
+                }
             }
         }
 
-        function infoAkaun(noAcc2){
-                    window.location = '{{route('infoAkaun','noAcc2')}}';
-                }
         
 
     </script>

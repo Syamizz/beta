@@ -269,5 +269,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         //AKAUN
         Route::get('akaun/PelayarAkaun','App\Http\Controllers\AkaunController@pelayarAkaun')->name('pelayarAkaun');
+        Route::get('akaun/InfoAkaun/{noAcc2}','App\Http\Controllers\AkaunController@infoAkaun')->name('infoAkaun');
+
+        Route::get('akaun/PelayarAkaun2/','App\Http\Controllers\AkaunController@pelayarAkaun')->name('pelayarAkaun2');
     });
 });
